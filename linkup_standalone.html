@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkUP - Plataforma de Acompañamiento Estudiantil (Standalone)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-[#4C8FA8] text-slate-800 antialiased min-h-screen">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    function App() {
+      const [activeTab, setActiveTab] = useState('COMUNIDAD');
+      const [activeSubCategory, setActiveSubCategory] = useState('Foros');
+
+      // Foros State (Reddit Style)
+      const [forumThreads, setForumThreads] = useState([
+        {
+          id: 1,
+          title: '¿Alguien con experiencia en entrevistas técnicas de Arquitectura de Software para estudiantes sin experiencia previa?',
+          context: '¡Hola comu! 👋 Estoy en 7mo ciclo y pasé a la fase técnica para Software Architect Trainee en Globant. Me dijeron que pedirán diagramar microservicios e identificar cuellos de botella en tiempo real. ¿Qué tipo de preguntas suelen hacer y cómo sugieren practicar?',
+          tag: '#entrevistas-tech',
+          author: 'Mateo Benítez',
+          role: 'Estudiante de Sistemas • 7mo Semestre',
+          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+          time: 'Hace 2 horas',
+          upvotes: 34,
+          answers: [
+            { id: 101, author: 'Carlos Gutiérrez', role: 'Lead Architect en Globant', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150', time: 'Hace 1 hora', content: 'Enfócate en 3 conceptos clave: 1) Balancimiento de carga (Load Balancers), 2) Caché con Redis para no saturar la BD, 3) Diferencia entre REST y gRPC. Practica dibujando diagramas en Excalidraw...', upvotes: 18 },
+            { id: 102, author: 'Andrea Silva', role: 'Estudiante de Sistemas • 9no Semestre', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150', time: 'Hace 45 min', content: 'Te recomiendo el canal de YouTube "ByteByteGo" y leer el libro "Designing Data-Intensive Applications". Te da ejemplos visuales muy claros para responder preguntas sobre bases de datos y colas.', upvotes: 9 }
+          ]
+        },
+        {
+          id: 2,
+          title: '¿Cómo balancear las prácticas pre-profesionales de 30 horas semanales con 5 cursos exigentes sin colapsar?',
+          context: 'Empecé mis prácticas de 8:00am a 2:00pm y en las tardes tengo clases presenciales hasta las 10:00pm. Siento que no me alcanza el tiempo para hacer tareas y descansar. ¿Cómo organizan sus bloques de estudio los fines de semana?',
+          tag: '#estudios-y-prácticas',
+          author: 'Camila Rojas',
+          role: 'Estudiante de Arquitectura • 6to Semestre',
+          avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150',
+          time: 'Hace 5 horas',
+          upvotes: 28,
+          answers: [
+            { id: 201, author: 'Mariana Alarcón', role: 'Arquitecta de Soluciones en BBVA', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150', time: 'Hace 3 horas', content: 'Mi regla de oro: 1) Bloquear domingos por la mañana únicamente para repasar los temas más pesados con Pomodoro. 2) Negociar días de home office en semanas de exámenes finales. ¡No intentes estudiar a las 11pm cuando tu cerebro ya está exhausto!', upvotes: 14 }
+          ]
+        }
+      ]);
+
+      const navItems = [
+        { id: 'INICIO', label: 'INICIO', icon: '🏠' },
+        { id: 'OPORTUNIDADES', label: 'OPORTUNIDADES', icon: '🎯' },
+        { id: 'COMUNIDAD', label: 'COMUNIDAD', icon: '👥' },
+        { id: 'BIENESTAR', label: 'BIENESTAR', icon: '💚' },
+        { id: 'APRENDIZAJE', label: 'APRENDIZAJE', icon: '📘' },
+        { id: 'PERFIL', label: 'PERFIL', icon: '👤' },
+      ];
+
+      return (
+        <div className="flex flex-col lg:flex-row min-h-screen bg-[#4C8FA8]">
+          <aside className="w-full lg:w-72 bg-[#92BAC8]/80 backdrop-blur-md border-r border-[#7DA8B8] flex flex-col justify-between shrink-0 shadow-lg p-4">
+            <div>
+              <div className="p-4 flex items-center gap-3 border-b border-[#7DA8B8] mb-4">
+                <div className="w-10 h-10 rounded-xl bg-[#2C5D71] text-white font-black text-xl flex items-center justify-center">L</div>
+                <div>
+                  <h1 className="font-extrabold text-2xl text-slate-900 leading-none">LinkUP</h1>
+                  <p className="text-[11px] font-semibold text-[#1A4050]">Plataforma Estudiantil</p>
+                </div>
+              </div>
+              <nav className="space-y-2">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id)}
+                    className={`w-full flex items-center gap-4 px-4 py-3 rounded-2xl font-bold text-sm transition-all cursor-pointer ${
+                      activeTab === item.id ? 'bg-[#B6D6E2] text-[#163847] shadow-md border border-[#8FBAC9]' : 'text-[#1E4353] hover:bg-[#A3CAD7]/60'
+                    }`}
+                  >
+                    <span className="text-lg">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+              </nav>
+            </div>
+            <div className="p-3 bg-[#A3CAD7]/50 rounded-2xl border border-[#8FBAC9] text-xs mt-6">
+              <p className="font-bold text-[#163847]">Mateo Benítez</p>
+              <p className="text-[10px] text-[#244E60]">Estudiante de Sistemas</p>
+            </div>
+          </aside>
+
+          <main className="flex-1 p-6 sm:p-8 max-w-6xl mx-auto w-full">
+            <header className="flex justify-between items-center text-white pb-4 border-b border-[#629EB4] mb-6">
+              <span className="font-bold text-xs bg-white/20 px-3 py-1 rounded-full">LinkUP - Modo Directo Navegador</span>
+            </header>
+
+            {activeTab === 'COMUNIDAD' && (
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-wider">COMUNIDAD</h1>
+                  <p className="text-white/90 text-sm font-medium mt-1">Conecta, comparte y aprende junto a otros estudiantes</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div onClick={() => setActiveSubCategory('Foros')} className={`p-6 rounded-3xl cursor-pointer transition-all ${activeSubCategory === 'Foros' ? 'bg-[#AECBD8] ring-4 ring-white' : 'bg-[#CBDDE6]'}`}>
+                    <h3 className="font-extrabold text-2xl text-slate-900">💬 Foros</h3>
+                    <p className="text-xs text-slate-600 mt-1">Estilo Reddit con preguntas y contexto</p>
+                  </div>
+                  <div onClick={() => setActiveSubCategory('Grupos')} className={`p-6 rounded-3xl cursor-pointer transition-all ${activeSubCategory === 'Grupos' ? 'bg-[#AECBD8] ring-4 ring-white' : 'bg-[#CBDDE6]'}`}>
+                    <h3 className="font-extrabold text-2xl text-slate-900">👥 Grupos</h3>
+                    <p className="text-xs text-slate-600 mt-1">Comunidades por carrera y creación</p>
+                  </div>
+                  <div onClick={() => setActiveSubCategory('Conexión')} className={`p-6 rounded-3xl cursor-pointer transition-all ${activeSubCategory === 'Conexión' ? 'bg-[#AECBD8] ring-4 ring-white' : 'bg-[#CBDDE6]'}`}>
+                    <h3 className="font-extrabold text-2xl text-slate-900">🤝 Conexión</h3>
+                    <p className="text-xs text-slate-600 mt-1">Reclutadores y mentores profesionales</p>
+                  </div>
+                </div>
+
+                {activeSubCategory === 'Foros' && (
+                  <div className="space-y-6">
+                    {forumThreads.map((thread) => (
+                      <div key={thread.id} className="bg-white rounded-3xl p-6 shadow-xl space-y-4">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-xs text-slate-900">{thread.author}</span>
+                          <span className="text-xs text-slate-500">• {thread.tag}</span>
+                        </div>
+                        <h3 className="font-black text-slate-900 text-lg">{thread.title}</h3>
+                        <p className="p-4 bg-slate-50 rounded-2xl text-xs text-slate-700">{thread.context}</p>
+                        <div className="pt-2 border-t border-slate-200">
+                          <p className="text-xs font-bold text-[#2C5D71]">💬 {thread.answers.length} Respuestas:</p>
+                          {thread.answers.map((ans) => (
+                            <div key={ans.id} className="mt-2 p-3 bg-[#EAF2F6] rounded-xl text-xs">
+                              <span className="font-bold">{ans.author}:</span> {ans.content}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
