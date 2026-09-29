@@ -1,0 +1,11 @@
+# Temporary Excel files
+~$*
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build / System
+dist/
+.DS_Store
+Thumbs.db
