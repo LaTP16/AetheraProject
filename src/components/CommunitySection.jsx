@@ -5,8 +5,8 @@ export default function CommunitySection() {
   const [activeSubCategory, setActiveSubCategory] = useState('TODOS');
   
   // CONEXIÓN SEARCH STATE
-  const [targetRole, setTargetRole] = useState('Arquitecto de Software');
-  const [targetCompany, setTargetCompany] = useState('Globant');
+  const [targetRole, setTargetRole] = useState('TODOS');
+  const [targetCompany, setTargetCompany] = useState('TODOS');
   const [copiedContact, setCopiedContact] = useState(null);
 
   // GRUPOS STATE & DATA
@@ -74,69 +74,61 @@ export default function CommunitySection() {
   const [forumThreads, setForumThreads] = useState([
     {
       id: 1,
-      title: '¿Alguien con experiencia en entrevistas técnicas de Arquitectura de Software para estudiantes sin experiencia previa?',
-      context: '¡Hola comu! 👋 Estoy en 7mo ciclo de Sistemas y pasé a la fase técnica para un puesto de Software Architect Trainee en Globant. Me dijeron que me pedirán diagramar microservicios e identificar cuellos de botella en tiempo real. ¿Qué tipo de preguntas suelen hacer y cómo me sugieren practicar para no ponerme nervioso?',
-      tag: '#entrevistas-tech',
-      author: 'Mateo Benítez',
-      role: 'Estudiante de Sistemas • 7mo Semestre',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+      title: '¿Tienen tips para organizar los tiempos entre el trabajo de medio tiempo y clases?',
+      context: 'Hola comunidad, quería ampliar algo que compartí en mi encuesta de bienestar (Testimonio D4): "Entre clases y trabajo he tratado de ordenar mis tiempos al combinar turnos laborales con clases. La presión baja cuando priorizo tareas realistas. Estoy probando pausas breves y un horario más realista." Quería saber si a alguien más le funciona esto o si usan alguna app en específico para los horarios y pausas.',
+      tag: '#estudios-y-prácticas',
+      author: 'Usuario Anónimo (D4)',
+      role: 'Testimonio Real • Dataset 4',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150',
       time: 'Hace 2 horas',
       answers: [
         {
           id: 101,
-          author: 'Carlos Gutiérrez',
-          role: 'Lead Software Architect en Globant',
-          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
-          time: 'Hace 1 hora',
-          content: '¡Hola Mateo! Como líder técnico en Globant, te doy 3 consejos de oro: 1) Enfócate en la escalabilidad básica (explicar cuándo usar un Load Balancer y Caché con Redis). 2) Justifica siempre tus decisiones ("uso PostgreSQL aquí porque necesito consistencia ACID"). 3) Practica dibujando diagramas en Excalidraw expresando tus ideas en voz alta. ¡Éxitos!'
-        },
-        {
-          id: 102,
           author: 'Andrea Silva',
-          role: 'Estudiante de Sistemas • 9no Semestre',
+          role: 'Estudiante de Sistemas',
           avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
           time: 'Hace 45 min',
-          content: 'Te recomiendo el canal de YouTube "ByteByteGo" y leer el libro "Designing Data-Intensive Applications". Te da ejemplos visuales muy claros para responder preguntas sobre bases de datos y colas de mensajes.'
+          content: 'A mí me pasaba igual. Las "pausas breves" que mencionas son la técnica Pomodoro. Yo uso la app Forest y me ayuda a no tocar el celular mientras hago tareas. Y para horarios realistas, Notion es tu mejor amigo.'
         }
       ]
     },
     {
       id: 2,
-      title: '¿Cómo balancear las prácticas pre-profesionales de 30 horas semanales con 5 cursos exigentes sin colapsar?',
-      context: 'Empecé mis prácticas profesionales la semana pasada de 8:00am a 2:00pm y en las tardes tengo clases presenciales hasta las 10:00pm. Siento que no me alcanza el día para hacer tareas y descansar. ¿Cómo organizan sus bloques de estudio y descanso los fines de semana quienes trabajan y estudian?',
-      tag: '#estudios-y-prácticas',
-      author: 'Camila Rojas',
-      role: 'Estudiante de Arquitectura • 6to Semestre',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150',
+      title: 'Responsabilidades familiares y estudio (¿Qué servicios de la universidad existen para esto?)',
+      context: 'Chicos, dejé este comentario en el buzón universitario (Testimonio D4): "He estado probando formas más saludables de estudiar cuando tengo muchas responsabilidades familiares. No siempre sé a qué servicio acudir." ¿Alguien sabe si el área de bienestar (Dataset 2) ofrece flexibilidad de horarios o si hay consejería familiar gratuita en el campus?',
+      tag: '#salud-y-estudio',
+      author: 'Usuario Anónimo (D4)',
+      role: 'Testimonio Real • Dataset 4',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
       time: 'Hace 5 horas',
       answers: [
         {
           id: 201,
-          author: 'Mariana Alarcón',
-          role: 'Arquitecta de Soluciones en BBVA',
+          author: 'Dra. Elena Vargas',
+          role: 'Coordinadora de Bienestar Estudiantil',
           avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150',
           time: 'Hace 3 horas',
-          content: 'Mi regla de oro durante mi último año: 1) Bloquear religiosamente los domingos por la mañana únicamente para repasar los temas más pesados con la técnica Pomodoro. 2) Negociar días de home office en tus prácticas en semanas de exámenes finales. ¡No intentes estudiar a las 11pm cuando tu cerebro ya está exhausto!'
+          content: '¡Hola! Qué bueno que lo compartes. Sí contamos con el servicio de "Soporte Social" (verificado en el Dataset 2 de servicios). Puedes sacar cita a través de la sección de Bienestar de LinkUP. Ellos pueden emitir un certificado para los profesores solicitando flexibilidad justificada.'
         }
       ]
     },
     {
       id: 3,
-      title: 'Duda con el examen de suficiencia profesional vs Tesis: ¿Cuál conviene más según tus metas?',
-      context: 'Estoy evaluando si sustentar tesis de investigación o dar el examen de titulación profesional. Me gustaría saber el impacto real que tiene haber hecho tesis al momento de postular a maestrías en el extranjero vs el mercado laboral técnico local.',
-      tag: '#tesis-vs-examen',
-      author: 'Diego Pérez',
-      role: 'Estudiante de Ingeniería • 8vo Semestre',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
+      title: 'Bajón emocional por notas bajas (Lidiando con el síndrome del impostor)',
+      context: 'Les comparto mi testimonio anónimo (Dataset 4): "He estado probando formas más saludables de estudiar cuando una nota baja afecta mi confianza. No siempre sé a qué servicio acudir. Estoy probando pausas breves y un horario más realista." A veces una mala nota en parciales me tumba la confianza para el resto del ciclo. ¿Alguien ha llevado terapia psicológica con la red de la universidad?',
+      tag: '#consejo-carrera',
+      author: 'Usuario Anónimo (D4)',
+      role: 'Testimonio Real • Dataset 4',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
       time: 'Hace 1 día',
       answers: [
         {
           id: 301,
-          author: 'Valeria Ríos',
-          role: 'Recruiting Lead en Google',
-          avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=150',
+          author: 'Carlos Gutiérrez',
+          role: 'Lead Software Architect',
+          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
           time: 'Hace 18 horas',
-          content: 'Si tu meta es una maestría internacional o becas como Fulbright o Chevening, la TESIS es un requisito con un peso enorme por las publicaciones académicas. Para la industria tech corporativa local, el examen de titulación te permite obtener el título más rápido.'
+          content: 'Es normal que una nota afecte, yo jalé mi primer curso de programación y ahora soy Arquitecto de Software. Lo de las pausas breves es clave. Sobre el psicólogo, en LinkUP en la pestaña Bienestar puedes pedir cita virtual, aunque a veces demoran unos 15 días (como vimos en el D2), te sugiero sacarla con anticipación en épocas de exámenes.'
         }
       ]
     }
@@ -173,6 +165,56 @@ export default function CommunitySection() {
       avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=150',
       email: 'valeriarios@google.com',
       linkedin: 'linkedin.com/in/valeriarios-recruiting'
+    },
+    {
+      id: 4,
+      name: 'Esteban Morales',
+      role: 'Tech Talent Sourcer',
+      company: 'Rappi',
+      specialty: 'Desarrolladores Fullstack, React, Node.js & Mobile',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
+      email: 'esteban.morales@rappi.com',
+      linkedin: 'linkedin.com/in/estebanmorales-talent'
+    },
+    {
+      id: 5,
+      name: 'Luciana Alarcón',
+      role: 'HR Business Partner',
+      company: 'NovaTech Solutions',
+      specialty: 'Diseñadores UX/UI, Product Managers & UX Research',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+      email: 'luciana.a@novatech.io',
+      linkedin: 'linkedin.com/in/lucianaalarcon-hr'
+    },
+    {
+      id: 6,
+      name: 'Gabriel Sotomayor',
+      role: 'People & Culture Lead',
+      company: 'Aethera Systems',
+      specialty: 'DevOps & Cloud Engineers, Ciberseguridad & Infraestructura',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+      email: 'gabriel.s@aetherasystems.com',
+      linkedin: 'linkedin.com/in/gabrielsotomayor-people'
+    },
+    {
+      id: 7,
+      name: 'Dra. Patricia Paredes',
+      role: 'Head of Clinical Recruitment',
+      company: 'Hospital Central Gaia',
+      specialty: 'Enfermería Especializada, Salud Pública & Gestión Médica',
+      avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=150',
+      email: 'p.paredes@hospitalgaia.org',
+      linkedin: 'linkedin.com/in/patriciaparedes-salud'
+    },
+    {
+      id: 8,
+      name: 'Dr. Fernando Vidal',
+      role: 'Socio Director de Talentos Legal',
+      company: 'Estudio Jurídico Aethera',
+      specialty: 'Abogados Junior, Litigio Corporativo & Derecho Marítimo',
+      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150',
+      email: 'fvidal@aetheralaw.com',
+      linkedin: 'linkedin.com/in/fernandovidal-legal'
     }
   ];
 
@@ -183,7 +225,7 @@ export default function CommunitySection() {
       currentRole: 'Lead Software Architect',
       company: 'Globant',
       experience: '4 años en el puesto • Ex-alumno Universidad Aethera',
-      bio: 'Apasionado por apoyar a nuevos talentos en diseño de sistemas y preparación de entrevistas técnicas.',
+      bio: 'Apasionado por apoyar a nuevos talentos en diseño de sistemas distribuidos y preparación de entrevistas técnicas.',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
       email: 'carlos.gutierrez.tech@gmail.com',
       linkedin: 'linkedin.com/in/cgutierrez-arch'
@@ -209,13 +251,68 @@ export default function CommunitySection() {
       avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150',
       email: 'jorge.benavides@rappi.com',
       linkedin: 'linkedin.com/in/jbenavides-tech'
+    },
+    {
+      id: 104,
+      name: 'Elena Bustamante',
+      currentRole: 'Senior Data Scientist & AI Lead',
+      company: 'Google',
+      experience: '4 años de experiencia • Ex-alumna Aethera',
+      bio: 'Especialista en Machine Learning y Big Data. Ofrezco retroalimentación de proyectos analíticos y portfolio.',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150',
+      email: 'elena.bustamante@google.com',
+      linkedin: 'linkedin.com/in/elenabustamante-ds'
+    },
+    {
+      id: 105,
+      name: 'Mateo Rivas',
+      currentRole: 'Diseñador UX/UI Lead',
+      company: 'NovaTech Solutions',
+      experience: '3 años de experiencia',
+      bio: 'Revisión de portafolios en Figma, pruebas de usabilidad y orientación sobre cómo ingresar al mundo UX.',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
+      email: 'mrivas.ux@novatech.io',
+      linkedin: 'linkedin.com/in/mateorivas-ux'
+    },
+    {
+      id: 106,
+      name: 'Kevin Salazar',
+      currentRole: 'DevOps & Cloud Engineer Senior',
+      company: 'Aethera Systems',
+      experience: '6 años de experiencia',
+      bio: 'Asesoría en CI/CD, Docker, Kubernetes y preparación para certificaciones AWS y Terraform.',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
+      email: 'ksalazar@aetherasystems.com',
+      linkedin: 'linkedin.com/in/kevinsalazar-devops'
+    },
+    {
+      id: 107,
+      name: 'Lic. Carmen Espinoza',
+      currentRole: 'Enfermera Lead en UCI & Salud Pública',
+      company: 'Hospital Central Gaia',
+      experience: '7 años de experiencia • Mentora Académica',
+      bio: 'Te oriento sobre rotaciones de internado, ética médica y preparación para oposiciones y SERUMS.',
+      avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=150',
+      email: 'cespinoza@hospitalgaia.org',
+      linkedin: 'linkedin.com/in/carmenespinoza-salud'
+    },
+    {
+      id: 108,
+      name: 'Abog. Ricardo Palma',
+      currentRole: 'Abogado Corporativo & Senior Legal Specialist',
+      company: 'Estudio Jurídico Aethera',
+      experience: '5 años de experiencia • Licenciado con honores',
+      bio: 'Orientación en redacción de contratos, sustentación de tesis en Derecho y preparación para entrevistas jurídicas.',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+      email: 'rpalma@aetheralaw.com',
+      linkedin: 'linkedin.com/in/ricardopalma-law'
     }
   ];
 
   const topCards = [
-    { id: 'Foros', title: 'Foros', icon: MessageSquare, description: 'Preguntas, contexto y respuestas comunitarias', color: 'bg-[#CBDDE6]', hoverColor: 'hover:bg-[#B9D3E0]' },
-    { id: 'Grupos', title: 'Grupos', icon: Users, description: 'Comunidades por carrera y creación de grupos', color: 'bg-[#CBDDE6]', hoverColor: 'hover:bg-[#B9D3E0]' },
-    { id: 'Conexión', title: 'Conexión', icon: Share2, description: 'Contacto con Reclutadores y Mentores Profesionales', color: 'bg-[#CBDDE6]', hoverColor: 'hover:bg-[#B9D3E0]' },
+    { id: 'Foros', title: 'Foros', icon: MessageSquare, description: 'Preguntas, contexto y respuestas comunitarias', color: 'bg-slate-900/60 border border-slate-800', hoverColor: 'hover:border-blue-500/40 hover:bg-slate-800/60' },
+    { id: 'Grupos', title: 'Grupos', icon: Users, description: 'Comunidades por carrera y creación de grupos', color: 'bg-slate-900/60 border border-slate-800', hoverColor: 'hover:border-blue-500/40 hover:bg-slate-800/60' },
+    { id: 'Conexión', title: 'Conexión', icon: Share2, description: 'Contacto con Reclutadores y Mentores Profesionales', color: 'bg-slate-900/60 border border-slate-800', hoverColor: 'hover:border-blue-500/40 hover:bg-slate-800/60' },
   ];
 
   const handleCopy = (text, type) => {
@@ -309,15 +406,35 @@ export default function CommunitySection() {
   };
 
   const filteredRecruiters = recruitersData.filter(r => {
-    const roleMatch = !targetRole || r.role.toLowerCase().includes(targetRole.toLowerCase()) || r.specialty.toLowerCase().includes(targetRole.toLowerCase());
-    const companyMatch = !targetCompany || r.company.toLowerCase().includes(targetCompany.toLowerCase());
-    return roleMatch || companyMatch;
+    const roleMatch = targetRole === 'TODOS' || 
+      r.role.toLowerCase().includes(targetRole.toLowerCase()) || 
+      r.specialty.toLowerCase().includes(targetRole.toLowerCase()) ||
+      (targetRole === 'Arquitecto de Software' && (r.specialty.includes('Arquitectura') || r.role.includes('Tech'))) ||
+      (targetRole === 'Data Analyst / Data Scientist' && (r.specialty.includes('Data') || r.role.includes('Data'))) ||
+      (targetRole === 'Desarrollador Fullstack / Backend' && (r.specialty.includes('Backend') || r.specialty.includes('Fullstack'))) ||
+      (targetRole === 'Diseñador UX/UI' && (r.specialty.includes('UX') || r.role.includes('UX'))) ||
+      (targetRole === 'DevOps & Cloud Engineer' && (r.specialty.includes('DevOps') || r.specialty.includes('Cloud'))) ||
+      (targetRole === 'Enfermería & Salud' && (r.specialty.includes('Enfermería') || r.role.includes('Clinical'))) ||
+      (targetRole === 'Derecho & Legal' && (r.specialty.includes('Legal') || r.specialty.includes('Abogados')));
+      
+    const companyMatch = targetCompany === 'TODOS' || r.company.toLowerCase().includes(targetCompany.toLowerCase());
+    return roleMatch && companyMatch;
   });
 
   const filteredProfessionals = workingProfessionalsData.filter(p => {
-    const roleMatch = !targetRole || p.currentRole.toLowerCase().includes(targetRole.toLowerCase()) || p.bio.toLowerCase().includes(targetRole.toLowerCase());
-    const companyMatch = !targetCompany || p.company.toLowerCase().includes(targetCompany.toLowerCase());
-    return roleMatch || companyMatch;
+    const roleMatch = targetRole === 'TODOS' || 
+      p.currentRole.toLowerCase().includes(targetRole.toLowerCase()) || 
+      p.bio.toLowerCase().includes(targetRole.toLowerCase()) ||
+      (targetRole === 'Arquitecto de Software' && (p.currentRole.includes('Architect') || p.currentRole.includes('Arquitectura'))) ||
+      (targetRole === 'Data Analyst / Data Scientist' && (p.currentRole.includes('Data') || p.bio.includes('Data'))) ||
+      (targetRole === 'Desarrollador Fullstack / Backend' && (p.currentRole.includes('Frontend') || p.bio.includes('React'))) ||
+      (targetRole === 'Diseñador UX/UI' && (p.currentRole.includes('UX') || p.bio.includes('Figma'))) ||
+      (targetRole === 'DevOps & Cloud Engineer' && (p.currentRole.includes('Cloud') || p.currentRole.includes('DevOps'))) ||
+      (targetRole === 'Enfermería & Salud' && (p.currentRole.includes('Enfermera') || p.bio.includes('internado'))) ||
+      (targetRole === 'Derecho & Legal' && (p.currentRole.includes('Abogado') || p.bio.includes('Derecho')));
+
+    const companyMatch = targetCompany === 'TODOS' || p.company.toLowerCase().includes(targetCompany.toLowerCase());
+    return roleMatch && companyMatch;
   });
 
   const filteredGroups = groupCategoryFilter === 'TODOS'
@@ -332,7 +449,7 @@ export default function CommunitySection() {
         <h1 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-wider">
           COMUNIDAD
         </h1>
-        <p className="text-white/90 text-sm sm:text-base font-medium mt-1">
+        <p className="text-slate-400 text-sm sm:text-base font-medium mt-1">
           Foros de preguntas y respuestas, comunidades académicas y red de conexión con reclutadores y mentores
         </p>
       </div>
@@ -347,16 +464,16 @@ export default function CommunitySection() {
             <div
               key={card.id}
               onClick={() => setActiveSubCategory(card.id)}
-              className={`${card.color} ${card.hoverColor} p-6 sm:p-8 rounded-3xl shadow-xl border border-white/40 cursor-pointer transition-all transform hover:-translate-y-1 text-slate-800 flex flex-col items-start justify-between min-h-[160px] group ${
-                isSelected ? 'ring-4 ring-white/80 scale-[1.02] bg-[#AECBD8]' : ''
+              className={`${card.color} ${card.hoverColor} backdrop-blur-md p-6 sm:p-8 rounded-3xl shadow-xl cursor-pointer transition-all transform hover:-translate-y-1 text-white flex flex-col items-start justify-between min-h-[160px] group ${
+                isSelected ? 'ring-2 ring-blue-400 bg-blue-600/30 shadow-[0_0_20px_rgba(37,99,235,0.3)]' : ''
               }`}
             >
-              <div className="p-3 bg-[#2C5D71] text-white rounded-2xl shadow-md group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-2xl shadow-md group-hover:scale-110 transition-transform">
                 <Icon className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="font-extrabold text-2xl text-slate-900 mt-4 tracking-tight">{card.title}</h3>
-                <p className="text-xs text-slate-600 font-semibold mt-1">{card.description}</p>
+                <h3 className="font-extrabold text-2xl text-white mt-4 tracking-tight">{card.title}</h3>
+                <p className="text-xs text-slate-400 font-medium mt-1">{card.description}</p>
               </div>
             </div>
           );
@@ -368,22 +485,22 @@ export default function CommunitySection() {
         <div className="space-y-8 animate-fadeIn">
           
           {/* HEADER DE FOROS & BOTÓN CREAR PREGUNTA */}
-          <div className="bg-[#CBDDE6] rounded-3xl p-6 sm:p-8 shadow-xl border border-white/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <HelpCircle className="w-6 h-6 text-[#2C5D71]" />
-                <h2 className="text-2xl font-black text-[#1F4555]">
+                <HelpCircle className="w-6 h-6 text-blue-400" />
+                <h2 className="text-2xl font-black text-white">
                   Foro de Preguntas & Debates
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-slate-700 font-medium mt-1">
+              <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
                 Haz tus preguntas con contexto detallado y recibe respuestas e ideas útiles de tus compañeros y mentores.
               </p>
             </div>
 
             <button
               onClick={() => setShowCreateForumModal(true)}
-              className="px-5 py-3 bg-[#2C5D71] hover:bg-[#1E4353] text-white font-bold text-xs sm:text-sm rounded-2xl shadow-lg flex items-center gap-2 shrink-0 transition-transform active:scale-95 cursor-pointer"
+              className="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 transition-all active:scale-95 cursor-pointer"
             >
               <Plus className="w-5 h-5" />
               <span>Hacer una Pregunta / Crear Hilo</span>
@@ -395,7 +512,7 @@ export default function CommunitySection() {
             {forumThreads.map((thread) => (
               <div
                 key={thread.id}
-                className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 space-y-5 hover:shadow-2xl transition-all"
+                className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800 space-y-5 hover:border-blue-500/30 transition-all"
               >
                 
                 {/* THREAD HEADER & QUESTION */}
@@ -405,38 +522,38 @@ export default function CommunitySection() {
                       <img
                         src={thread.avatar}
                         alt={thread.author}
-                        className="w-9 h-9 rounded-full object-cover border border-slate-300"
+                        className="w-9 h-9 rounded-full object-cover border border-slate-700"
                       />
                       <div>
-                        <h4 className="font-extrabold text-xs text-slate-900">{thread.author}</h4>
-                        <p className="text-[10px] text-slate-500">{thread.role}</p>
+                        <h4 className="font-extrabold text-xs text-white">{thread.author}</h4>
+                        <p className="text-[10px] text-slate-400">{thread.role}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-extrabold px-3 py-1 rounded-full uppercase bg-teal-100 text-[#2C5D71]">
+                      <span className="text-[10px] font-extrabold px-3 py-1 rounded-full uppercase bg-blue-500/20 border border-blue-500/30 text-blue-400">
                         {thread.tag}
                       </span>
-                      <span className="text-xs text-slate-400">{thread.time}</span>
+                      <span className="text-xs text-slate-500">{thread.time}</span>
                     </div>
                   </div>
 
                   {/* PREGUNTA PRINCIPAL / TITULO */}
-                  <h3 className="font-black text-slate-900 text-lg sm:text-xl leading-snug">
+                  <h3 className="font-black text-white text-lg sm:text-xl leading-snug">
                     {thread.title}
                   </h3>
 
                   {/* CONTEXTO DETALLADO */}
-                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs sm:text-sm text-slate-700 leading-relaxed space-y-1">
-                    <p className="font-bold text-[#1F4555]">Contexto de la duda:</p>
+                  <div className="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/60 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-1">
+                    <p className="font-bold text-blue-400">Contexto de la duda:</p>
                     <p>{thread.context}</p>
                   </div>
                 </div>
 
                 {/* RESPUESTAS / HILO DE APORTES */}
-                <div className="pt-4 border-t border-slate-200 space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-extrabold text-[#1F4555]">
-                    <MessageSquare className="w-4 h-4 text-[#2C5D71]" />
+                <div className="pt-4 border-t border-slate-800 space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-extrabold text-blue-400">
+                    <MessageSquare className="w-4 h-4 text-cyan-400" />
                     <span>{thread.answers.length} Respuestas y Aportes:</span>
                   </div>
 
@@ -445,20 +562,20 @@ export default function CommunitySection() {
                     {thread.answers.map((answer) => (
                       <div
                         key={answer.id}
-                        className="p-4 bg-[#EAF2F6] rounded-2xl border border-[#B4D3E0] space-y-2"
+                        className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/80 space-y-2"
                       >
                         <div className="flex items-center gap-2">
                           <img
                             src={answer.avatar}
                             alt={answer.author}
-                            className="w-7 h-7 rounded-full object-cover border border-[#2C5D71]"
+                            className="w-7 h-7 rounded-full object-cover border border-blue-500/40"
                           />
-                          <span className="font-extrabold text-xs text-slate-900">{answer.author}</span>
-                          <span className="text-[10px] text-slate-500">• {answer.role}</span>
-                          <span className="text-[10px] text-slate-400 ml-auto">{answer.time}</span>
+                          <span className="font-extrabold text-xs text-white">{answer.author}</span>
+                          <span className="text-[10px] text-slate-400">• {answer.role}</span>
+                          <span className="text-[10px] text-slate-500 ml-auto">{answer.time}</span>
                         </div>
 
-                        <p className="text-xs text-slate-800 font-medium leading-relaxed pl-9">
+                        <p className="text-xs text-slate-300 font-medium leading-relaxed pl-9">
                           {answer.content}
                         </p>
                       </div>
@@ -475,11 +592,11 @@ export default function CommunitySection() {
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') handleAddForumReply(thread.id);
                       }}
-                      className="flex-1 px-4 py-2.5 text-xs rounded-xl bg-slate-50 border border-slate-300 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#2C5D71]"
+                      className="flex-1 px-4 py-2.5 text-xs rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 font-medium focus:outline-none focus:border-blue-500"
                     />
                     <button
                       onClick={() => handleAddForumReply(thread.id)}
-                      className="px-4 py-2.5 bg-[#2C5D71] hover:bg-[#1E4353] text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer"
+                      className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer transition-colors"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>Responder</span>
@@ -500,22 +617,22 @@ export default function CommunitySection() {
         <div className="space-y-8 animate-fadeIn">
           
           {/* HEADER DE GRUPOS & BOTÓN CREAR GRUPO */}
-          <div className="bg-[#CBDDE6] rounded-3xl p-6 sm:p-8 shadow-xl border border-white/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <Users className="w-6 h-6 text-[#2C5D71]" />
-                <h2 className="text-2xl font-black text-[#1F4555]">
+                <Users className="w-6 h-6 text-blue-400" />
+                <h2 className="text-2xl font-black text-white">
                   Comunidades & Grupos Estudiantiles
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-slate-700 font-medium mt-1">
+              <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
                 Explora grupos de estudio por carreras (Software, Arquitectura, Enfermería, etc.) o crea tu propio grupo para coordinar con compañeros.
               </p>
             </div>
 
             <button
               onClick={() => setShowCreateGroupModal(true)}
-              className="px-5 py-3 bg-[#2C5D71] hover:bg-[#1E4353] text-white font-bold text-xs sm:text-sm rounded-2xl shadow-lg flex items-center gap-2 shrink-0 transition-transform active:scale-95 cursor-pointer"
+              className="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 transition-all active:scale-95 cursor-pointer"
             >
               <Plus className="w-5 h-5" />
               <span>Crear Nuevo Grupo</span>
@@ -524,15 +641,15 @@ export default function CommunitySection() {
 
           {/* CHIPS DE FILTRO POR CARRERA */}
           <div className="flex flex-wrap gap-2 items-center">
-            <span className="text-xs font-bold text-white uppercase tracking-wider mr-2">Filtrar área:</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">Filtrar área:</span>
             {['TODOS', 'Software / TI', 'Arquitectura', 'Enfermería', 'Derecho'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setGroupCategoryFilter(cat)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   groupCategoryFilter === cat
-                    ? 'bg-white text-[#193F4E] shadow-md ring-2 ring-[#2C5D71]'
-                    : 'bg-white/20 text-white hover:bg-white/30'
+                    ? 'bg-blue-600 text-white shadow-md border border-blue-400/40'
+                    : 'bg-slate-900/60 border border-slate-800 text-slate-400 hover:bg-slate-800/60 hover:text-white'
                 }`}
               >
                 {cat}
@@ -545,40 +662,40 @@ export default function CommunitySection() {
             {filteredGroups.map((group) => (
               <div
                 key={group.id}
-                className="bg-white rounded-3xl p-6 shadow-xl border border-slate-200 flex flex-col justify-between hover:shadow-2xl transition-all space-y-4"
+                className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-800 flex flex-col justify-between hover:border-blue-500/30 transition-all space-y-4"
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-3">
-                    <span className={`text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider ${group.tagBg}`}>
+                    <span className="text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider bg-blue-500/20 border border-blue-500/30 text-blue-400">
                       {group.category}
                     </span>
-                    <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+                    <span className="text-xs font-semibold text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">
                       👥 {group.membersCount} miembros
                     </span>
                   </div>
 
-                  <h3 className="font-extrabold text-slate-900 text-lg leading-snug">
+                  <h3 className="font-extrabold text-white text-lg leading-snug">
                     {group.name}
                   </h3>
 
-                  <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-1">
-                    <p className="font-bold text-[#1F4555]">🎯 Objetivo del grupo:</p>
-                    <p className="text-slate-700 leading-relaxed">{group.objective}</p>
+                  <div className="p-3.5 bg-slate-800/50 rounded-2xl border border-slate-700/60 text-xs space-y-1">
+                    <p className="font-bold text-blue-400">🎯 Objetivo del grupo:</p>
+                    <p className="text-slate-300 leading-relaxed">{group.objective}</p>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
                   <div>
-                    <p className="font-bold text-slate-600">Modalidad: <span className="text-[#2C5D71]">{group.modality}</span></p>
-                    {group.creator && <p className="text-[10px] text-slate-400">Creado por: {group.creator}</p>}
+                    <p className="font-bold text-slate-400">Modalidad: <span className="text-cyan-400">{group.modality}</span></p>
+                    {group.creator && <p className="text-[10px] text-slate-500">Creado por: {group.creator}</p>}
                   </div>
 
                   <button
                     onClick={() => handleToggleJoinGroup(group.id)}
                     className={`px-4 py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer ${
                       group.joined
-                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                        : 'bg-[#2C5D71] hover:bg-[#1E4353] text-white'
+                        ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                        : 'bg-blue-600 hover:bg-blue-500 text-white'
                     }`}
                   >
                     {group.joined ? (
@@ -606,47 +723,62 @@ export default function CommunitySection() {
         <div className="space-y-8 animate-fadeIn">
           
           {/* SEARCH & TARGET INPUT FORM */}
-          <div className="bg-[#CBDDE6] rounded-3xl p-6 sm:p-8 shadow-xl border border-white/40 space-y-4">
-            <div className="flex items-center gap-2 border-b border-slate-300 pb-3">
-              <Sparkles className="w-6 h-6 text-[#2C5D71]" />
-              <h2 className="text-xl sm:text-2xl font-black text-[#1F4555]">
+          <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 space-y-4">
+            <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
+              <Sparkles className="w-6 h-6 text-blue-400" />
+              <h2 className="text-xl sm:text-2xl font-black text-white">
                 Red de Conexión Laboral & Mentores
               </h2>
             </div>
-            <p className="text-xs sm:text-sm text-slate-700 font-medium">
+            <p className="text-xs sm:text-sm text-slate-400 font-medium">
               Ingresa el puesto al que aspiras y las empresas donde planeas trabajar. LinkUP te conectará directamente con reclutadores activos y profesionales/mentores trabajando en esa área.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
               <div>
-                <label className="block text-xs font-bold text-[#1F4555] uppercase tracking-wider mb-1">
-                  🎯 Puesto al que aspiras:
+                <label className="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">
+                  🎯 Puesto al que aspiras (Filtro por Rol):
                 </label>
                 <div className="relative">
-                  <Briefcase className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-500" />
-                  <input
-                    type="text"
+                  <Briefcase className="w-4 h-4 absolute left-3.5 top-3.5 text-blue-400 z-10 pointer-events-none" />
+                  <select
                     value={targetRole}
                     onChange={(e) => setTargetRole(e.target.value)}
-                    placeholder="Ej. Arquitecto de Software, Analista de Datos..."
-                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white text-slate-800 font-semibold text-sm border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#2C5D71]"
-                  />
+                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-800/90 text-white font-semibold text-sm border border-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer appearance-none"
+                  >
+                    <option value="TODOS">✨ Todos los Puestos y Áreas</option>
+                    <option value="Arquitecto de Software">💻 Arquitecto de Software</option>
+                    <option value="Data Analyst / Data Scientist">📊 Data Analyst / Data Scientist</option>
+                    <option value="Desarrollador Fullstack / Backend">⚡ Desarrollador Fullstack / Backend</option>
+                    <option value="Diseñador UX/UI">🎨 Diseñador UX/UI</option>
+                    <option value="DevOps & Cloud Engineer">☁️ DevOps & Cloud Engineer</option>
+                    <option value="Enfermería & Salud">🩺 Enfermería & Salud</option>
+                    <option value="Derecho & Legal">⚖️ Derecho & Legal</option>
+                  </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1F4555] uppercase tracking-wider mb-1">
-                  🏢 Empresa o lugar donde planeas trabajar:
+                <label className="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">
+                  🏢 Empresa donde planeas trabajar (Filtro por Empresa):
                 </label>
                 <div className="relative">
-                  <Building2 className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-500" />
-                  <input
-                    type="text"
+                  <Building2 className="w-4 h-4 absolute left-3.5 top-3.5 text-blue-400 z-10 pointer-events-none" />
+                  <select
                     value={targetCompany}
                     onChange={(e) => setTargetCompany(e.target.value)}
-                    placeholder="Ej. Globant, BBVA, Google, Rappi..."
-                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white text-slate-800 font-semibold text-sm border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#2C5D71]"
-                  />
+                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-800/90 text-white font-semibold text-sm border border-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer appearance-none"
+                  >
+                    <option value="TODOS">✨ Todas las Empresas</option>
+                    <option value="Globant">🏢 Globant</option>
+                    <option value="BBVA">🏦 BBVA</option>
+                    <option value="Google">🌐 Google</option>
+                    <option value="Rappi">🚀 Rappi</option>
+                    <option value="NovaTech Solutions">💡 NovaTech Solutions</option>
+                    <option value="Aethera Systems">⚡ Aethera Systems</option>
+                    <option value="Hospital Central Gaia">🏥 Hospital Central Gaia</option>
+                    <option value="Estudio Jurídico Aethera">⚖️ Estudio Jurídico Aethera</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -657,7 +789,7 @@ export default function CommunitySection() {
             <div className="flex items-center justify-between">
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide flex items-center gap-2">
                 <span>👔 Reclutadores para el puesto</span>
-                <span className="text-xs px-3 py-1 bg-white/20 rounded-full font-bold text-white">
+                <span className="text-xs px-3 py-1 bg-slate-800 border border-slate-700 rounded-full font-bold text-cyan-400">
                   {filteredRecruiters.length} encontrados
                 </span>
               </h3>
@@ -665,28 +797,28 @@ export default function CommunitySection() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {filteredRecruiters.map((recruiter) => (
-                <div key={recruiter.id} className="bg-white rounded-3xl p-6 shadow-xl border border-slate-200 flex flex-col justify-between hover:shadow-2xl transition-all space-y-4">
+                <div key={recruiter.id} className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-800 flex flex-col justify-between hover:border-blue-500/30 transition-all space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
-                      <img src={recruiter.avatar} alt={recruiter.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-[#2C5D71] shadow-sm" />
+                      <img src={recruiter.avatar} alt={recruiter.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-blue-500 shadow-sm" />
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-base">{recruiter.name} <span className="text-blue-600 text-xs">✓</span></h4>
-                        <p className="text-xs font-bold text-[#2C5D71]">{recruiter.role}</p>
-                        <p className="text-[11px] font-semibold text-slate-600">🏢 {recruiter.company}</p>
+                        <h4 className="font-extrabold text-white text-base">{recruiter.name} <span className="text-blue-400 text-xs">✓</span></h4>
+                        <p className="text-xs font-bold text-blue-400">{recruiter.role}</p>
+                        <p className="text-[11px] font-semibold text-slate-400">🏢 {recruiter.company}</p>
                       </div>
                     </div>
-                    <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
-                      <span className="font-bold text-slate-700">Especialidad: </span>
-                      <span className="text-slate-600">{recruiter.specialty}</span>
+                    <div className="p-3 bg-slate-800/50 rounded-2xl border border-slate-700/60 text-xs">
+                      <span className="font-bold text-slate-300">Especialidad: </span>
+                      <span className="text-slate-400">{recruiter.specialty}</span>
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-200 space-y-2">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Contacto directo:</p>
-                    <div className="flex items-center justify-between p-2.5 bg-[#EAF2F6] rounded-xl text-xs">
-                      <span className="font-medium text-[11px] truncate">✉️ {recruiter.email}</span>
-                      <button onClick={() => handleCopy(recruiter.email, `rec-${recruiter.id}`)} className="p-1.5 bg-white text-[#2C5D71] rounded-lg shadow-xs cursor-pointer">
-                        {copiedContact === `rec-${recruiter.id}` ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  <div className="pt-3 border-t border-slate-800 space-y-2">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Contacto directo:</p>
+                    <div className="flex items-center justify-between p-2.5 bg-slate-800/80 rounded-xl text-xs border border-slate-700">
+                      <span className="font-medium text-[11px] truncate text-slate-300">✉️ {recruiter.email}</span>
+                      <button onClick={() => handleCopy(recruiter.email, `rec-${recruiter.id}`)} className="p-1.5 bg-slate-700 hover:bg-slate-600 text-cyan-400 rounded-lg cursor-pointer">
+                        {copiedContact === `rec-${recruiter.id}` ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                       </button>
                     </div>
                     <a href={`https://${recruiter.linkedin}`} target="_blank" rel="noopener noreferrer" className="w-full py-2.5 bg-[#0077B5] hover:bg-[#005E93] text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer">
@@ -704,7 +836,7 @@ export default function CommunitySection() {
             <div className="flex items-center justify-between">
               <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide flex items-center gap-2">
                 <span>💼 Mentores y Profesionales Trabajando en el Sector</span>
-                <span className="text-xs px-3 py-1 bg-white/20 rounded-full font-bold text-white">
+                <span className="text-xs px-3 py-1 bg-slate-800 border border-slate-700 rounded-full font-bold text-emerald-400">
                   {filteredProfessionals.length} disponibles
                 </span>
               </h3>
@@ -712,32 +844,32 @@ export default function CommunitySection() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {filteredProfessionals.map((pro) => (
-                <div key={pro.id} className="bg-white rounded-3xl p-6 shadow-xl border border-slate-200 flex flex-col justify-between hover:shadow-2xl transition-all space-y-4">
+                <div key={pro.id} className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-800 flex flex-col justify-between hover:border-emerald-500/30 transition-all space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
-                      <img src={pro.avatar} alt={pro.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-emerald-600 shadow-sm" />
+                      <img src={pro.avatar} alt={pro.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-emerald-500 shadow-sm" />
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-base">{pro.name}</h4>
-                        <p className="text-xs font-bold text-emerald-800">{pro.currentRole}</p>
-                        <p className="text-[11px] font-semibold text-slate-600">🏢 {pro.company}</p>
+                        <h4 className="font-extrabold text-white text-base">{pro.name}</h4>
+                        <p className="text-xs font-bold text-emerald-400">{pro.currentRole}</p>
+                        <p className="text-[11px] font-semibold text-slate-400">🏢 {pro.company}</p>
                       </div>
                     </div>
 
-                    <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-100 text-xs">
-                      <p className="font-bold text-emerald-900 mb-1">🎓 Experiencia & Mentoria:</p>
-                      <p className="text-slate-700 leading-relaxed">{pro.bio}</p>
+                    <div className="p-3 bg-slate-800/50 rounded-2xl border border-slate-700/60 text-xs">
+                      <p className="font-bold text-emerald-400 mb-1">🎓 Experiencia & Mentoría:</p>
+                      <p className="text-slate-300 leading-relaxed">{pro.bio}</p>
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-200 space-y-2">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Contactar para orientación:</p>
-                    <div className="flex items-center justify-between p-2.5 bg-[#EAF2F6] rounded-xl text-xs">
-                      <span className="font-medium text-[11px] truncate">✉️ {pro.email}</span>
-                      <button onClick={() => handleCopy(pro.email, `pro-${pro.id}`)} className="p-1.5 bg-white text-[#2C5D71] rounded-lg shadow-xs cursor-pointer">
-                        {copiedContact === `pro-${pro.id}` ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  <div className="pt-3 border-t border-slate-800 space-y-2">
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Contactar para orientación:</p>
+                    <div className="flex items-center justify-between p-2.5 bg-slate-800/80 rounded-xl text-xs border border-slate-700">
+                      <span className="font-medium text-[11px] truncate text-slate-300">✉️ {pro.email}</span>
+                      <button onClick={() => handleCopy(pro.email, `pro-${pro.id}`)} className="p-1.5 bg-slate-700 hover:bg-slate-600 text-cyan-400 rounded-lg cursor-pointer">
+                        {copiedContact === `pro-${pro.id}` ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                       </button>
                     </div>
-                    <a href={`https://${pro.linkedin}`} target="_blank" rel="noopener noreferrer" className="w-full py-2.5 bg-[#2C5D71] hover:bg-[#1E4353] text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer">
+                    <a href={`https://${pro.linkedin}`} target="_blank" rel="noopener noreferrer" className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer">
                       <Linkedin className="w-4 h-4" />
                       <span>Conectar en LinkedIn</span>
                     </a>
@@ -752,17 +884,17 @@ export default function CommunitySection() {
 
       {/* MODAL HACER PREGUNTA / CREAR HILO EN FORO */}
       {showCreateForumModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 border border-slate-200 animate-fadeIn">
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-slate-200 animate-fadeIn">
             
-            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <div className="flex items-center gap-2">
-                <HelpCircle className="w-6 h-6 text-[#2C5D71]" />
-                <h3 className="font-black text-slate-900 text-xl">Hacer una Pregunta o Abrir Debate</h3>
+                <HelpCircle className="w-6 h-6 text-blue-400" />
+                <h3 className="font-black text-white text-xl">Hacer una Pregunta o Abrir Debate</h3>
               </div>
               <button
                 onClick={() => setShowCreateForumModal(false)}
-                className="text-slate-400 hover:text-slate-700 font-bold p-1 rounded-lg"
+                className="text-slate-400 hover:text-white font-bold p-1 rounded-lg"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -770,7 +902,7 @@ export default function CommunitySection() {
 
             <form onSubmit={handleCreateForumSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
                   Título de la Pregunta / Debate:
                 </label>
                 <input
@@ -779,18 +911,18 @@ export default function CommunitySection() {
                   value={newForumTitle}
                   onChange={(e) => setNewForumTitle(e.target.value)}
                   placeholder="Ej. ¿Alguien sabe cómo preparar el portafolio para la vacante Trainee?"
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 text-slate-800 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#2C5D71]"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-semibold text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
                   Etiqueta / Tema:
                 </label>
                 <select
                   value={newForumTag}
                   onChange={(e) => setNewForumTag(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 text-slate-800 font-bold text-xs focus:outline-none"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-bold text-xs focus:outline-none"
                 >
                   <option value="#entrevistas-tech">#entrevistas-tech</option>
                   <option value="#estudios-y-prácticas">#estudios-y-prácticas</option>
@@ -801,7 +933,7 @@ export default function CommunitySection() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
                   Contexto Detallado y Explicación:
                 </label>
                 <textarea
@@ -810,21 +942,21 @@ export default function CommunitySection() {
                   value={newForumContext}
                   onChange={(e) => setNewForumContext(e.target.value)}
                   placeholder="Escribe el trasfondo de tu pregunta, dudas específicas o lo que has intentado hasta el momento..."
-                  className="w-full p-4 rounded-2xl bg-slate-50 border border-slate-300 text-slate-800 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#2C5D71] resize-none"
+                  className="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 text-white font-medium text-sm focus:outline-none focus:border-blue-500 resize-none"
                 ></textarea>
               </div>
 
-              <div className="pt-3 border-t border-slate-200 flex justify-end gap-3">
+              <div className="pt-3 border-t border-slate-800 flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setShowCreateForumModal(false)}
-                  className="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl"
+                  className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl border border-slate-700"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-[#2C5D71] hover:bg-[#1E4353] text-white font-bold text-xs rounded-xl shadow-md cursor-pointer"
+                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md cursor-pointer"
                 >
                   Publicar Pregunta ✨
                 </button>
@@ -837,17 +969,17 @@ export default function CommunitySection() {
 
       {/* MODAL CREAR NUEVO GRUPO */}
       {showCreateGroupModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 border border-slate-200 animate-fadeIn">
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-slate-200 animate-fadeIn">
             
-            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <div className="flex items-center gap-2">
-                <Users className="w-6 h-6 text-[#2C5D71]" />
-                <h3 className="font-black text-slate-900 text-xl">Crear Nuevo Grupo</h3>
+                <Users className="w-6 h-6 text-blue-400" />
+                <h3 className="font-black text-white text-xl">Crear Nuevo Grupo</h3>
               </div>
               <button
                 onClick={() => setShowCreateGroupModal(false)}
-                className="text-slate-400 hover:text-slate-700 font-bold p-1 rounded-lg"
+                className="text-slate-400 hover:text-white font-bold p-1 rounded-lg"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -855,7 +987,7 @@ export default function CommunitySection() {
 
             <form onSubmit={handleCreateGroupSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
                   Nombre del Grupo / Comunidad:
                 </label>
                 <input
@@ -864,19 +996,19 @@ export default function CommunitySection() {
                   value={newGroupName}
                   onChange={(e) => setNewGroupName(e.target.value)}
                   placeholder="Ej. Grupo de Estudio de Enfermería Pediátrica..."
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 text-slate-800 font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-[#2C5D71]"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-semibold text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
                     Área / Carrera:
                   </label>
                   <select
                     value={newGroupCategory}
                     onChange={(e) => setNewGroupCategory(e.target.value)}
-                    className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 text-slate-800 font-bold text-xs focus:outline-none"
+                    className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-bold text-xs focus:outline-none"
                   >
                     <option value="Software / TI">Software / TI</option>
                     <option value="Arquitectura">Arquitectura</option>
@@ -887,13 +1019,13 @@ export default function CommunitySection() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
                     Modalidad:
                   </label>
                   <select
                     value={newGroupModality}
                     onChange={(e) => setNewGroupModality(e.target.value)}
-                    className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-300 text-slate-800 font-bold text-xs focus:outline-none"
+                    className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-bold text-xs focus:outline-none"
                   >
                     <option value="Virtual">Virtual (Online)</option>
                     <option value="Presencial">Presencial (Campus)</option>
@@ -903,7 +1035,7 @@ export default function CommunitySection() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
                   Descripción de su Objetivo:
                 </label>
                 <textarea
@@ -912,21 +1044,21 @@ export default function CommunitySection() {
                   value={newGroupObjective}
                   onChange={(e) => setNewGroupObjective(e.target.value)}
                   placeholder="Explica qué temas se estudiarán, horarios sugeridos y metas del grupo..."
-                  className="w-full p-4 rounded-2xl bg-slate-50 border border-slate-300 text-slate-800 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-[#2C5D71] resize-none"
+                  className="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 text-white font-medium text-sm focus:outline-none focus:border-blue-500 resize-none"
                 ></textarea>
               </div>
 
-              <div className="pt-3 border-t border-slate-200 flex justify-end gap-3">
+              <div className="pt-3 border-t border-slate-800 flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setShowCreateGroupModal(false)}
-                  className="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl"
+                  className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl border border-slate-700"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-[#2C5D71] hover:bg-[#1E4353] text-white font-bold text-xs rounded-xl shadow-md cursor-pointer"
+                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md cursor-pointer"
                 >
                   Publicar y Crear Grupo ✨
                 </button>

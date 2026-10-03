@@ -1,0 +1,32 @@
+DATA PACK — CIUDAD AETHERA · OLEADA 2
+Contenido:
+PackDataset_Oleada2/
+- D4_testimonials.json Testimonios estudiantiles (6.000 testimonios)
+- D5_help_line_conversations.json Conversaciones de orientación (2.500 conversaciones,
+14.166 mensajes)
+Descripción:
+D4_testimonials.json
+Testimonios sintéticos provenientes de foros estudiantiles y buzones de bienestar.
+Incluye país, institución, distrito, tema, sentimiento y texto del testimonio.
+D5_help_line_conversations.json
+Conversaciones sintéticas entre estudiantes y un servicio de orientación.
+Incluye fecha de inicio, país, motivo de contacto, servicio recomendado,
+mensajes de la conversación y nota de seguridad.
+Llaves y relaciones con los datasets:
+testimony_id : identificador único de cada testimonio en D4
+conversation_id : identificador único de cada conversación en D5
+referral : servicio recomendado en D5; permite relacionar la conversación
+con los servicios identificados mediante service_id en D2 / D6
+country_context : permite realizar análisis agregados por país en D4 y D5
+Importante:
+D4 y D5 no poseen una llave directa para relacionar un testimonio específico
+con una conversación específica. Las relaciones entre ambos deben realizarse
+de forma agregada o temática.
+Los campos topic (D4) y motive (D5) permiten analizar temáticas similares,
+pero NO constituyen una llave relacional.
+Nota:
+Datos 100% sintéticos, creados exclusivamente para el desafío Ciudad Aethera.
+No contienen información personal real.
+Las conversaciones de D5 corresponden a orientación sintética no clínica
+y consideran revisión humana como medida de seguridad.
+

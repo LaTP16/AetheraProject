@@ -1,0 +1,13 @@
+,D6 · Field dictionary,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9,Unnamed: 10,Unnamed: 11,Unnamed: 12,Unnamed: 13,Unnamed: 14,Unnamed: 15,Unnamed: 16
+0,Generation rules are public summaries and do not disclose latent variables or bias mechanisms.,,,,,,,,,,,,,,,,
+1,dataset,field_name,display_name,description,type,domain,range,nullable,example,primary_key,foreign_key,related_dataset,generation_rule_summary,mission,sensitivity,public_private,notes
+2,D6,service_id,Service Id,Unique fictional service identifier,string,,,False,,True,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+3,D6,name,Name,Fictional service name,string,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+4,D6,service_type,Service Type,Service category,enum,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+5,D6,district_id,District Id,District identifier,enum,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+6,D6,schedule,Schedule,Fictional opening schedule,string,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+7,D6,capacity,Capacity,Weekly orientation capacity,integer,,10-140,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+8,D6,channels,Channels,Available channels,array,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+9,D6,eligibility,Eligibility,Orientation eligibility note,string,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+10,D6,referral_information,Referral Information,Information needed for referral,string,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+11,D6,geometry,Geometry,Fictional point on Aethera synthetic grid,GeoJSON Point,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,

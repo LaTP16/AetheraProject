@@ -1,0 +1,12 @@
+,D7 · Field dictionary,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9,Unnamed: 10,Unnamed: 11,Unnamed: 12,Unnamed: 13,Unnamed: 14,Unnamed: 15,Unnamed: 16
+0,Generation rules are public summaries and do not disclose latent variables or bias mechanisms.,,,,,,,,,,,,,,,,
+1,dataset,field_name,display_name,description,type,domain,range,nullable,example,primary_key,foreign_key,related_dataset,generation_rule_summary,mission,sensitivity,public_private,notes
+2,D7,calendar_event_id,Calendar Event Id,Unique calendar event,string,,,False,,True,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+3,D7,period_id,Period Id,Academic period identifier,enum,,,False,,False,,D3,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+4,D7,event_type,Event Type,Calendar event category,enum,period_start|period_end|evaluation_week|university_activity|wellbeing_activity,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+5,D7,title,Title,Fictional event title,string,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+6,D7,start_date,Start Date,Event start date,date,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+7,D7,end_date,End Date,Inclusive event end date,date,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+8,D7,institution_id,Institution Id,Institution or ALL,enum,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+9,D7,district_id,District Id,District or ALL,enum,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+10,D7,evaluation_intensity,Evaluation Intensity,Synthetic evaluation intensity,integer,,0-3,False,,False,,,synthetic configurable rule,M2,non-sensitive synthetic,PUBLIC,

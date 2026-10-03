@@ -1,0 +1,14 @@
+,D3 · Field dictionary,Unnamed: 1,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9,Unnamed: 10,Unnamed: 11,Unnamed: 12,Unnamed: 13,Unnamed: 14,Unnamed: 15,Unnamed: 16
+0,Generation rules are public summaries and do not disclose latent variables or bias mechanisms.,,,,,,,,,,,,,,,,
+1,dataset,field_name,display_name,description,type,domain,range,nullable,example,primary_key,foreign_key,related_dataset,generation_rule_summary,mission,sensitivity,public_private,notes
+2,D3,student_period_id,Student Period Id,Unique student-period key,string,,,False,,True,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+3,D3,student_id,Student Id,Opaque student identifier,string,,,False,,False,D1/D2.student_id,"D1,D2",synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+4,D3,institution_id,Institution Id,Institution identifier,enum,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+5,D3,period_id,Period Id,Academic period identifier,enum,,,False,,False,D7.period_id,D7,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+6,D3,academic_stage,Academic Stage,Progress stage during period,enum,early|middle|final,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+7,D3,credit_load,Credit Load,Credits enrolled,integer,,12-32,False,,False,,,synthetic configurable rule,M2,non-sensitive synthetic,PUBLIC,
+8,D3,evaluation_count,Evaluation Count,Number of major evaluations,integer,,2-10,False,,False,,,synthetic configurable rule,M2,non-sensitive synthetic,PUBLIC,
+9,D3,average_grade,Average Grade,Aggregate grade on synthetic 1-7 scale,float,,1.0-7.0,False,,False,,,synthetic configurable rule,M2,non-sensitive synthetic,PUBLIC,
+10,D3,grade_change,Grade Change,Change from prior synthetic period,float,,-3.0-3.0,False,,False,,,synthetic configurable rule,M2,non-sensitive synthetic,PUBLIC,
+11,D3,attendance_rate,Attendance Rate,Attendance proportion,float,,0-1,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+12,D3,dropout_alert,Dropout Alert,Synthetic non-deterministic risk alert,enum,low|medium|high,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,

@@ -39,10 +39,11 @@ export default function Navbar() {
           <div className="relative">
             <button 
               onClick={() => setShowNotifications(!showNotifications)}
-              className="p-2 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl relative transition-colors"
+              className="p-3 text-cyan-400 hover:text-white bg-slate-800/80 hover:bg-blue-600/30 border border-slate-700 rounded-2xl relative transition-all cursor-pointer group flex items-center justify-center"
+              title="Notificaciones"
             >
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-emerald-500 rounded-full ring-2 ring-white"></span>
+              <Bell className="w-7 h-7 transform group-hover:scale-110 transition-transform" />
+              <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-cyan-400 rounded-full animate-pulse ring-2 ring-slate-900 shadow-[0_0_10px_rgba(34,211,238,1)]"></span>
             </button>
 
             {showNotifications && (
