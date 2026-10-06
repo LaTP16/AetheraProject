@@ -26,7 +26,7 @@ export default function CommunitySection() {
       membersCount: 48,
       modality: 'Virtual (Discord & Meet)',
       joined: false,
-      tagBg: 'bg-[#2A5C70] text-white',
+      tagBg: 'bg-[#2A5C70] text-[#0D2538]',
       creator: 'Mateo Benítez'
     },
     {
@@ -37,7 +37,7 @@ export default function CommunitySection() {
       membersCount: 32,
       modality: 'Híbrido (Campus & Zoom)',
       joined: false,
-      tagBg: 'bg-[#8B5CF6] text-white',
+      tagBg: 'bg-[#8B5CF6] text-[#0D2538]',
       creator: 'Camila Rojas'
     },
     {
@@ -48,7 +48,7 @@ export default function CommunitySection() {
       membersCount: 29,
       modality: 'Presencial (Laboratorios)',
       joined: false,
-      tagBg: 'bg-[#059669] text-white',
+      tagBg: 'bg-[#059669] text-[#0D2538]',
       creator: 'Lucía Fernández'
     },
     {
@@ -59,7 +59,7 @@ export default function CommunitySection() {
       membersCount: 21,
       modality: 'Virtual',
       joined: false,
-      tagBg: 'bg-[#D97706] text-white',
+      tagBg: 'bg-[#D97706] text-[#0D2538]',
       creator: 'Gonzalo Silva'
     }
   ]);
@@ -310,9 +310,9 @@ export default function CommunitySection() {
   ];
 
   const topCards = [
-    { id: 'Foros', title: 'Foros', icon: MessageSquare, description: 'Preguntas, contexto y respuestas comunitarias', color: 'bg-slate-900/60 border border-slate-800', hoverColor: 'hover:border-blue-500/40 hover:bg-slate-800/60' },
-    { id: 'Grupos', title: 'Grupos', icon: Users, description: 'Comunidades por carrera y creación de grupos', color: 'bg-slate-900/60 border border-slate-800', hoverColor: 'hover:border-blue-500/40 hover:bg-slate-800/60' },
-    { id: 'Conexión', title: 'Conexión', icon: Share2, description: 'Contacto con Reclutadores y Mentores Profesionales', color: 'bg-slate-900/60 border border-slate-800', hoverColor: 'hover:border-blue-500/40 hover:bg-slate-800/60' },
+    { id: 'Foros', title: 'Foros', icon: MessageSquare, description: 'Preguntas, contexto y respuestas comunitarias', color: 'bg-white border border-slate-200', hoverColor: 'hover:border-blue-500/40 hover:bg-slate-100/60' },
+    { id: 'Grupos', title: 'Grupos', icon: Users, description: 'Comunidades por carrera y creación de grupos', color: 'bg-white border border-slate-200', hoverColor: 'hover:border-blue-500/40 hover:bg-slate-100/60' },
+    { id: 'Conexión', title: 'Conexión', icon: Share2, description: 'Contacto con Reclutadores y Mentores Profesionales', color: 'bg-white border border-slate-200', hoverColor: 'hover:border-blue-500/40 hover:bg-slate-100/60' },
   ];
 
   const handleCopy = (text, type) => {
@@ -347,7 +347,7 @@ export default function CommunitySection() {
       membersCount: 1,
       modality: newGroupModality,
       joined: true,
-      tagBg: 'bg-[#2C5D71] text-white',
+      tagBg: 'bg-[#2C5D71] text-[#0D2538]',
       creator: 'Mateo Benítez (Tú)'
     };
 
@@ -446,10 +446,10 @@ export default function CommunitySection() {
       
       {/* HEADER SECTION */}
       <div>
-        <h1 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-wider">
+        <h1 className="text-3xl sm:text-5xl font-black text-black uppercase tracking-wider">
           COMUNIDAD
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base font-medium mt-1">
+        <p className="text-[#4A5568] text-sm sm:text-base font-medium mt-1">
           Foros de preguntas y respuestas, comunidades académicas y red de conexión con reclutadores y mentores
         </p>
       </div>
@@ -464,16 +464,16 @@ export default function CommunitySection() {
             <div
               key={card.id}
               onClick={() => setActiveSubCategory(card.id)}
-              className={`${card.color} ${card.hoverColor} backdrop-blur-md p-6 sm:p-8 rounded-3xl shadow-xl cursor-pointer transition-all transform hover:-translate-y-1 text-white flex flex-col items-start justify-between min-h-[160px] group ${
-                isSelected ? 'ring-2 ring-blue-400 bg-blue-600/30 shadow-[0_0_20px_rgba(37,99,235,0.3)]' : ''
+              className={`${card.color} ${card.hoverColor} bg-white backdrop-blur-md p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 cursor-pointer transition-all transform hover:-translate-y-1 text-black flex flex-col items-start justify-between min-h-[160px] group ${
+                isSelected ? 'ring-2 ring-[#F97316] bg-orange-50 shadow-md' : 'bg-white'
               }`}
             >
-              <div className="p-3 bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-2xl shadow-md group-hover:scale-110 transition-transform">
+              <div className="p-3 bg-[#1D63B8]/10 border border-blue-500/30 text-[#1D63B8] rounded-2xl shadow-md group-hover:scale-110 transition-transform">
                 <Icon className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="font-extrabold text-2xl text-white mt-4 tracking-tight">{card.title}</h3>
-                <p className="text-xs text-slate-400 font-medium mt-1">{card.description}</p>
+                <h3 className="font-extrabold text-2xl text-[#0D2538] mt-4 tracking-tight">{card.title}</h3>
+                <p className="text-xs text-[#4A5568] font-medium mt-1">{card.description}</p>
               </div>
             </div>
           );
@@ -485,22 +485,22 @@ export default function CommunitySection() {
         <div className="space-y-8 animate-fadeIn">
           
           {/* HEADER DE FOROS & BOTÓN CREAR PREGUNTA */}
-          <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <HelpCircle className="w-6 h-6 text-blue-400" />
-                <h2 className="text-2xl font-black text-white">
+                <HelpCircle className="w-6 h-6 text-[#1D63B8]" />
+                <h2 className="text-2xl font-black text-[#0D2538]">
                   Foro de Preguntas & Debates
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
+              <p className="text-xs sm:text-sm text-[#4A5568] font-medium mt-1">
                 Haz tus preguntas con contexto detallado y recibe respuestas e ideas útiles de tus compañeros y mentores.
               </p>
             </div>
 
             <button
               onClick={() => setShowCreateForumModal(true)}
-              className="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 transition-all active:scale-95 cursor-pointer"
+              className="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-[#0D2538] font-bold text-xs sm:text-sm rounded-2xl shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 transition-all active:scale-95 cursor-pointer"
             >
               <Plus className="w-5 h-5" />
               <span>Hacer una Pregunta / Crear Hilo</span>
@@ -512,7 +512,7 @@ export default function CommunitySection() {
             {forumThreads.map((thread) => (
               <div
                 key={thread.id}
-                className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800 space-y-5 hover:border-blue-500/30 transition-all"
+                className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200 space-y-5 hover:border-blue-500/30 transition-all"
               >
                 
                 {/* THREAD HEADER & QUESTION */}
@@ -522,16 +522,16 @@ export default function CommunitySection() {
                       <img
                         src={thread.avatar}
                         alt={thread.author}
-                        className="w-9 h-9 rounded-full object-cover border border-slate-700"
+                        className="w-9 h-9 rounded-full object-cover border border-slate-200"
                       />
                       <div>
-                        <h4 className="font-extrabold text-xs text-white">{thread.author}</h4>
-                        <p className="text-[10px] text-slate-400">{thread.role}</p>
+                        <h4 className="font-extrabold text-xs text-[#0D2538]">{thread.author}</h4>
+                        <p className="text-[10px] text-[#4A5568]">{thread.role}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-extrabold px-3 py-1 rounded-full uppercase bg-blue-500/20 border border-blue-500/30 text-blue-400">
+                      <span className="text-[10px] font-extrabold px-3 py-1 rounded-full uppercase bg-[#1D63B8]/10 border border-blue-500/30 text-[#1D63B8]">
                         {thread.tag}
                       </span>
                       <span className="text-xs text-slate-500">{thread.time}</span>
@@ -539,21 +539,21 @@ export default function CommunitySection() {
                   </div>
 
                   {/* PREGUNTA PRINCIPAL / TITULO */}
-                  <h3 className="font-black text-white text-lg sm:text-xl leading-snug">
+                  <h3 className="font-black text-[#0D2538] text-lg sm:text-xl leading-snug">
                     {thread.title}
                   </h3>
 
                   {/* CONTEXTO DETALLADO */}
-                  <div className="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/60 text-xs sm:text-sm text-slate-300 leading-relaxed space-y-1">
-                    <p className="font-bold text-blue-400">Contexto de la duda:</p>
+                  <div className="p-4 bg-[#F8F7F4] rounded-2xl border border-slate-200 text-xs sm:text-sm text-[#333A42] leading-relaxed space-y-1">
+                    <p className="font-bold text-[#1D63B8]">Contexto de la duda:</p>
                     <p>{thread.context}</p>
                   </div>
                 </div>
 
                 {/* RESPUESTAS / HILO DE APORTES */}
-                <div className="pt-4 border-t border-slate-800 space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-extrabold text-blue-400">
-                    <MessageSquare className="w-4 h-4 text-cyan-400" />
+                <div className="pt-4 border-t border-slate-200 space-y-4">
+                  <div className="flex items-center gap-2 text-xs font-extrabold text-[#1D63B8]">
+                    <MessageSquare className="w-4 h-4 text-[#1D63B8]" />
                     <span>{thread.answers.length} Respuestas y Aportes:</span>
                   </div>
 
@@ -562,7 +562,7 @@ export default function CommunitySection() {
                     {thread.answers.map((answer) => (
                       <div
                         key={answer.id}
-                        className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/80 space-y-2"
+                        className="p-4 bg-slate-100/60 rounded-2xl border border-slate-200 space-y-2"
                       >
                         <div className="flex items-center gap-2">
                           <img
@@ -570,12 +570,12 @@ export default function CommunitySection() {
                             alt={answer.author}
                             className="w-7 h-7 rounded-full object-cover border border-blue-500/40"
                           />
-                          <span className="font-extrabold text-xs text-white">{answer.author}</span>
-                          <span className="text-[10px] text-slate-400">• {answer.role}</span>
+                          <span className="font-extrabold text-xs text-[#0D2538]">{answer.author}</span>
+                          <span className="text-[10px] text-[#4A5568]">• {answer.role}</span>
                           <span className="text-[10px] text-slate-500 ml-auto">{answer.time}</span>
                         </div>
 
-                        <p className="text-xs text-slate-300 font-medium leading-relaxed pl-9">
+                        <p className="text-xs text-[#333A42] font-medium leading-relaxed pl-9">
                           {answer.content}
                         </p>
                       </div>
@@ -592,11 +592,11 @@ export default function CommunitySection() {
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') handleAddForumReply(thread.id);
                       }}
-                      className="flex-1 px-4 py-2.5 text-xs rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 font-medium focus:outline-none focus:border-blue-500"
+                      className="flex-1 px-4 py-2.5 text-xs rounded-xl bg-slate-100/80 border border-slate-200 text-[#0D2538] placeholder-slate-500 font-medium focus:outline-none focus:border-blue-500"
                     />
                     <button
                       onClick={() => handleAddForumReply(thread.id)}
-                      className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer transition-colors"
+                      className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-[#0D2538] font-bold text-xs rounded-xl shadow-md flex items-center gap-1.5 cursor-pointer transition-colors"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>Responder</span>
@@ -617,22 +617,22 @@ export default function CommunitySection() {
         <div className="space-y-8 animate-fadeIn">
           
           {/* HEADER DE GRUPOS & BOTÓN CREAR GRUPO */}
-          <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <Users className="w-6 h-6 text-blue-400" />
-                <h2 className="text-2xl font-black text-white">
+                <Users className="w-6 h-6 text-[#1D63B8]" />
+                <h2 className="text-2xl font-black text-[#0D2538]">
                   Comunidades & Grupos Estudiantiles
                 </h2>
               </div>
-              <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
+              <p className="text-xs sm:text-sm text-[#4A5568] font-medium mt-1">
                 Explora grupos de estudio por carreras (Software, Arquitectura, Enfermería, etc.) o crea tu propio grupo para coordinar con compañeros.
               </p>
             </div>
 
             <button
               onClick={() => setShowCreateGroupModal(true)}
-              className="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm rounded-2xl shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 transition-all active:scale-95 cursor-pointer"
+              className="px-5 py-3 bg-blue-600 hover:bg-blue-500 text-[#0D2538] font-bold text-xs sm:text-sm rounded-2xl shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center gap-2 shrink-0 transition-all active:scale-95 cursor-pointer"
             >
               <Plus className="w-5 h-5" />
               <span>Crear Nuevo Grupo</span>
@@ -641,15 +641,15 @@ export default function CommunitySection() {
 
           {/* CHIPS DE FILTRO POR CARRERA */}
           <div className="flex flex-wrap gap-2 items-center">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">Filtrar área:</span>
+            <span className="text-xs font-bold text-[#4A5568] uppercase tracking-wider mr-2">Filtrar área:</span>
             {['TODOS', 'Software / TI', 'Arquitectura', 'Enfermería', 'Derecho'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setGroupCategoryFilter(cat)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   groupCategoryFilter === cat
-                    ? 'bg-blue-600 text-white shadow-md border border-blue-400/40'
-                    : 'bg-slate-900/60 border border-slate-800 text-slate-400 hover:bg-slate-800/60 hover:text-white'
+                    ? 'bg-blue-600 text-[#0D2538] shadow-md border border-blue-400/40'
+                    : 'bg-white border border-slate-200 text-[#4A5568] hover:bg-slate-100/60 hover:text-[#0D2538]'
                 }`}
               >
                 {cat}
@@ -662,31 +662,31 @@ export default function CommunitySection() {
             {filteredGroups.map((group) => (
               <div
                 key={group.id}
-                className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-800 flex flex-col justify-between hover:border-blue-500/30 transition-all space-y-4"
+                className="bg-white backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-200 flex flex-col justify-between hover:border-blue-500/30 transition-all space-y-4"
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-3">
-                    <span className="text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider bg-blue-500/20 border border-blue-500/30 text-blue-400">
+                    <span className="text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider bg-[#1D63B8]/10 border border-blue-500/30 text-[#1D63B8]">
                       {group.category}
                     </span>
-                    <span className="text-xs font-semibold text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">
+                    <span className="text-xs font-semibold text-[#4A5568] bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200">
                       👥 {group.membersCount} miembros
                     </span>
                   </div>
 
-                  <h3 className="font-extrabold text-white text-lg leading-snug">
+                  <h3 className="font-extrabold text-[#0D2538] text-lg leading-snug">
                     {group.name}
                   </h3>
 
-                  <div className="p-3.5 bg-slate-800/50 rounded-2xl border border-slate-700/60 text-xs space-y-1">
-                    <p className="font-bold text-blue-400">🎯 Objetivo del grupo:</p>
-                    <p className="text-slate-300 leading-relaxed">{group.objective}</p>
+                  <div className="p-3.5 bg-[#F8F7F4] rounded-2xl border border-slate-200 text-xs space-y-1">
+                    <p className="font-bold text-[#1D63B8]">🎯 Objetivo del grupo:</p>
+                    <p className="text-[#333A42] leading-relaxed">{group.objective}</p>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+                <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
                   <div>
-                    <p className="font-bold text-slate-400">Modalidad: <span className="text-cyan-400">{group.modality}</span></p>
+                    <p className="font-bold text-[#4A5568]">Modalidad: <span className="text-[#1D63B8]">{group.modality}</span></p>
                     {group.creator && <p className="text-[10px] text-slate-500">Creado por: {group.creator}</p>}
                   </div>
 
@@ -694,8 +694,8 @@ export default function CommunitySection() {
                     onClick={() => handleToggleJoinGroup(group.id)}
                     className={`px-4 py-2.5 rounded-xl font-bold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer ${
                       group.joined
-                        ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                        : 'bg-blue-600 hover:bg-blue-500 text-white'
+                        ? 'bg-emerald-600 hover:bg-emerald-500 text-[#0D2538]'
+                        : 'bg-blue-600 hover:bg-blue-500 text-[#0D2538]'
                     }`}
                   >
                     {group.joined ? (
@@ -723,28 +723,28 @@ export default function CommunitySection() {
         <div className="space-y-8 animate-fadeIn">
           
           {/* SEARCH & TARGET INPUT FORM */}
-          <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 space-y-4">
-            <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
-              <Sparkles className="w-6 h-6 text-blue-400" />
-              <h2 className="text-xl sm:text-2xl font-black text-white">
+          <div className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-4">
+            <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
+              <Sparkles className="w-6 h-6 text-[#1D63B8]" />
+              <h2 className="text-xl sm:text-2xl font-black text-[#0D2538]">
                 Red de Conexión Laboral & Mentores
               </h2>
             </div>
-            <p className="text-xs sm:text-sm text-slate-400 font-medium">
+            <p className="text-xs sm:text-sm text-[#4A5568] font-medium">
               Ingresa el puesto al que aspiras y las empresas donde planeas trabajar. LinkUP te conectará directamente con reclutadores activos y profesionales/mentores trabajando en esa área.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
               <div>
-                <label className="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-[#1D63B8] uppercase tracking-wider mb-1">
                   🎯 Puesto al que aspiras (Filtro por Rol):
                 </label>
                 <div className="relative">
-                  <Briefcase className="w-4 h-4 absolute left-3.5 top-3.5 text-blue-400 z-10 pointer-events-none" />
+                  <Briefcase className="w-4 h-4 absolute left-3.5 top-3.5 text-[#1D63B8] z-10 pointer-events-none" />
                   <select
                     value={targetRole}
                     onChange={(e) => setTargetRole(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-800/90 text-white font-semibold text-sm border border-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer appearance-none"
+                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-100/90 text-[#0D2538] font-semibold text-sm border border-slate-200 focus:outline-none focus:border-blue-500 cursor-pointer appearance-none"
                   >
                     <option value="TODOS">✨ Todos los Puestos y Áreas</option>
                     <option value="Arquitecto de Software">💻 Arquitecto de Software</option>
@@ -759,15 +759,15 @@ export default function CommunitySection() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-blue-400 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-[#1D63B8] uppercase tracking-wider mb-1">
                   🏢 Empresa donde planeas trabajar (Filtro por Empresa):
                 </label>
                 <div className="relative">
-                  <Building2 className="w-4 h-4 absolute left-3.5 top-3.5 text-blue-400 z-10 pointer-events-none" />
+                  <Building2 className="w-4 h-4 absolute left-3.5 top-3.5 text-[#1D63B8] z-10 pointer-events-none" />
                   <select
                     value={targetCompany}
                     onChange={(e) => setTargetCompany(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-800/90 text-white font-semibold text-sm border border-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer appearance-none"
+                    className="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-100/90 text-[#0D2538] font-semibold text-sm border border-slate-200 focus:outline-none focus:border-blue-500 cursor-pointer appearance-none"
                   >
                     <option value="TODOS">✨ Todas las Empresas</option>
                     <option value="Globant">🏢 Globant</option>
@@ -787,9 +787,9 @@ export default function CommunitySection() {
           {/* SECCIÓN 1: RECLUTADORES PARA EL PUESTO */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide flex items-center gap-2">
+              <h3 className="text-xl sm:text-2xl font-black text-[#0D2538] tracking-wide flex items-center gap-2">
                 <span>👔 Reclutadores para el puesto</span>
-                <span className="text-xs px-3 py-1 bg-slate-800 border border-slate-700 rounded-full font-bold text-cyan-400">
+                <span className="text-xs px-3 py-1 bg-slate-100 border border-slate-200 rounded-full font-bold text-[#1D63B8]">
                   {filteredRecruiters.length} encontrados
                 </span>
               </h3>
@@ -797,31 +797,31 @@ export default function CommunitySection() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {filteredRecruiters.map((recruiter) => (
-                <div key={recruiter.id} className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-800 flex flex-col justify-between hover:border-blue-500/30 transition-all space-y-4">
+                <div key={recruiter.id} className="bg-white backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-200 flex flex-col justify-between hover:border-blue-500/30 transition-all space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <img src={recruiter.avatar} alt={recruiter.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-blue-500 shadow-sm" />
                       <div>
-                        <h4 className="font-extrabold text-white text-base">{recruiter.name} <span className="text-blue-400 text-xs">✓</span></h4>
-                        <p className="text-xs font-bold text-blue-400">{recruiter.role}</p>
-                        <p className="text-[11px] font-semibold text-slate-400">🏢 {recruiter.company}</p>
+                        <h4 className="font-extrabold text-[#0D2538] text-base">{recruiter.name} <span className="text-[#1D63B8] text-xs">✓</span></h4>
+                        <p className="text-xs font-bold text-[#1D63B8]">{recruiter.role}</p>
+                        <p className="text-[11px] font-semibold text-[#4A5568]">🏢 {recruiter.company}</p>
                       </div>
                     </div>
-                    <div className="p-3 bg-slate-800/50 rounded-2xl border border-slate-700/60 text-xs">
-                      <span className="font-bold text-slate-300">Especialidad: </span>
-                      <span className="text-slate-400">{recruiter.specialty}</span>
+                    <div className="p-3 bg-[#F8F7F4] rounded-2xl border border-slate-200 text-xs">
+                      <span className="font-bold text-[#333A42]">Especialidad: </span>
+                      <span className="text-[#4A5568]">{recruiter.specialty}</span>
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-800 space-y-2">
+                  <div className="pt-3 border-t border-slate-200 space-y-2">
                     <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Contacto directo:</p>
-                    <div className="flex items-center justify-between p-2.5 bg-slate-800/80 rounded-xl text-xs border border-slate-700">
-                      <span className="font-medium text-[11px] truncate text-slate-300">✉️ {recruiter.email}</span>
-                      <button onClick={() => handleCopy(recruiter.email, `rec-${recruiter.id}`)} className="p-1.5 bg-slate-700 hover:bg-slate-600 text-cyan-400 rounded-lg cursor-pointer">
+                    <div className="flex items-center justify-between p-2.5 bg-slate-100/80 rounded-xl text-xs border border-slate-200">
+                      <span className="font-medium text-[11px] truncate text-[#333A42]">✉️ {recruiter.email}</span>
+                      <button onClick={() => handleCopy(recruiter.email, `rec-${recruiter.id}`)} className="p-1.5 bg-slate-700 hover:bg-slate-600 text-[#1D63B8] rounded-lg cursor-pointer">
                         {copiedContact === `rec-${recruiter.id}` ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                       </button>
                     </div>
-                    <a href={`https://${recruiter.linkedin}`} target="_blank" rel="noopener noreferrer" className="w-full py-2.5 bg-[#0077B5] hover:bg-[#005E93] text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer">
+                    <a href={`https://${recruiter.linkedin}`} target="_blank" rel="noopener noreferrer" className="w-full py-2.5 bg-[#0077B5] hover:bg-[#005E93] text-[#0D2538] font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer">
                       <Linkedin className="w-4 h-4 fill-white" />
                       <span>Contactar en LinkedIn</span>
                     </a>
@@ -834,9 +834,9 @@ export default function CommunitySection() {
           {/* SECCIÓN 2: MENTORES Y PROFESIONALES TRABAJANDO EN EL SECTOR */}
           <div className="space-y-4 pt-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide flex items-center gap-2">
+              <h3 className="text-xl sm:text-2xl font-black text-[#0D2538] tracking-wide flex items-center gap-2">
                 <span>💼 Mentores y Profesionales Trabajando en el Sector</span>
-                <span className="text-xs px-3 py-1 bg-slate-800 border border-slate-700 rounded-full font-bold text-emerald-400">
+                <span className="text-xs px-3 py-1 bg-slate-100 border border-slate-200 rounded-full font-bold text-emerald-400">
                   {filteredProfessionals.length} disponibles
                 </span>
               </h3>
@@ -844,32 +844,32 @@ export default function CommunitySection() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {filteredProfessionals.map((pro) => (
-                <div key={pro.id} className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-800 flex flex-col justify-between hover:border-emerald-500/30 transition-all space-y-4">
+                <div key={pro.id} className="bg-white backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-200 flex flex-col justify-between hover:border-emerald-500/30 transition-all space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <img src={pro.avatar} alt={pro.name} className="w-14 h-14 rounded-2xl object-cover border-2 border-emerald-500 shadow-sm" />
                       <div>
-                        <h4 className="font-extrabold text-white text-base">{pro.name}</h4>
+                        <h4 className="font-extrabold text-[#0D2538] text-base">{pro.name}</h4>
                         <p className="text-xs font-bold text-emerald-400">{pro.currentRole}</p>
-                        <p className="text-[11px] font-semibold text-slate-400">🏢 {pro.company}</p>
+                        <p className="text-[11px] font-semibold text-[#4A5568]">🏢 {pro.company}</p>
                       </div>
                     </div>
 
-                    <div className="p-3 bg-slate-800/50 rounded-2xl border border-slate-700/60 text-xs">
+                    <div className="p-3 bg-[#F8F7F4] rounded-2xl border border-slate-200 text-xs">
                       <p className="font-bold text-emerald-400 mb-1">🎓 Experiencia & Mentoría:</p>
-                      <p className="text-slate-300 leading-relaxed">{pro.bio}</p>
+                      <p className="text-[#333A42] leading-relaxed">{pro.bio}</p>
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-800 space-y-2">
+                  <div className="pt-3 border-t border-slate-200 space-y-2">
                     <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Contactar para orientación:</p>
-                    <div className="flex items-center justify-between p-2.5 bg-slate-800/80 rounded-xl text-xs border border-slate-700">
-                      <span className="font-medium text-[11px] truncate text-slate-300">✉️ {pro.email}</span>
-                      <button onClick={() => handleCopy(pro.email, `pro-${pro.id}`)} className="p-1.5 bg-slate-700 hover:bg-slate-600 text-cyan-400 rounded-lg cursor-pointer">
+                    <div className="flex items-center justify-between p-2.5 bg-slate-100/80 rounded-xl text-xs border border-slate-200">
+                      <span className="font-medium text-[11px] truncate text-[#333A42]">✉️ {pro.email}</span>
+                      <button onClick={() => handleCopy(pro.email, `pro-${pro.id}`)} className="p-1.5 bg-slate-700 hover:bg-slate-600 text-[#1D63B8] rounded-lg cursor-pointer">
                         {copiedContact === `pro-${pro.id}` ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                       </button>
                     </div>
-                    <a href={`https://${pro.linkedin}`} target="_blank" rel="noopener noreferrer" className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer">
+                    <a href={`https://${pro.linkedin}`} target="_blank" rel="noopener noreferrer" className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-[#0D2538] font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer">
                       <Linkedin className="w-4 h-4" />
                       <span>Conectar en LinkedIn</span>
                     </a>
@@ -884,17 +884,17 @@ export default function CommunitySection() {
 
       {/* MODAL HACER PREGUNTA / CREAR HILO EN FORO */}
       {showCreateForumModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-slate-200 animate-fadeIn">
+        <div className="fixed inset-0 z-50 bg-slate-800/50 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-[#333A42] animate-fadeIn">
             
-            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
-                <HelpCircle className="w-6 h-6 text-blue-400" />
-                <h3 className="font-black text-white text-xl">Hacer una Pregunta o Abrir Debate</h3>
+                <HelpCircle className="w-6 h-6 text-[#1D63B8]" />
+                <h3 className="font-black text-[#0D2538] text-xl">Hacer una Pregunta o Abrir Debate</h3>
               </div>
               <button
                 onClick={() => setShowCreateForumModal(false)}
-                className="text-slate-400 hover:text-white font-bold p-1 rounded-lg"
+                className="text-[#4A5568] hover:text-[#0D2538] font-bold p-1 rounded-lg"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -902,7 +902,7 @@ export default function CommunitySection() {
 
             <form onSubmit={handleCreateForumSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-[#333A42] uppercase tracking-wider mb-1">
                   Título de la Pregunta / Debate:
                 </label>
                 <input
@@ -911,18 +911,18 @@ export default function CommunitySection() {
                   value={newForumTitle}
                   onChange={(e) => setNewForumTitle(e.target.value)}
                   placeholder="Ej. ¿Alguien sabe cómo preparar el portafolio para la vacante Trainee?"
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-semibold text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-100 border border-slate-200 text-[#0D2538] font-semibold text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-[#333A42] uppercase tracking-wider mb-1">
                   Etiqueta / Tema:
                 </label>
                 <select
                   value={newForumTag}
                   onChange={(e) => setNewForumTag(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-bold text-xs focus:outline-none"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-100 border border-slate-200 text-[#0D2538] font-bold text-xs focus:outline-none"
                 >
                   <option value="#entrevistas-tech">#entrevistas-tech</option>
                   <option value="#estudios-y-prácticas">#estudios-y-prácticas</option>
@@ -933,7 +933,7 @@ export default function CommunitySection() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-[#333A42] uppercase tracking-wider mb-1">
                   Contexto Detallado y Explicación:
                 </label>
                 <textarea
@@ -942,21 +942,21 @@ export default function CommunitySection() {
                   value={newForumContext}
                   onChange={(e) => setNewForumContext(e.target.value)}
                   placeholder="Escribe el trasfondo de tu pregunta, dudas específicas o lo que has intentado hasta el momento..."
-                  className="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 text-white font-medium text-sm focus:outline-none focus:border-blue-500 resize-none"
+                  className="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 text-[#0D2538] font-medium text-sm focus:outline-none focus:border-blue-500 resize-none"
                 ></textarea>
               </div>
 
-              <div className="pt-3 border-t border-slate-800 flex justify-end gap-3">
+              <div className="pt-3 border-t border-slate-200 flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setShowCreateForumModal(false)}
-                  className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl border border-slate-700"
+                  className="px-5 py-2.5 bg-slate-100 hover:bg-slate-700 text-[#333A42] font-bold text-xs rounded-xl border border-slate-200"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md cursor-pointer"
+                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-[#0D2538] font-bold text-xs rounded-xl shadow-md cursor-pointer"
                 >
                   Publicar Pregunta ✨
                 </button>
@@ -969,17 +969,17 @@ export default function CommunitySection() {
 
       {/* MODAL CREAR NUEVO GRUPO */}
       {showCreateGroupModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-slate-200 animate-fadeIn">
+        <div className="fixed inset-0 z-50 bg-slate-800/50 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 text-[#333A42] animate-fadeIn">
             
-            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
-                <Users className="w-6 h-6 text-blue-400" />
-                <h3 className="font-black text-white text-xl">Crear Nuevo Grupo</h3>
+                <Users className="w-6 h-6 text-[#1D63B8]" />
+                <h3 className="font-black text-[#0D2538] text-xl">Crear Nuevo Grupo</h3>
               </div>
               <button
                 onClick={() => setShowCreateGroupModal(false)}
-                className="text-slate-400 hover:text-white font-bold p-1 rounded-lg"
+                className="text-[#4A5568] hover:text-[#0D2538] font-bold p-1 rounded-lg"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -987,7 +987,7 @@ export default function CommunitySection() {
 
             <form onSubmit={handleCreateGroupSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-[#333A42] uppercase tracking-wider mb-1">
                   Nombre del Grupo / Comunidad:
                 </label>
                 <input
@@ -996,19 +996,19 @@ export default function CommunitySection() {
                   value={newGroupName}
                   onChange={(e) => setNewGroupName(e.target.value)}
                   placeholder="Ej. Grupo de Estudio de Enfermería Pediátrica..."
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-semibold text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-100 border border-slate-200 text-[#0D2538] font-semibold text-sm focus:outline-none focus:border-blue-500"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-[#333A42] uppercase tracking-wider mb-1">
                     Área / Carrera:
                   </label>
                   <select
                     value={newGroupCategory}
                     onChange={(e) => setNewGroupCategory(e.target.value)}
-                    className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-bold text-xs focus:outline-none"
+                    className="w-full px-4 py-3 rounded-2xl bg-slate-100 border border-slate-200 text-[#0D2538] font-bold text-xs focus:outline-none"
                   >
                     <option value="Software / TI">Software / TI</option>
                     <option value="Arquitectura">Arquitectura</option>
@@ -1019,13 +1019,13 @@ export default function CommunitySection() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold text-[#333A42] uppercase tracking-wider mb-1">
                     Modalidad:
                   </label>
                   <select
                     value={newGroupModality}
                     onChange={(e) => setNewGroupModality(e.target.value)}
-                    className="w-full px-4 py-3 rounded-2xl bg-slate-800 border border-slate-700 text-white font-bold text-xs focus:outline-none"
+                    className="w-full px-4 py-3 rounded-2xl bg-slate-100 border border-slate-200 text-[#0D2538] font-bold text-xs focus:outline-none"
                   >
                     <option value="Virtual">Virtual (Online)</option>
                     <option value="Presencial">Presencial (Campus)</option>
@@ -1035,7 +1035,7 @@ export default function CommunitySection() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold text-[#333A42] uppercase tracking-wider mb-1">
                   Descripción de su Objetivo:
                 </label>
                 <textarea
@@ -1044,21 +1044,21 @@ export default function CommunitySection() {
                   value={newGroupObjective}
                   onChange={(e) => setNewGroupObjective(e.target.value)}
                   placeholder="Explica qué temas se estudiarán, horarios sugeridos y metas del grupo..."
-                  className="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 text-white font-medium text-sm focus:outline-none focus:border-blue-500 resize-none"
+                  className="w-full p-4 rounded-2xl bg-slate-100 border border-slate-200 text-[#0D2538] font-medium text-sm focus:outline-none focus:border-blue-500 resize-none"
                 ></textarea>
               </div>
 
-              <div className="pt-3 border-t border-slate-800 flex justify-end gap-3">
+              <div className="pt-3 border-t border-slate-200 flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setShowCreateGroupModal(false)}
-                  className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl border border-slate-700"
+                  className="px-5 py-2.5 bg-slate-100 hover:bg-slate-700 text-[#333A42] font-bold text-xs rounded-xl border border-slate-200"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md cursor-pointer"
+                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-[#0D2538] font-bold text-xs rounded-xl shadow-md cursor-pointer"
                 >
                   Publicar y Crear Grupo ✨
                 </button>

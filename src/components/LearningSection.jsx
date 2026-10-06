@@ -1,132 +1,78 @@
-import React, { useState } from 'react';
-import { GraduationCap, BookOpen, ClipboardCheck, Star, Edit3, Calendar, Clock, CheckCircle2, ArrowRight, Download, Sparkles, Trophy, BookMarked } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { GraduationCap, BookMarked, ClipboardCheck, Trophy, CheckCircle2, ArrowLeft, Search, CalendarDays, MapPin, Clock, Play, Pause, RotateCcw, Timer } from 'lucide-react';
 
 export default function LearningSection() {
-  const [activeFilter, setActiveFilter] = useState('ALL');
-  const [calendarModal, setCalendarModal] = useState(false);
-  
+  // NAVIGATION STATE
+  const [activeView, setActiveView] = useState('HOME');
+
   // RETO DIARIO STATE
-  const [dailyDate, setDailyDate] = useState('2026-09-21');
-  const [dailyTime, setDailyTime] = useState('18:00');
+  const [dailyDate, setDailyDate] = useState('2026-10-06');
+  const [dailyStartTime, setDailyStartTime] = useState('18:00');
+  const [dailyPlace, setDailyPlace] = useState('Biblioteca Central');
   const [habitSaved, setHabitSaved] = useState(false);
   const [streakCount, setStreakCount] = useState(5);
+
+  // TIMER STATE
+  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutos en segundos
+  const [isTimerActive, setIsTimerActive] = useState(false);
+
+  useEffect(() => {
+    let interval = null;
+    if (isTimerActive && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft(time => time - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      setIsTimerActive(false);
+    }
+    return () => clearInterval(interval);
+  }, [isTimerActive, timeLeft]);
+
+  const formatTime = (seconds) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
+  const handleModifyTimer = (mins) => {
+    setTimeLeft(mins * 60);
+    setIsTimerActive(false);
+  };
+
+  // MOCK MINI-CALENDARIO RACHA
+  const weekDays = [
+    { day: 'L', done: true },
+    { day: 'M', done: true },
+    { day: 'X', done: true },
+    { day: 'J', done: true },
+    { day: 'V', done: true },
+    { day: 'S', done: false },
+    { day: 'D', done: false },
+  ];
+
+  // FILTERS STATE
+  const [carrera, setCarrera] = useState('');
+  const [semestre, setSemestre] = useState('');
+  const [hasSearched, setHasSearched] = useState(false);
 
   const categories = [
     {
       id: 'CURSOS',
       title: 'Cursos',
       icon: GraduationCap,
-      description: 'Accede a cursos y contenidos para tu desarrollo académico y profesional',
-      badgeColor: 'bg-[#2A5C70] text-white'
+      description: 'Accede a cursos y contenidos para tu desarrollo académico y profesional'
     },
     {
       id: 'RECURSOS',
       title: 'Recursos',
       icon: BookMarked,
-      description: 'Encuentra apuntes, guías, plantillas y material de apoyo',
-      badgeColor: 'bg-[#2A5C70] text-white'
+      description: 'Encuentra apuntes, guías, plantillas y material de apoyo'
     },
     {
       id: 'PRACTICA',
       title: 'Práctica',
       icon: ClipboardCheck,
-      description: 'Pon a prueba tus conocimientos con ejercicios, simulaciones y evaluación',
-      badgeColor: 'bg-[#2A5C70] text-white'
-    },
-    {
-      id: 'CALENDARIO',
-      title: 'Calendario',
-      icon: Calendar,
-      description: 'Fechas clave, evaluaciones parciales y semanas de bienestar',
-      badgeColor: 'bg-[#2A5C70] text-white'
-    }
-  ];
-
-  // SAMPLES: RECOMENDADO PARA TI
-  const recommendedItems = [
-    {
-      id: 1,
-      category: 'CURSOS',
-      categoryLabel: 'Curso Recomendado',
-      title: 'Fundamentos de Arquitectura de Software',
-      instructor: 'Ing. Carlos Gutiérrez • Globant',
-      duration: '12 horas • 8 módulos',
-      level: 'Principiante / Intermedio',
-      icon: GraduationCap,
-      tagBg: 'bg-teal-700 text-white'
-    },
-    {
-      id: 2,
-      category: 'PRACTICA',
-      categoryLabel: 'Simulación & Quiz',
-      title: 'Simulador de Examen: Métodos Numéricos 2026-1',
-      instructor: 'Depto. de Ciencias Básicas',
-      duration: '45 minutos • 20 preguntas',
-      level: 'Evaluación Formativa',
-      icon: ClipboardCheck,
-      tagBg: 'bg-amber-700 text-white'
-    },
-    {
-      id: 3,
-      category: 'RECURSOS',
-      categoryLabel: 'Guía de Estudio',
-      title: 'Kit de Patrones de Diseño Gang of Four (GoF)',
-      instructor: 'Comunidad LinkUP Tech',
-      duration: 'PDF Interactivo + Ejemplos C#/Java',
-      level: 'Avanzado',
-      icon: BookMarked,
-      tagBg: 'bg-indigo-700 text-white'
-    },
-    {
-      id: 4,
-      category: 'CURSOS',
-      categoryLabel: 'Taller Práctico',
-      title: 'SQL Avanzado y Optimización de Consultas para Data Science',
-      instructor: 'Mariana Alarcón • BBVA',
-      duration: '6 horas • Casos reales de banca',
-      level: 'Intermedio',
-      icon: GraduationCap,
-      tagBg: 'bg-emerald-700 text-white'
-    }
-  ];
-
-  // SAMPLES: MATERIAL DESTACADO
-  const featuredMaterials = [
-    {
-      id: 101,
-      category: 'RECURSOS',
-      title: 'Resumen Completo en PDF: Cálculo Multivariable & Vectores',
-      author: 'Camila Rojas (Top 1% ciclo anterior)',
-      downloads: 342,
-      format: 'PDF • 24 págs',
-      badge: 'Más Descargado'
-    },
-    {
-      id: 102,
-      category: 'RECURSOS',
-      title: 'Plantilla de Diagramación UML & Microservicios en Excalidraw',
-      author: 'Mateo Benítez',
-      downloads: 189,
-      format: 'Plantilla .excalidraw',
-      badge: 'Herramienta'
-    },
-    {
-      id: 103,
-      category: 'PRACTICA',
-      title: 'Banco de 100 Preguntas Resueltas: Fundamentos de IA & Redes',
-      author: 'Círculo de Estudios de Sistemas',
-      downloads: 512,
-      format: 'PDF + Solucionario',
-      badge: 'Examen Final'
-    },
-    {
-      id: 104,
-      category: 'RECURSOS',
-      title: 'Cheatsheet Interactivo: Comandos Básicos de Docker & Kubernetes',
-      author: 'DevOps Community Aethera',
-      downloads: 275,
-      format: 'Guía Rápida PDF',
-      badge: 'DevOps'
+      description: 'Pon a prueba tus conocimientos con ejercicios, simulaciones y evaluación'
     }
   ];
 
@@ -136,341 +82,330 @@ export default function LearningSection() {
     setTimeout(() => setHabitSaved(false), 3000);
   };
 
-  const filteredRecommended = activeFilter === 'ALL'
-    ? recommendedItems
-    : recommendedItems.filter(item => item.category === activeFilter);
+  const handleCategoryClick = (id) => {
+    setActiveView(id);
+    setHasSearched(false);
+    setCarrera('');
+    setSemestre('');
+  };
 
-  return (
-    <div className="flex-1 p-6 sm:p-10 max-w-6xl mx-auto w-full space-y-8 animate-fadeIn">
-      
-      {/* HEADER SECTION & RETO DIARIO GRID */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
-        {/* LEFT TITLE & SUBTITLE */}
-        <div className="lg:col-span-8 space-y-2 text-center lg:text-left">
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-wider uppercase">
-            APRENDIZAJE
+  const handleSearch = () => {
+    if (carrera && semestre) {
+      setHasSearched(true);
+    }
+  };
+
+  const mockCourses = [
+    {
+      id: 1,
+      title: 'Fundamentos de Arquitectura de Software',
+      instructor: 'Ing. Carlos Gutiérrez',
+      level: 'Intermedio',
+      duration: '12 horas'
+    },
+    {
+      id: 2,
+      title: 'Desarrollo Web Frontend',
+      instructor: 'Mariana Alarcón',
+      level: 'Básico',
+      duration: '8 horas'
+    },
+    {
+      id: 3,
+      title: 'Patrones de Diseño (GoF)',
+      instructor: 'Comunidad LinkUP Tech',
+      level: 'Avanzado',
+      duration: '15 horas'
+    }
+  ];
+
+  if (activeView === 'CURSOS') {
+    return (
+      <div className="flex-1 p-6 sm:p-10 max-w-5xl mx-auto w-full flex flex-col animate-fadeIn min-h-[80vh]">
+        <button 
+          onClick={() => setActiveView('HOME')}
+          className="flex items-center gap-2 text-[#4A5568] hover:text-[#1D63B8] font-bold text-sm mb-6 transition-colors w-fit cursor-pointer"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          Volver a Inicio
+        </button>
+
+        <div className="space-y-3 mb-8">
+          <h1 className="text-3xl sm:text-4xl font-black text-[#0D2538] tracking-wider uppercase">
+            Catálogo de Cursos
           </h1>
-          <p className="text-slate-400 text-sm sm:text-base font-semibold tracking-wide">
-            Aprende, practica y desarrolla tus habilidades
+          <p className="text-[#4A5568] text-base font-semibold">
+            Filtra por tu carrera y semestre para encontrar el contenido adecuado.
           </p>
         </div>
 
-        {/* RIGHT CARD: RETO DIARIO */}
-        <div className="lg:col-span-4 bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-slate-800 space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-amber-400" />
-              <h2 className="font-extrabold text-white text-base uppercase tracking-wide">
-                RETO DIARIO
-              </h2>
-            </div>
-            <span className="text-[10px] font-black px-2.5 py-0.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded-full">
-              🔥 Racha: {streakCount} días
-            </span>
-          </div>
-
-          <p className="text-xs font-medium text-slate-300 leading-snug">
-            Establece una fecha y hora para formar el hábito de estudio diario:
-          </p>
-
-          <form onSubmit={handleSaveHabit} className="space-y-3 pt-1">
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Fecha:</label>
-
-                <input
-                  type="date"
-                  value={dailyDate}
-                  onChange={(e) => setDailyDate(e.target.value)}
-                  className="w-full px-2.5 py-1.5 rounded-xl bg-slate-800 text-white font-bold text-xs border border-slate-700 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 uppercase mb-0.5">Hora:</label>
-
-                <input
-                  type="time"
-                  value={dailyTime}
-                  onChange={(e) => setDailyTime(e.target.value)}
-                  className="w-full px-2.5 py-1.5 rounded-xl bg-slate-800 text-white font-bold text-xs border border-slate-700 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
+        {/* FILTERS */}
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xl mb-8 flex flex-col md:flex-row gap-4 items-end">
+          <div className="w-full md:w-2/5">
+            <label className="block text-xs font-bold text-[#4A5568] uppercase mb-2">Carrera</label>
+            <select 
+              value={carrera}
+              onChange={(e) => { setCarrera(e.target.value); setHasSearched(false); }}
+              className="w-full px-4 py-3 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-sm border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 cursor-pointer"
             >
-              <CheckCircle2 className="w-4 h-4 text-cyan-300" />
-              <span>{habitSaved ? '¡Hábito Programado! ✓' : 'Fijar Recordatorio de Estudio'}</span>
+              <option value="">Selecciona tu carrera...</option>
+              <option value="Ingeniería de Software">Ingeniería de Software</option>
+              <option value="Ciencias de la Computación">Ciencias de la Computación</option>
+              <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+              <option value="Ingeniería Informática">Ingeniería Informática</option>
+            </select>
+          </div>
+          <div className="w-full md:w-2/5">
+            <label className="block text-xs font-bold text-[#4A5568] uppercase mb-2">Semestre</label>
+            <select 
+              value={semestre}
+              onChange={(e) => { setSemestre(e.target.value); setHasSearched(false); }}
+              className="w-full px-4 py-3 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-sm border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 cursor-pointer"
+            >
+              <option value="">Semestre...</option>
+              <option value="1">1er Semestre</option>
+              <option value="2">2do Semestre</option>
+              <option value="3">3er Semestre</option>
+              <option value="4">4to Semestre</option>
+              <option value="5">5to Semestre</option>
+              <option value="6">6to Semestre</option>
+              <option value="7">7mo Semestre</option>
+              <option value="8">8vo Semestre</option>
+              <option value="9">9no Semestre</option>
+              <option value="10">10mo Semestre</option>
+            </select>
+          </div>
+          <div className="w-full md:w-1/5">
+            <button 
+              onClick={handleSearch}
+              disabled={!carrera || !semestre}
+              className={`w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${(!carrera || !semestre) ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg cursor-pointer'}`}
+            >
+              <Search className="w-4 h-4" />
+              Buscar
             </button>
-          </form>
+          </div>
         </div>
 
+        {/* RESULTS OR EMPTY STATE */}
+        {hasSearched ? (
+          <div className="space-y-6 animate-fadeIn">
+            <h2 className="text-xl font-extrabold text-[#0D2538] border-b border-slate-200 pb-2">
+              Resultados para {carrera} - Semestre {semestre}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {mockCourses.map(course => (
+                <div key={course.id} className="bg-white border border-slate-200 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all group flex flex-col">
+                  <div className="w-14 h-14 rounded-2xl bg-[#1D63B8]/10 text-[#1D63B8] border border-blue-500/30 flex items-center justify-center mb-5">
+                    <GraduationCap className="w-7 h-7" />
+                  </div>
+                  <h3 className="font-extrabold text-[#0D2538] text-lg mb-2 group-hover:text-[#1D63B8] transition-colors leading-snug">
+                    {course.title}
+                  </h3>
+                  <p className="text-sm font-medium text-[#4A5568] mb-4">
+                    👨‍🏫 {course.instructor}
+                  </p>
+                  
+                  <div className="pt-4 border-t border-slate-100 space-y-2 mb-6 flex-1">
+                    <p className="text-xs font-bold text-[#1D63B8]">⏱️ {course.duration}</p>
+                    <p className="text-xs font-medium text-[#4A5568]">📊 Nivel: {course.level}</p>
+                  </div>
+                  <button className="w-full mt-auto py-2.5 bg-slate-100 hover:bg-blue-600 hover:text-white text-[#0D2538] font-bold text-sm rounded-xl transition-colors cursor-pointer">
+                    Ver Detalles
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="flex-1 flex flex-col items-center justify-center text-center opacity-60 mt-10">
+            <Search className="w-16 h-16 text-slate-300 mb-4" />
+            <h3 className="text-xl font-bold text-slate-400">Selecciona tus filtros</h3>
+            <p className="text-sm font-medium text-slate-400">Los cursos se mostrarán cuando selecciones tu carrera y semestre.</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // HOME VIEW
+  return (
+    <div className="flex-1 p-6 sm:p-10 max-w-5xl mx-auto w-full flex flex-col items-center justify-center space-y-12 animate-fadeIn min-h-[80vh]">
+      
+      {/* HEADER SECTION */}
+      <div className="text-center space-y-3">
+        <h1 className="text-4xl sm:text-5xl font-black text-[#0D2538] tracking-wider uppercase">
+          APRENDIZAJE
+        </h1>
+        <p className="text-[#4A5568] text-base sm:text-lg font-semibold tracking-wide">
+          Aprende, practica y desarrolla tus habilidades
+        </p>
       </div>
 
-      {/* 4 MAIN CATEGORY CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {/* SECTION: RETO DIARIO & CRONÓMETRO */}
+      <div className="w-full bg-white backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-slate-200">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          
+          {/* IZQUIERDA: Planificación y Racha */}
+          <div className="space-y-6 flex flex-col justify-center">
+            {/* Cabecera del Reto */}
+            <div className="flex flex-col items-start space-y-2 pb-2">
+              <div className="flex items-center gap-3">
+                <Trophy className="w-10 h-10 text-amber-400 drop-shadow-sm" />
+                <h2 className="font-extrabold text-[#0D2538] text-2xl uppercase tracking-wide">
+                  Tu Reto Diario
+                </h2>
+              </div>
+              <p className="text-sm font-medium text-[#4A5568] max-w-md">
+                ¡Mantén la constancia! Configura tu lugar y hora, y cumple tus objetivos semanales.
+              </p>
+            </div>
+
+            {/* Mini Calendario de Racha */}
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-2xl border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-inner">
+              <div className="flex gap-2">
+                {weekDays.map((d, i) => (
+                  <div key={i} className={`w-8 h-11 sm:w-10 sm:h-12 rounded-xl flex flex-col items-center justify-center gap-0.5 shadow-sm transition-transform hover:scale-105 ${d.done ? 'bg-amber-400 text-white' : 'bg-white text-slate-400 border border-slate-200'}`}>
+                    <span className="text-[10px] font-black">{d.day}</span>
+                    {d.done ? <CheckCircle2 className="w-4 h-4 text-white" /> : <div className="w-4 h-4 rounded-full border-2 border-slate-200" />}
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-col items-center justify-center bg-white px-5 py-2 rounded-xl shadow-sm border border-amber-100 min-w-[100px]">
+                <span className="text-2xl font-black text-amber-500 leading-none">{streakCount}</span>
+                <span className="text-[9px] font-extrabold text-amber-600 uppercase tracking-wider mt-1">Días Seguidos</span>
+              </div>
+            </div>
+
+            {/* Formulario Fechas, Horas y Lugar */}
+            <form onSubmit={handleSaveHabit} className="space-y-5 pt-3 border-t border-slate-100">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="sm:col-span-1">
+                  <label className="block text-[10px] font-bold text-[#4A5568] uppercase mb-1.5 flex items-center gap-1">
+                    <CalendarDays className="w-3 h-3" /> Fecha:
+                  </label>
+                  <input
+                    type="date"
+                    value={dailyDate}
+                    onChange={(e) => setDailyDate(e.target.value)}
+                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-xs border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all cursor-pointer"
+                  />
+                </div>
+                <div className="sm:col-span-1">
+                  <label className="block text-[10px] font-bold text-[#4A5568] uppercase mb-1.5 flex items-center gap-1">
+                    <Clock className="w-3 h-3" /> Hora Inicio:
+                  </label>
+                  <input
+                    type="time"
+                    value={dailyStartTime}
+                    onChange={(e) => setDailyStartTime(e.target.value)}
+                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-xs border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all cursor-pointer"
+                  />
+                </div>
+                <div className="sm:col-span-1">
+                  <label className="block text-[10px] font-bold text-[#4A5568] uppercase mb-1.5 flex items-center gap-1">
+                    <MapPin className="w-3 h-3" /> Lugar:
+                  </label>
+                  <input
+                    type="text"
+                    value={dailyPlace}
+                    onChange={(e) => setDailyPlace(e.target.value)}
+                    placeholder="Ej. Biblioteca"
+                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-xs border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#1D63B8] hover:bg-blue-600 text-white font-bold text-sm rounded-xl shadow-lg transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-2"
+              >
+                <CheckCircle2 className="w-4 h-4 text-cyan-300" />
+                <span>{habitSaved ? '¡Reto Guardado! ✓' : 'Fijar Compromiso de Estudio'}</span>
+              </button>
+            </form>
+          </div>
+
+          {/* DERECHA: Cronómetro */}
+          <div className="flex flex-col items-center justify-center bg-slate-50 rounded-3xl p-8 border border-slate-200 shadow-inner">
+            <Timer className="w-8 h-8 text-blue-500 mb-2 drop-shadow-sm" />
+            <h3 className="text-sm font-extrabold text-slate-500 uppercase tracking-widest mb-6">
+              Cronómetro de Estudio
+            </h3>
+
+            {/* Display de tiempo */}
+            <div className="text-7xl sm:text-8xl font-black text-[#0D2538] tabular-nums tracking-tighter mb-8 drop-shadow-md">
+              {formatTime(timeLeft)}
+            </div>
+
+            {/* Botones rápidos */}
+            <div className="flex flex-wrap justify-center gap-2 mb-8">
+              {[5, 15, 25, 45, 60].map((mins) => (
+                <button
+                  key={mins}
+                  onClick={() => handleModifyTimer(mins)}
+                  className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:text-[#1D63B8] hover:border-blue-300 hover:bg-blue-50 shadow-sm transition-all active:scale-95"
+                >
+                  {mins} min
+                </button>
+              ))}
+            </div>
+
+            {/* Controles del Cronómetro */}
+            <div className="flex gap-4">
+              <button 
+                onClick={() => setIsTimerActive(!isTimerActive)} 
+                className="w-16 h-16 rounded-full bg-[#1D63B8] hover:bg-blue-600 flex items-center justify-center text-white shadow-xl hover:shadow-2xl transition-all active:scale-95 transform hover:-translate-y-1"
+              >
+                {isTimerActive ? (
+                  <Pause className="w-7 h-7 fill-current" />
+                ) : (
+                  <Play className="w-7 h-7 fill-current ml-1" />
+                )}
+              </button>
+              <button 
+                onClick={() => handleModifyTimer(25)} 
+                className="w-16 h-16 rounded-full bg-white border border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-600 shadow-md transition-all active:scale-95 transform hover:-translate-y-1"
+                title="Reiniciar a 25 min (Pomodoro)"
+              >
+                <RotateCcw className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* 3 MAIN CATEGORY CARDS */}
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
         {categories.map((cat) => {
           const Icon = cat.icon;
-          const isSelected = activeFilter === cat.id;
-
           return (
             <div
               key={cat.id}
-              onClick={() => {
-                if (cat.id === 'CALENDARIO') {
-                  setCalendarModal(true);
-                } else {
-                  setActiveFilter(isSelected ? 'ALL' : cat.id);
-                }
-              }}
-              className={`p-6 sm:p-8 rounded-3xl cursor-pointer transition-all duration-300 flex flex-col justify-between border shadow-xl hover:shadow-2xl transform hover:-translate-y-1.5 backdrop-blur-md ${
-                isSelected && cat.id !== 'CALENDARIO'
-                  ? 'bg-blue-600/30 border-blue-400 ring-2 ring-blue-400/50 shadow-[0_0_20px_rgba(37,99,235,0.3)]'
-                  : 'bg-slate-900/60 border-slate-800 hover:bg-slate-800/60 hover:border-slate-700'
-              }`}
+              onClick={() => handleCategoryClick(cat.id)}
+              className="p-8 rounded-3xl cursor-pointer transition-all duration-300 flex flex-col items-center text-center border shadow-xl hover:shadow-2xl transform hover:-translate-y-2 bg-white border-slate-200 hover:border-blue-400 group"
             >
-              <div className="space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-blue-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center shadow-md">
-                  <Icon className="w-8 h-8" />
-                </div>
-
-                <div>
-                  <h3 className="font-extrabold text-2xl text-white tracking-tight">
-                    {cat.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm font-medium text-slate-400 mt-2 leading-relaxed">
-                    {cat.description}
-                  </p>
-                </div>
+              <div className="w-20 h-20 rounded-2xl bg-[#1D63B8]/10 border border-blue-500/30 text-[#1D63B8] flex items-center justify-center shadow-md mb-6 group-hover:bg-[#1D63B8] group-hover:text-white transition-colors">
+                <Icon className="w-10 h-10" />
               </div>
-
-              <div className="mt-6 flex items-center justify-between pt-4 border-t border-slate-800">
-                <span className="text-xs font-bold text-cyan-400">
-                  {cat.id === 'CALENDARIO' ? 'Ver fechas (D7)' : (isSelected ? 'Filtrado activo' : 'Explorar contenidos')}
-                </span>
-                <span className="w-7 h-7 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-sm border border-slate-700">
-                  →
+              <h3 className="font-extrabold text-2xl text-[#0D2538] tracking-tight mb-3">
+                {cat.title}
+              </h3>
+              <p className="text-sm font-medium text-[#4A5568] leading-relaxed mb-6">
+                {cat.description}
+              </p>
+              <div className="mt-auto pt-4 border-t border-slate-100 w-full flex justify-center">
+                <span className="text-sm font-bold text-[#1D63B8] flex items-center gap-2">
+                  Explorar contenidos
+                  <span className="w-6 h-6 rounded-full bg-[#1D63B8]/10 text-[#1D63B8] flex items-center justify-center text-lg group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
                 </span>
               </div>
             </div>
           );
         })}
       </div>
-
-      {/* SECTION 1: RECOMENDADO PARA TI */}
-      <div className="space-y-4 pt-2">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-amber-400/20 border border-amber-400/30 text-amber-400 flex items-center justify-center shadow-md">
-            <Star className="w-5 h-5 fill-amber-400 stroke-amber-400" />
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-wide">
-            Recomendado para ti
-          </h2>
-          {activeFilter !== 'ALL' && (
-            <button
-              onClick={() => setActiveFilter('ALL')}
-              className="ml-auto text-xs font-bold px-3 py-1 bg-slate-800 text-slate-300 rounded-full hover:bg-slate-700 border border-slate-700"
-            >
-              Ver Todos ({recommendedItems.length})
-            </button>
-          )}
-        </div>
-
-        {/* 4 CARDS RECOMENDADO PARA TI */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {filteredRecommended.map((item) => {
-            const ItemIcon = item.icon;
-            return (
-              <div
-                key={item.id}
-                className="bg-slate-900/60 border border-slate-800 hover:border-blue-500/40 rounded-3xl p-5 shadow-xl hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 group backdrop-blur-md"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider bg-blue-500/20 border border-blue-500/30 text-blue-400">
-                      {item.categoryLabel}
-                    </span>
-                    <div className="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center text-cyan-400 border border-slate-700">
-                      <ItemIcon className="w-4 h-4" />
-                    </div>
-                  </div>
-
-                  <h3 className="font-extrabold text-white text-base leading-snug group-hover:text-cyan-300 transition-colors">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-xs font-medium text-slate-400">
-                    👨‍🏫 {item.instructor}
-                  </p>
-                </div>
-
-                <div className="mt-5 pt-3 border-t border-slate-800 space-y-2">
-                  <p className="text-[11px] font-bold text-cyan-400">
-                    ⏱️ {item.duration}
-                  </p>
-                  <p className="text-[10px] font-medium text-slate-400">
-                    📊 Nivel: {item.level}
-                  </p>
-
-                  <button className="w-full mt-2 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-sm transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
-                    <span>Empezar Cursos</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* SECTION 2: MATERIAL DESTACADO */}
-      <div className="space-y-4 pt-4">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center shadow-md">
-            <Edit3 className="w-5 h-5" />
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-wide">
-            Material Destacado
-          </h2>
-        </div>
-
-        {/* 4 CARDS MATERIAL DESTACADO */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {featuredMaterials.map((mat) => (
-            <div
-              key={mat.id}
-              className="bg-slate-900/60 border border-slate-800 hover:border-blue-500/40 rounded-3xl p-5 shadow-xl hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 backdrop-blur-md"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase bg-blue-500/20 border border-blue-500/30 text-blue-400">
-                    {mat.badge}
-                  </span>
-                  <span className="text-[10px] font-bold text-slate-400">
-                    📥 {mat.downloads} descargas
-                  </span>
-                </div>
-
-                <h3 className="font-extrabold text-white text-base leading-snug">
-                  {mat.title}
-                </h3>
-
-                <p className="text-xs font-medium text-slate-400">
-                  👤 {mat.author}
-                </p>
-              </div>
-
-              <div className="mt-5 pt-3 border-t border-slate-800 space-y-2">
-                <p className="text-[11px] font-bold text-cyan-400">
-                  📄 Formato: {mat.format}
-                </p>
-
-                <button
-                  onClick={() => alert(`Descargando material: ${mat.title}`)}
-                  className="w-full mt-2 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-sm transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Descargar Recurso</span>
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* MODAL CALENDARIO (D7) - VISTA ANUAL */}
-      {calendarModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 lg:p-10 animate-fadeIn" onClick={() => setCalendarModal(false)}>
-          <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-6xl w-full p-6 lg:p-8 shadow-2xl relative flex flex-col max-h-full text-slate-200" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setCalendarModal(false)} className="absolute top-6 right-6 w-8 h-8 rounded-full bg-slate-800 text-slate-300 font-bold flex items-center justify-center hover:bg-slate-700 transition-colors cursor-pointer z-10 border border-slate-700">
-              ✕
-            </button>
-            
-            {/* Header del Calendario */}
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4 shrink-0">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-md">
-                  <Calendar className="w-6 h-6"/>
-                </div>
-                <div>
-                  <h2 className="text-2xl lg:text-3xl font-extrabold text-white tracking-tight">Calendario Académico 2026</h2>
-                  <p className="text-sm font-bold text-blue-400">Vista Anual de Eventos • Dataset 7</p>
-                </div>
-              </div>
-              
-              {/* Leyenda */}
-              <div className="flex flex-wrap gap-3 bg-slate-800/80 p-3 rounded-xl border border-slate-700 shadow-sm text-xs font-bold text-slate-300">
-                <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-full bg-blue-500"></div> Inicio/Fin Semestre</div>
-                <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-full bg-red-500"></div> Exámenes (Parciales/Finales)</div>
-                <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-full bg-emerald-500"></div> Semanas de Bienestar</div>
-              </div>
-            </div>
-
-            {/* Grid de Meses */}
-            <div className="overflow-y-auto custom-scrollbar pr-2 flex-1">
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {[
-                  { name: 'Enero', days: 31, offset: 4 }, { name: 'Febrero', days: 28, offset: 0 }, { name: 'Marzo', days: 31, offset: 0 },
-                  { name: 'Abril', days: 30, offset: 3 }, { name: 'Mayo', days: 31, offset: 5 }, { name: 'Junio', days: 30, offset: 1 },
-                  { name: 'Julio', days: 31, offset: 3 }, { name: 'Agosto', days: 31, offset: 6 }, { name: 'Septiembre', days: 30, offset: 2 },
-                  { name: 'Octubre', days: 31, offset: 4 }, { name: 'Noviembre', days: 30, offset: 0 }, { name: 'Diciembre', days: 31, offset: 2 }
-                ].map((month, mIdx) => (
-                  <div key={month.name} className="bg-slate-800/60 rounded-2xl p-4 border border-slate-700/80 shadow-sm">
-                    <h3 className="font-extrabold text-white text-center mb-3 border-b border-slate-700 pb-2">{month.name}</h3>
-                    
-                    {/* Días de la semana */}
-                    <div className="grid grid-cols-7 gap-1 text-[9px] font-black text-slate-400 text-center mb-1">
-                      <div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div><div>D</div>
-                    </div>
-                    
-                    {/* Números de días */}
-                    <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-semibold">
-                      {Array.from({ length: month.offset }).map((_, i) => (
-                        <div key={`empty-${i}`}></div>
-                      ))}
-                      
-                      {Array.from({ length: month.days }).map((_, i) => {
-                        const day = i + 1;
-                        let dayClass = "hover:bg-slate-700 text-slate-300 rounded-md py-1 transition-colors";
-                        let title = "";
-
-                        // Lógica de Eventos (Dataset 7)
-                        // Parciales 1: Mayo 4-9
-                        if (mIdx === 4 && day >= 4 && day <= 9) { dayClass = "bg-red-500 text-white font-bold rounded-md py-1 shadow-sm"; title = "Exámenes Parciales"; }
-                        // Finales 1: Julio 6-11
-                        else if (mIdx === 6 && day >= 6 && day <= 11) { dayClass = "bg-red-500 text-white font-bold rounded-md py-1 shadow-sm"; title = "Exámenes Finales"; }
-                        // Parciales 2: Octubre 5-10
-                        else if (mIdx === 9 && day >= 5 && day <= 10) { dayClass = "bg-red-500 text-white font-bold rounded-md py-1 shadow-sm"; title = "Exámenes Parciales S2"; }
-                        // Finales 2: Diciembre 7-12
-                        else if (mIdx === 11 && day >= 7 && day <= 12) { dayClass = "bg-red-500 text-white font-bold rounded-md py-1 shadow-sm"; title = "Exámenes Finales S2"; }
-                        
-                        // Bienestar 1: Junio 10-14
-                        else if (mIdx === 5 && day >= 10 && day <= 14) { dayClass = "bg-emerald-500 text-white font-bold rounded-md py-1 shadow-sm"; title = "Semana de Bienestar"; }
-                        // Bienestar 2: Noviembre 2-6
-                        else if (mIdx === 10 && day >= 2 && day <= 6) { dayClass = "bg-emerald-500 text-white font-bold rounded-md py-1 shadow-sm"; title = "Semana de Bienestar S2"; }
-
-                        // Inicio Clases: Mar 15, Ago 10
-                        else if ((mIdx === 2 && day === 15) || (mIdx === 7 && day === 10)) { dayClass = "bg-blue-500 text-white font-bold rounded-md py-1 shadow-sm"; title = "Inicio de Clases"; }
-
-                        return (
-                          <div key={day} className={dayClass} title={title}>
-                            {day}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      )}
 
     </div>
   );

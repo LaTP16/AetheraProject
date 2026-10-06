@@ -25,7 +25,7 @@ export default function OpportunitiesSection() {
 
   // ==================== "CREA TU CV" STATE ====================
   // Mandatory initial 4 CV Sections submitted by student
-  const [cvInfoSubmitted, setCvInfoSubmitted] = useState(true);
+  const [cvInfoSubmitted, setCvInfoSubmitted] = useState(false);
   const [cvSavedFeedback, setCvSavedFeedback] = useState(false);
 
   const [cvData, setCvData] = useState({
@@ -83,7 +83,7 @@ export default function OpportunitiesSection() {
       label: 'Becas & Estudios', 
       icon: GraduationCap, 
       color: 'border-blue-500/40 text-blue-300 bg-blue-500/10', 
-      activeGlow: 'ring-2 ring-blue-400 bg-blue-500/20 shadow-[0_0_20px_rgba(59,130,246,0.25)]',
+      activeGlow: 'ring-2 ring-blue-400 bg-[#1D63B8]/10 shadow-[0_0_20px_rgba(59,130,246,0.25)]',
       desc: 'Financiamientos de estudio, certificaciones y becas de excelencia'
     },
     { 
@@ -116,7 +116,7 @@ export default function OpportunitiesSection() {
               `[Projects] Falta desplegar un proyecto en contenedores Docker en producción.`
             ],
             recommendations: [
-              { category: 'Cursos & Certificaciones', badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30', title: 'Beca Formación TI en Cloud Computing (AWS)', actionText: 'Inscribirme al Curso', desc: 'Curso de 6 meses 100% subvencionado con voucher de certificación oficial para incluir en tu CV.' },
+              { category: 'Cursos & Certificaciones', badgeColor: 'bg-[#1D63B8]/10 text-blue-300 border-blue-500/30', title: 'Beca Formación TI en Cloud Computing (AWS)', actionText: 'Inscribirme al Curso', desc: 'Curso de 6 meses 100% subvencionado con voucher de certificación oficial para incluir en tu CV.' },
               { category: 'Grupos & Comunidades', badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30', title: 'Club de Desarrollo de Software & IA', actionText: 'Unirme al Grupo', desc: 'Participa en proyectos colaborativos con Docker y Git Flow junto a compañeros de ciclos superiores.' },
               { category: 'Mentorías Senior', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30', title: 'Revisión Técnica con Carlos Gutiérrez (Globant)', actionText: 'Agendar Mentoría', desc: 'Recibe feedback directo sobre la arquitectura y diagramas UML de tus proyectos personales.' },
               { category: 'Concursos & Hackathons', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30', title: 'Hackathon Nacional de Arquitectura 2026', actionText: 'Participar en Concurso', desc: 'Diseña una arquitectura escalable en 48h y demuestra tus habilidades prácticas a reclutadores.' }
@@ -137,7 +137,7 @@ export default function OpportunitiesSection() {
               `[Experience] Falta liderazgo documentado liderando equipos ágiles.`
             ],
             recommendations: [
-              { category: 'Cursos & Certificaciones', badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30', title: 'Programa Avanzado de Microservicios & Cloud', actionText: 'Postular al Curso', desc: 'Capacitación intensiva en Kubernetes y resiliencia de software para postulantes Senior.' },
+              { category: 'Cursos & Certificaciones', badgeColor: 'bg-[#1D63B8]/10 text-blue-300 border-blue-500/30', title: 'Programa Avanzado de Microservicios & Cloud', actionText: 'Postular al Curso', desc: 'Capacitación intensiva en Kubernetes y resiliencia de software para postulantes Senior.' },
               { category: 'Concursos & Hackathons', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30', title: 'Desafío de Innovación & Arquitectura de Datos', actionText: 'Unirme a la Competencia', desc: 'Lidera un equipo y genera métricas de impacto real para colocar en tu portafolio.' }
             ]
           };
@@ -194,7 +194,7 @@ export default function OpportunitiesSection() {
         ],
         recommendations: [
           { category: 'Voluntariado & Impacto Social', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30', title: 'Voluntariado de Tutorías Estudiantiles LinkUP', actionText: 'Postular al Voluntariado', desc: 'Enséñale a alumnos de 1er ciclo y obtén tu certificado oficial de 50 horas de servicio social.' },
-          { category: 'Grupos de Investigación', badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30', title: 'Círculo de Investigación & Proyectos Académicos', actionText: 'Explorar Grupos', desc: 'Colabora en publicaciones para conseguir tu carta de recomendación de un docente.' }
+          { category: 'Grupos de Investigación', badgeColor: 'bg-[#1D63B8]/10 text-blue-300 border-blue-500/30', title: 'Círculo de Investigación & Proyectos Académicos', actionText: 'Explorar Grupos', desc: 'Colabora en publicaciones para conseguir tu carta de recomendación de un docente.' }
         ]
       };
     }
@@ -364,14 +364,14 @@ ${cvData.technicalSkills}
   };
 
   return (
-    <div className="flex-1 p-6 sm:p-8 max-w-6xl mx-auto w-full animate-fadeIn space-y-8 text-slate-200">
+    <div className="flex-1 p-6 sm:p-8 max-w-6xl mx-auto w-full animate-fadeIn space-y-8 text-[#333A42]">
       
       {/* HEADER SECTION */}
       <div className="text-center space-y-2">
-        <h1 className="text-3xl sm:text-5xl font-black text-white tracking-wider uppercase">
+        <h1 className="text-3xl sm:text-5xl font-black text-[#0D2538] tracking-wider uppercase">
           OPORTUNIDADES & CV
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base font-medium max-w-2xl mx-auto">
+        <p className="text-[#4A5568] text-sm sm:text-base font-medium max-w-2xl mx-auto">
           Postula a convocatorias del Mercado Laboral y Becas de Estudio, y construye tu CV detectando exactamente lo que necesitas desarrollar.
         </p>
       </div>
@@ -388,16 +388,16 @@ ${cvData.technicalSkills}
               onClick={() => setSelectedCategory(cat.id)}
               className={`p-6 rounded-3xl border backdrop-blur-md flex flex-col items-start justify-between text-left transition-all cursor-pointer min-h-[140px] ${
                 isSelected
-                  ? `${cat.activeGlow} border-white/60 text-white`
+                  ? `${cat.activeGlow} border-white/60 text-[#0D2538]`
                   : `${cat.color} opacity-80 hover:opacity-100 hover:scale-[1.02]`
               }`}
             >
               <div className="flex items-center justify-between w-full">
-                <div className="p-3 rounded-2xl bg-slate-900/60 shadow-md">
+                <div className="p-3 rounded-2xl bg-white shadow-md">
                   <Icon className="w-7 h-7" />
                 </div>
                 {cat.id !== 'Crea tu CV' ? (
-                  <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-slate-900/80 text-cyan-400 border border-slate-700">
+                  <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-white text-[#1D63B8] border border-slate-200">
                     {opportunitiesData[cat.id]?.length || 0} convocatorias
                   </span>
                 ) : (
@@ -407,8 +407,8 @@ ${cvData.technicalSkills}
                 )}
               </div>
               <div className="mt-3">
-                <span className="font-black text-lg sm:text-xl block text-white">{cat.label}</span>
-                <span className="text-xs text-slate-400 font-medium block mt-0.5">{cat.desc}</span>
+                <span className="font-black text-lg sm:text-xl block text-[#0D2538]">{cat.label}</span>
+                <span className="text-xs text-[#4A5568] font-medium block mt-0.5">{cat.desc}</span>
               </div>
             </button>
           );
@@ -420,25 +420,25 @@ ${cvData.technicalSkills}
         <div className="space-y-6 animate-fadeIn">
           
           {/* CONTEXTUAL FILTERS PANEL */}
-          <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-slate-800 space-y-4">
+          <div className="bg-white backdrop-blur-md rounded-3xl p-6 shadow-2xl border border-slate-200 space-y-4">
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
               <div className="flex items-center gap-2">
-                <Filter className="w-5 h-5 text-blue-400" />
-                <h2 className="font-bold text-white text-base sm:text-lg">
-                  Filtros para <span className="text-cyan-400 underline">{selectedCategory}</span>
+                <Filter className="w-5 h-5 text-[#1D63B8]" />
+                <h2 className="font-bold text-[#0D2538] text-base sm:text-lg">
+                  Filtros para <span className="text-[#1D63B8] underline">{selectedCategory}</span>
                 </h2>
               </div>
 
               {/* GLOBAL SEARCH INPUT */}
               <div className="relative w-full sm:w-72">
-                <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+                <Search className="w-4 h-4 absolute left-3 top-3 text-[#4A5568]" />
                 <input
                   type="text"
                   placeholder={`Buscar en ${selectedCategory}...`}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 text-xs bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 rounded-xl focus:outline-none focus:border-blue-500"
+                  className="w-full pl-9 pr-4 py-2 text-xs bg-slate-100/80 border border-slate-200 text-[#0D2538] placeholder-slate-500 rounded-xl focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
@@ -450,13 +450,13 @@ ${cvData.technicalSkills}
               {selectedCategory === 'Mercado Laboral' && (
                 <>
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-bold text-[#4A5568] uppercase tracking-wider mb-1">
                       🎓 Disciplina / Área:
                     </label>
                     <select
                       value={filters.discipline}
                       onChange={(e) => handleFilterChange('discipline', e.target.value)}
-                      className="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white font-semibold text-xs focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-[#0D2538] font-semibold text-xs focus:outline-none focus:border-blue-500"
                     >
                       <option value="ALL">Todas las Disciplinas</option>
                       <option value="Software / TI">Software / TI</option>
@@ -467,13 +467,13 @@ ${cvData.technicalSkills}
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-bold text-[#4A5568] uppercase tracking-wider mb-1">
                       💼 Puesto / Nivel:
                     </label>
                     <select
                       value={filters.roleLevel}
                       onChange={(e) => handleFilterChange('roleLevel', e.target.value)}
-                      className="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white font-semibold text-xs focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-[#0D2538] font-semibold text-xs focus:outline-none focus:border-blue-500"
                     >
                       <option value="ALL">Todos los Niveles</option>
                       <option value="Trainee / Practicante">Trainee / Practicante</option>
@@ -482,13 +482,13 @@ ${cvData.technicalSkills}
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-bold text-[#4A5568] uppercase tracking-wider mb-1">
                       🌐 Modalidad de Trabajo:
                     </label>
                     <select
                       value={filters.jobModality}
                       onChange={(e) => handleFilterChange('jobModality', e.target.value)}
-                      className="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white font-semibold text-xs focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-[#0D2538] font-semibold text-xs focus:outline-none focus:border-blue-500"
                     >
                       <option value="ALL">Todas las Modalidades</option>
                       <option value="Remoto">Remoto</option>
@@ -503,13 +503,13 @@ ${cvData.technicalSkills}
               {selectedCategory === 'Becas' && (
                 <>
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-bold text-[#4A5568] uppercase tracking-wider mb-1">
                       💰 Tipo de Cobertura:
                     </label>
                     <select
                       value={filters.coverage}
                       onChange={(e) => handleFilterChange('coverage', e.target.value)}
-                      className="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white font-semibold text-xs focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-[#0D2538] font-semibold text-xs focus:outline-none focus:border-blue-500"
                     >
                       <option value="ALL">Todas las Coberturas</option>
                       <option value="100% Cobertura">100% Cobertura Completa</option>
@@ -519,13 +519,13 @@ ${cvData.technicalSkills}
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-bold text-[#4A5568] uppercase tracking-wider mb-1">
                       🎓 Nivel Académico:
                     </label>
                     <select
                       value={filters.academicLevel}
                       onChange={(e) => handleFilterChange('academicLevel', e.target.value)}
-                      className="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white font-semibold text-xs focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-[#0D2538] font-semibold text-xs focus:outline-none focus:border-blue-500"
                     >
                       <option value="ALL">Todos los Niveles</option>
                       <option value="Pregrado">Pregrado</option>
@@ -535,13 +535,13 @@ ${cvData.technicalSkills}
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-bold text-[#4A5568] uppercase tracking-wider mb-1">
                       🌐 Modalidad:
                     </label>
                     <select
                       value={filters.becaModality}
                       onChange={(e) => handleFilterChange('becaModality', e.target.value)}
-                      className="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white font-semibold text-xs focus:outline-none focus:border-blue-500"
+                      className="w-full p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-[#0D2538] font-semibold text-xs focus:outline-none focus:border-blue-500"
                     >
                       <option value="ALL">Todas las Modalidades</option>
                       <option value="Virtual">Virtual</option>
@@ -559,22 +559,22 @@ ${cvData.technicalSkills}
           <div className="space-y-4">
             
             <div className="flex items-center justify-between px-2">
-              <span className="font-bold text-white text-base">
-                Convocatorias en <span className="text-cyan-400">{selectedCategory}</span>
+              <span className="font-bold text-[#0D2538] text-base">
+                Convocatorias en <span className="text-[#1D63B8]">{selectedCategory}</span>
               </span>
-              <span className="text-xs font-semibold text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">
+              <span className="text-xs font-semibold text-[#1D63B8] bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">
                 {filteredItems.length} resultados encontrados
               </span>
             </div>
 
             {filteredItems.length === 0 ? (
-              <div className="p-10 bg-slate-900/60 backdrop-blur-md rounded-3xl border border-slate-800 text-center space-y-3">
+              <div className="p-10 bg-white backdrop-blur-md rounded-3xl border border-slate-200 text-center space-y-3">
                 <Filter className="w-10 h-10 text-slate-500 mx-auto" />
-                <h3 className="font-bold text-white text-base">No se encontraron convocatorias para los filtros seleccionados</h3>
-                <p className="text-xs text-slate-400">Prueba cambiando o limpiando los criterios de selección.</p>
+                <h3 className="font-bold text-[#0D2538] text-base">No se encontraron convocatorias para los filtros seleccionados</h3>
+                <p className="text-xs text-[#4A5568]">Prueba cambiando o limpiando los criterios de selección.</p>
                 <button
                   onClick={resetFilters}
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition-colors"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-[#0D2538] text-xs font-bold rounded-xl transition-colors"
                 >
                   Restablecer Filtros
                 </button>
@@ -584,11 +584,11 @@ ${cvData.technicalSkills}
                 {filteredItems.map((item) => (
                   <div
                     key={item.id}
-                    className="bg-slate-900/60 backdrop-blur-md p-6 rounded-3xl border border-slate-800 shadow-xl space-y-4 hover:border-blue-500/40 transition-all flex flex-col justify-between"
+                    className="bg-white backdrop-blur-md p-6 rounded-3xl border border-slate-200 shadow-xl space-y-4 hover:border-blue-500/40 transition-all flex flex-col justify-between"
                   >
                     <div className="space-y-3">
                       <div className="flex items-start justify-between gap-2">
-                        <span className="px-2.5 py-1 bg-blue-500/20 border border-blue-500/30 text-blue-400 text-[11px] font-bold rounded-lg">
+                        <span className="px-2.5 py-1 bg-[#1D63B8]/10 border border-blue-500/30 text-[#1D63B8] text-[11px] font-bold rounded-lg">
                           {item.company}
                         </span>
 
@@ -597,27 +597,27 @@ ${cvData.technicalSkills}
                         </span>
                       </div>
 
-                      <h3 className="font-black text-white text-base sm:text-lg leading-snug">
+                      <h3 className="font-black text-[#0D2538] text-base sm:text-lg leading-snug">
                         {item.title}
                       </h3>
 
-                      <div className="flex flex-wrap gap-3 text-xs font-medium text-slate-400 pt-1">
-                        <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-cyan-400" /> {item.modality || item.location}</span>
-                        {item.discipline && <span className="flex items-center gap-1"><Briefcase className="w-3.5 h-3.5 text-cyan-400" /> {item.discipline}</span>}
-                        {item.academicLevel && <span className="flex items-center gap-1"><BookOpen className="w-3.5 h-3.5 text-cyan-400" /> {item.academicLevel}</span>}
+                      <div className="flex flex-wrap gap-3 text-xs font-medium text-[#4A5568] pt-1">
+                        <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#1D63B8]" /> {item.modality || item.location}</span>
+                        {item.discipline && <span className="flex items-center gap-1"><Briefcase className="w-3.5 h-3.5 text-[#1D63B8]" /> {item.discipline}</span>}
+                        {item.academicLevel && <span className="flex items-center gap-1"><BookOpen className="w-3.5 h-3.5 text-[#1D63B8]" /> {item.academicLevel}</span>}
                       </div>
 
-                      <p className="text-xs text-slate-300 leading-relaxed pt-1">
+                      <p className="text-xs text-[#333A42] leading-relaxed pt-1">
                         {item.description}
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <div className="pt-4 border-t border-slate-200/80 flex items-center justify-between">
                       <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Convocatoria Activa</span>
 
                       <button
                         onClick={() => setAppliedModal(item)}
-                        className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-all flex items-center gap-1.5 cursor-pointer"
+                        className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-[#0D2538] text-xs font-bold rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-all flex items-center gap-1.5 cursor-pointer"
                       >
                         <span>Postular / Ver detalles</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -633,22 +633,121 @@ ${cvData.technicalSkills}
         </div>
       )}
 
-      {/* ==================== VISTA CREA TU CV (MANDATORY CV UPLOAD FIRST, THEN FILTERS) ==================== */}
+      {/* ==================== VISTA CREA TU CV ==================== */}
       {selectedCategory === 'Crea tu CV' && (
         <div className="space-y-8 animate-fadeIn">
           
-          {/* PASO MANDATORIO DE INGRESO DE INFORMACIÓN DEL CV */}
-          <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 space-y-6">
+          {/* 1. FILTROS DE POSTULACIÓN */}
+          <div className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-6">
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div className="border-b border-slate-200 pb-4">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-6 h-6 text-purple-400" />
+                <h2 className="text-xl sm:text-2xl font-black text-[#0D2538]">
+                  1. Filtros de Postulación para Analizar tu CV
+                </h2>
+              </div>
+              <p className="text-xs sm:text-sm text-[#4A5568] font-medium mt-1">
+                Selecciona en orden la convocatoria a la que aspiras para comparar tus 4 secciones ingresadas con las exigencias del puesto.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {/* PASO 1 */}
+              <div className="p-4 rounded-2xl bg-slate-100/80 border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black text-purple-400 uppercase tracking-wider">Paso 1: Categoría</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold">Obligatorio</span>
+                </div>
+                <label className="block text-xs font-bold text-[#0D2538]">¿A qué postularás?</label>
+                <select
+                  value={cvTargetCategory}
+                  onChange={(e) => setCvTargetCategory(e.target.value)}
+                  className="w-full p-3 rounded-xl bg-white border border-purple-500/50 text-[#0D2538] font-extrabold text-xs focus:outline-none focus:border-purple-400 cursor-pointer"
+                >
+                  <option value="Puesto Laboral">💼 Puesto Laboral / Empleo</option>
+                  <option value="Becas & Estudios">🎓 Becas & Financiamientos de Estudio</option>
+                </select>
+              </div>
+
+              {/* PASO 2 */}
+              <div className="p-4 rounded-2xl bg-slate-100/80 border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black text-[#1D63B8] uppercase tracking-wider">Paso 2: Nivel</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">Obligatorio</span>
+                </div>
+                <label className="block text-xs font-bold text-[#0D2538]">Nivel al que aspiras:</label>
+                {cvTargetCategory === 'Puesto Laboral' ? (
+                  <select
+                    value={cvRoleLevel}
+                    onChange={(e) => setCvRoleLevel(e.target.value)}
+                    className="w-full p-3 rounded-xl bg-white border border-cyan-500/50 text-[#0D2538] font-extrabold text-xs focus:outline-none focus:border-cyan-400 cursor-pointer"
+                  >
+                    <option value="Prácticas Preprofesionales">🌱 Prácticas Preprofesionales</option>
+                    <option value="Prácticas Profesionales">🎓 Prácticas Profesionales</option>
+                    <option value="Junior">⚡ Nivel Junior</option>
+                    <option value="Semi-Senior / Senior">🔥 Nivel Semi-Senior / Senior</option>
+                  </select>
+                ) : (
+                  <select
+                    value={cvBecaLevel}
+                    onChange={(e) => setCvBecaLevel(e.target.value)}
+                    className="w-full p-3 rounded-xl bg-white border border-cyan-500/50 text-[#0D2538] font-extrabold text-xs focus:outline-none focus:border-cyan-400 cursor-pointer"
+                  >
+                    <option value="Pregrado">📘 Pregrado Universitario</option>
+                    <option value="Posgrado / Maestría">📙 Posgrado / Maestría</option>
+                    <option value="Certificación">📜 Certificación / Curso Especializado</option>
+                  </select>
+                )}
+              </div>
+
+              {/* PASO 3 */}
+              <div className="p-4 rounded-2xl bg-slate-100/80 border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-black text-amber-400 uppercase tracking-wider">Paso 3: Puesto / Área</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">Obligatorio</span>
+                </div>
+                <label className="block text-xs font-bold text-[#0D2538]">Puesto o Área objetivo:</label>
+                {cvTargetCategory === 'Puesto Laboral' ? (
+                  <select
+                    value={cvTargetRole}
+                    onChange={(e) => setCvTargetRole(e.target.value)}
+                    className="w-full p-3 rounded-xl bg-white border border-amber-500/50 text-[#0D2538] font-extrabold text-xs focus:outline-none focus:border-amber-400 cursor-pointer"
+                  >
+                    <option value="Arquitecto de Software">💻 Arquitecto de Software</option>
+                    <option value="Data Analyst / Data Scientist">📊 Data Analyst / Data Scientist</option>
+                    <option value="Diseñador UX/UI">🎨 Diseñador UX/UI</option>
+                    <option value="DevOps & Cloud Engineer">☁️ DevOps & Cloud Engineer</option>
+                    <option value="Finanzas & Negocios Tech">💼 Finanzas & Negocios Tech</option>
+                  </select>
+                ) : (
+                  <select
+                    value={cvTargetBecaArea}
+                    onChange={(e) => setCvTargetBecaArea(e.target.value)}
+                    className="w-full p-3 rounded-xl bg-white border border-amber-500/50 text-[#0D2538] font-extrabold text-xs focus:outline-none focus:border-amber-400 cursor-pointer"
+                  >
+                    <option value="Beca de Excelencia Académica">🌟 Beca de Excelencia Académica</option>
+                    <option value="Beca Formación TI / Certificación">🚀 Beca Formación TI / Certificación</option>
+                    <option value="Beca de Investigación & Posgrado">🔬 Beca de Investigación & Posgrado</option>
+                    <option value="Beca de Intercambio Internacional">🌎 Beca de Intercambio Internacional</option>
+                  </select>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* 2. INGRESA LA INFORMACIÓN DE TU CV */}
+          <div className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-6">
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <Edit3 className="w-6 h-6 text-purple-400" />
-                  <h2 className="text-xl sm:text-2xl font-black text-white">
-                    Paso Inicial: Ingresa la Información de tu CV
+                  <Edit3 className="w-6 h-6 text-emerald-400" />
+                  <h2 className="text-xl sm:text-2xl font-black text-[#0D2538]">
+                    2. Paso Inicial: Ingresa la Información de tu CV
                   </h2>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
+                <p className="text-xs sm:text-sm text-[#4A5568] font-medium mt-1">
                   Para analizar qué oportunidades encajan con tu perfil y qué te falta desarrollar, primero completa o actualiza las 4 secciones fundamentales de tu CV:
                 </p>
               </div>
@@ -661,14 +760,13 @@ ${cvData.technicalSkills}
               )}
             </div>
 
-            {/* FORMULARIO DE LAS 4 SECCIONES REQUERIDAS */}
             <form onSubmit={handleSaveCvInfo} className="space-y-5">
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
                 
                 {/* 1. EDUCATION */}
-                <div className="p-5 rounded-2xl bg-slate-800/60 border border-slate-700 space-y-2">
-                  <label className="block font-black text-blue-400 uppercase tracking-wider text-xs flex items-center gap-1.5">
+                <div className="p-5 rounded-2xl bg-slate-100/60 border border-slate-200 space-y-2">
+                  <label className="block font-black text-[#1D63B8] uppercase tracking-wider text-xs flex items-center gap-1.5">
                     <GraduationCap className="w-4 h-4" />
                     <span>1. Education (Educación & Pertenencia Académica):</span>
                   </label>
@@ -677,13 +775,12 @@ ${cvData.technicalSkills}
                     required
                     value={cvData.education}
                     onChange={(e) => setCvData({ ...cvData, education: e.target.value })}
-                    placeholder="Ej. Universidad Aethera, Ingeniería de Sistemas (7mo ciclo), Promedio: 17.2, Tercio Superior..."
-                    className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium focus:outline-none focus:border-blue-500 resize-none"
+                    className="w-full p-3 rounded-xl bg-white border border-slate-200 text-[#0D2538] font-medium focus:outline-none focus:border-blue-500 resize-none"
                   ></textarea>
                 </div>
 
                 {/* 2. EXPERIENCE */}
-                <div className="p-5 rounded-2xl bg-slate-800/60 border border-slate-700 space-y-2">
+                <div className="p-5 rounded-2xl bg-slate-100/60 border border-slate-200 space-y-2">
                   <label className="block font-black text-emerald-400 uppercase tracking-wider text-xs flex items-center gap-1.5">
                     <Briefcase className="w-4 h-4" />
                     <span>2. Experience (Experiencia Laboral o Prácticas):</span>
@@ -693,13 +790,12 @@ ${cvData.technicalSkills}
                     required
                     value={cvData.experience}
                     onChange={(e) => setCvData({ ...cvData, experience: e.target.value })}
-                    placeholder="Ej. Practicante de Desarrollo Web en NovaTech (6 meses), Tutor de Algoritmos..."
-                    className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium focus:outline-none focus:border-emerald-500 resize-none"
+                    className="w-full p-3 rounded-xl bg-white border border-slate-200 text-[#0D2538] font-medium focus:outline-none focus:border-emerald-500 resize-none"
                   ></textarea>
                 </div>
 
                 {/* 3. PROJECTS */}
-                <div className="p-5 rounded-2xl bg-slate-800/60 border border-slate-700 space-y-2">
+                <div className="p-5 rounded-2xl bg-slate-100/60 border border-slate-200 space-y-2">
                   <label className="block font-black text-amber-400 uppercase tracking-wider text-xs flex items-center gap-1.5">
                     <Code className="w-4 h-4" />
                     <span>3. Projects (Proyectos Destacados & Repositorios):</span>
@@ -709,13 +805,12 @@ ${cvData.technicalSkills}
                     required
                     value={cvData.projects}
                     onChange={(e) => setCvData({ ...cvData, projects: e.target.value })}
-                    placeholder="Ej. Plataforma LinkUP (React/Node), API REST de Comercio, Dashboard de Analítica..."
-                    className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium focus:outline-none focus:border-amber-500 resize-none"
+                    className="w-full p-3 rounded-xl bg-white border border-slate-200 text-[#0D2538] font-medium focus:outline-none focus:border-amber-500 resize-none"
                   ></textarea>
                 </div>
 
                 {/* 4. TECHNICAL SKILLS */}
-                <div className="p-5 rounded-2xl bg-slate-800/60 border border-slate-700 space-y-2">
+                <div className="p-5 rounded-2xl bg-slate-100/60 border border-slate-200 space-y-2">
                   <label className="block font-black text-purple-400 uppercase tracking-wider text-xs flex items-center gap-1.5">
                     <Layers className="w-4 h-4" />
                     <span>4. Technical Skills (Habilidades Técnicas & Herramientas):</span>
@@ -725,350 +820,163 @@ ${cvData.technicalSkills}
                     required
                     value={cvData.technicalSkills}
                     onChange={(e) => setCvData({ ...cvData, technicalSkills: e.target.value })}
-                    placeholder="Ej. React.js, Node.js, Python, SQL, Docker, Diagramas UML, Git/GitHub..."
-                    className="w-full p-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium focus:outline-none focus:border-purple-500 resize-none"
+                    className="w-full p-3 rounded-xl bg-white border border-slate-200 text-[#0D2538] font-medium focus:outline-none focus:border-purple-500 resize-none"
                   ></textarea>
                 </div>
 
               </div>
 
-              {/* ACTION BOTÓN: GUARDAR E HABILITAR FILTROS */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-800">
-                <p className="text-xs text-slate-400 font-medium">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-200">
+                <p className="text-xs text-[#4A5568] font-medium">
                   Al guardar tus 4 secciones, el motor de LinkUP analizará la compatibilidad exacta con tus metas.
                 </p>
 
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-black text-xs rounded-2xl shadow-[0_0_20px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0"
+                  className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-[#0D2538] font-black text-xs rounded-2xl shadow-[0_0_20px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0"
                 >
                   <Save className="w-4 h-4" />
-                  <span>{cvSavedFeedback ? '¡Información Guardada!' : 'Guardar Información y Activar Filtros ✨'}</span>
+                  <span>{cvSavedFeedback ? '¡Información Guardada!' : 'Guardar Información y Recibir Feedback ✨'}</span>
                 </button>
               </div>
 
             </form>
-
           </div>
 
-          {/* SINO SE HA INGRESADO LA INFORMACIÓN, MUESTRA MENSAJE DE BLOQUEO */}
-          {!cvInfoSubmitted ? (
-            <div className="p-8 bg-slate-900/60 backdrop-blur-md rounded-3xl border border-slate-800 text-center space-y-3">
-              <Lock className="w-10 h-10 text-amber-400 mx-auto" />
-              <h3 className="font-bold text-white text-lg">Ingresa primero las 4 secciones de tu CV</h3>
-              <p className="text-xs text-slate-400 max-w-md mx-auto">
-                Guarda tus datos de Education, Experience, Projects y Technical Skills en el panel superior para desbloquear la guía de análisis y filtros.
-              </p>
-            </div>
-          ) : (
-            /* FILTROS SECUENCIALES & ANÁLISIS DE BRECHAS DESBLOQUEADO */
+          {/* 3. RESULTADO, FEEDBACK Y OPORTUNIDADES (Aparece si se envió info) */}
+          {cvInfoSubmitted && (
             <div className="space-y-8 animate-fadeIn">
               
-              {/* PANEL DE FILTROS SECUENCIALES */}
-              <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 space-y-6">
-                
-                <div className="border-b border-slate-800 pb-4">
+              <div className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-6">
+                <div className="border-b border-slate-200 pb-4">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-6 h-6 text-purple-400" />
-                    <h2 className="text-xl sm:text-2xl font-black text-white">
-                      Filtros de Postulación para Analizar tu CV
+                    <MessageSquare className="w-6 h-6 text-amber-400" />
+                    <h2 className="text-xl sm:text-2xl font-black text-[#0D2538]">
+                      3. Feedback de IA & Oportunidades Sugeridas
                     </h2>
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
-                    Selecciona en orden la convocatoria a la que aspiras para comparar tus 4 secciones ingresadas con las exigencias del puesto.
-                  </p>
                 </div>
 
-                {/* TRES PASOS DE FILTRADO SECUENCIAL */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  
-                  {/* PASO 1 */}
-                  <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-black text-purple-400 uppercase tracking-wider">Paso 1: Categoría</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold">Obligatorio</span>
-                    </div>
-                    <label className="block text-xs font-bold text-white">¿A qué postularás?</label>
-                    <select
-                      value={cvTargetCategory}
-                      onChange={(e) => setCvTargetCategory(e.target.value)}
-                      className="w-full p-3 rounded-xl bg-slate-900 border border-purple-500/50 text-white font-extrabold text-xs focus:outline-none focus:border-purple-400 cursor-pointer"
-                    >
-                      <option value="Puesto Laboral">💼 Puesto Laboral / Empleo</option>
-                      <option value="Becas & Estudios">🎓 Becas & Financiamientos de Estudio</option>
-                    </select>
-                  </div>
-
-                  {/* PASO 2 */}
-                  <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-black text-cyan-400 uppercase tracking-wider">Paso 2: Nivel</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">Obligatorio</span>
-                    </div>
-                    <label className="block text-xs font-bold text-white">Nivel al que aspiras:</label>
-                    {cvTargetCategory === 'Puesto Laboral' ? (
-                      <select
-                        value={cvRoleLevel}
-                        onChange={(e) => setCvRoleLevel(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-900 border border-cyan-500/50 text-white font-extrabold text-xs focus:outline-none focus:border-cyan-400 cursor-pointer"
-                      >
-                        <option value="Prácticas Preprofesionales">🌱 Prácticas Preprofesionales</option>
-                        <option value="Prácticas Profesionales">🎓 Prácticas Profesionales</option>
-                        <option value="Junior">⚡ Nivel Junior</option>
-                        <option value="Semi-Senior / Senior">🔥 Nivel Semi-Senior / Senior</option>
-                      </select>
-                    ) : (
-                      <select
-                        value={cvBecaLevel}
-                        onChange={(e) => setCvBecaLevel(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-900 border border-cyan-500/50 text-white font-extrabold text-xs focus:outline-none focus:border-cyan-400 cursor-pointer"
-                      >
-                        <option value="Pregrado">📘 Pregrado Universitario</option>
-                        <option value="Posgrado / Maestría">📙 Posgrado / Maestría</option>
-                        <option value="Certificación">📜 Certificación / Curso Especializado</option>
-                      </select>
-                    )}
-                  </div>
-
-                  {/* PASO 3 */}
-                  <div className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-black text-amber-400 uppercase tracking-wider">Paso 3: Puesto / Área</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold">Obligatorio</span>
-                    </div>
-                    <label className="block text-xs font-bold text-white">Puesto o Área objetivo:</label>
-                    {cvTargetCategory === 'Puesto Laboral' ? (
-                      <select
-                        value={cvTargetRole}
-                        onChange={(e) => setCvTargetRole(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-900 border border-amber-500/50 text-white font-extrabold text-xs focus:outline-none focus:border-amber-400 cursor-pointer"
-                      >
-                        <option value="Arquitecto de Software">💻 Arquitecto de Software</option>
-                        <option value="Data Analyst / Data Scientist">📊 Data Analyst / Data Scientist</option>
-                        <option value="Diseñador UX/UI">🎨 Diseñador UX/UI</option>
-                        <option value="DevOps & Cloud Engineer">☁️ DevOps & Cloud Engineer</option>
-                        <option value="Finanzas & Negocios Tech">💼 Finanzas & Negocios Tech</option>
-                      </select>
-                    ) : (
-                      <select
-                        value={cvTargetBecaArea}
-                        onChange={(e) => setCvTargetBecaArea(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-900 border border-amber-500/50 text-white font-extrabold text-xs focus:outline-none focus:border-amber-400 cursor-pointer"
-                      >
-                        <option value="Beca de Excelencia Académica">🌟 Beca de Excelencia Académica</option>
-                        <option value="Beca Formación TI / Certificación">🚀 Beca Formación TI / Certificación</option>
-                        <option value="Beca de Investigación & Posgrado">🔬 Beca de Investigación & Posgrado</option>
-                        <option value="Beca de Intercambio Internacional">🌎 Beca de Intercambio Internacional</option>
-                      </select>
-                    )}
-                  </div>
-
-                </div>
-
-                {/* RESULTADO DEL DIAGNÓSTICO EVALUANDO LAS 4 SECCIONES DEL ESTUDIANTE */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
-                  
-                  {/* CARD DE SCORE */}
-                  <div className="p-5 rounded-2xl bg-slate-800/60 border border-slate-700 space-y-2">
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-400 block">Nivel de Compatibilidad de tu CV</span>
+                  <div className="p-5 rounded-2xl bg-slate-100/60 border border-slate-200 space-y-2">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-purple-400 block">Nivel de Compatibilidad</span>
                     <div className="flex items-center gap-3">
-                      <span className="text-3xl font-black text-cyan-400">{activeDiagnostic.score}%</span>
+                      <span className="text-3xl font-black text-[#1D63B8]">{activeDiagnostic.score}%</span>
                       <div className="flex-1 bg-slate-700 h-3 rounded-full overflow-hidden">
                         <div className="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full" style={{ width: `${activeDiagnostic.score}%` }}></div>
                       </div>
                     </div>
-                    <p className="text-xs text-slate-400 font-medium leading-relaxed">
-                      Evaluando tus 4 secciones para: <span className="text-white font-bold">{activeDiagnostic.targetLabel}</span>
+                    <p className="text-xs text-[#4A5568] font-medium leading-relaxed">
+                      Evaluando tus 4 secciones para: <span className="text-[#0D2538] font-bold">{activeDiagnostic.targetLabel}</span>
                     </p>
                   </div>
 
-                  {/* LO QUE YA TIENES */}
                   <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
                     <div className="flex items-center gap-2 text-emerald-400 font-extrabold text-xs">
                       <CheckCircle2 className="w-4 h-4" />
-                      <span>Lo que YA TIENES listo en tus 4 secciones ({activeDiagnostic.completed.length}):</span>
+                      <span>Lo que YA TIENES ({activeDiagnostic.completed.length}):</span>
                     </div>
-                    <ul className="space-y-1.5 text-xs text-slate-300">
+                    <ul className="space-y-1.5 text-xs text-[#333A42]">
                       {activeDiagnostic.completed.map((req, idx) => (
-                        <li key={idx} className="flex items-start gap-1.5 leading-snug">
-                          <span className="text-emerald-400 font-bold">✓</span>
-                          <span>{req}</span>
-                        </li>
+                        <li key={idx} className="flex items-start gap-1.5 leading-snug"><span className="text-emerald-400 font-bold">✓</span><span>{req}</span></li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* LO QUE TE FALTA */}
                   <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-2">
                     <div className="flex items-center gap-2 text-amber-400 font-extrabold text-xs">
                       <AlertTriangle className="w-4 h-4" />
-                      <span>Lo que TE FALTA DESARROLLAR ({activeDiagnostic.missing.length}):</span>
+                      <span>Lo que TE FALTA ({activeDiagnostic.missing.length}):</span>
                     </div>
-                    <ul className="space-y-1.5 text-xs text-slate-300">
+                    <ul className="space-y-1.5 text-xs text-[#333A42]">
                       {activeDiagnostic.missing.map((req, idx) => (
-                        <li key={idx} className="flex items-start gap-1.5 leading-snug">
-                          <span className="text-amber-400 font-bold">⚠️</span>
-                          <span>{req}</span>
-                        </li>
+                        <li key={idx} className="flex items-start gap-1.5 leading-snug"><span className="text-amber-400 font-bold">⚠️</span><span>{req}</span></li>
                       ))}
                     </ul>
                   </div>
-
                 </div>
 
-              </div>
-
-              {/* SECCIÓN DE FEEDBACK AUTOMÁTICO & OPORTUNIDADES PARA RESOLVERLAS */}
-              <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 space-y-6">
-                
-                {/* CABECERA CON FEEDBACK AUTOMÁTICO QUALITATIVO */}
-                <div className="space-y-3 border-b border-slate-800 pb-5">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare className="w-6 h-6 text-purple-400" />
-                    <h3 className="text-lg sm:text-xl font-black text-white">
-                      Feedback Automático de tu Perfil & Diagnóstico
-                    </h3>
+                {/* SINTESIS DEL FEEDBACK */}
+                <div className="p-5 rounded-2xl bg-purple-500/10 border border-purple-500/30 text-[#333A42] text-xs leading-relaxed space-y-2">
+                  <div className="flex items-center gap-2 font-bold text-purple-300 text-sm">
+                    <Sparkles className="w-4 h-4 text-purple-400" />
+                    <span>Informe de Evaluación Personalizado:</span>
                   </div>
-
-                  {/* PANEL DE SÍNTESIS DE FEEDBACK */}
-                  <div className="p-5 rounded-2xl bg-purple-500/10 border border-purple-500/30 text-slate-200 text-xs leading-relaxed space-y-2">
-                    <div className="flex items-center gap-2 font-bold text-purple-300 text-sm">
-                      <Sparkles className="w-4 h-4 text-purple-400" />
-                      <span>Informe de Evaluación Personalizado:</span>
-                    </div>
-                    <p>{activeDiagnostic.feedbackSummary}</p>
-                  </div>
+                  <p>{activeDiagnostic.feedbackSummary}</p>
                 </div>
 
-                {/* TITULO DE OPORTUNIDADES */}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Lightbulb className="w-6 h-6 text-amber-400" />
-                    <h3 className="text-lg sm:text-xl font-black text-white">
-                      ¿Cómo te ayudamos a cubrir tus vacíos en LinkUP?
-                    </h3>
-                  </div>
-                  <p className="text-xs text-slate-400 font-medium">
-                    Acciones y oportunidades directas para resolver tus brechas (Cursos, Voluntariados, Concursos, Mentorías y Comunidades):
-                  </p>
-                </div>
-
-                {/* TARJETAS DE OPORTUNIDADES CATEGORIZADAS */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {activeDiagnostic.recommendations.map((sol, index) => (
-                    <div key={index} className="p-5 rounded-2xl bg-slate-800/60 border border-slate-700 flex flex-col justify-between space-y-4 hover:border-purple-500/40 transition-all shadow-md">
-                      
-                      <div className="space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <span className={`text-[10px] font-extrabold px-3 py-1 rounded-full border ${sol.badgeColor}`}>
-                            {sol.category}
-                          </span>
-                          <span className="text-[10px] font-bold text-slate-500 uppercase">Recomendado</span>
+                <div className="pt-4 space-y-4">
+                  <h4 className="font-bold text-[#0D2538] text-sm">Opciones de Oportunidades Sugeridas:</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {activeDiagnostic.recommendations.map((sol, index) => (
+                      <div key={index} className="p-5 rounded-2xl bg-slate-100/60 border border-slate-200 flex flex-col justify-between space-y-4 hover:border-purple-500/40 transition-all shadow-md">
+                        <div className="space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className={`text-[10px] font-extrabold px-3 py-1 rounded-full border ${sol.badgeColor}`}>{sol.category}</span>
+                          </div>
+                          <h4 className="font-extrabold text-[#0D2538] text-base leading-snug">{sol.title}</h4>
+                          <p className="text-xs text-[#333A42] leading-relaxed">{sol.desc}</p>
                         </div>
-
-                        <h4 className="font-extrabold text-white text-base leading-snug">{sol.title}</h4>
-                        <p className="text-xs text-slate-300 leading-relaxed">{sol.desc}</p>
+                        <button onClick={() => alert(`Accediendo a la oportunidad en LinkUP: ${sol.title}`)} className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-[#0D2538] font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                          <span>{sol.actionText}</span> <ChevronRight className="w-4 h-4" />
+                        </button>
                       </div>
-
-                      <button
-                        onClick={() => alert(`Accediendo a la oportunidad en LinkUP: ${sol.title}`)}
-                        className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <span>{sol.actionText}</span>
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
 
               </div>
 
-              {/* VISTA PREVIA ATS DEL CV GENERADO */}
-              <div className="bg-slate-900/60 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <h3 className="font-black text-white text-base sm:text-lg flex items-center gap-2">
+              {/* 4. VISTA PREVIA ATS Y DESCARGA */}
+              <div className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                  <h3 className="font-black text-[#0D2538] text-base sm:text-lg flex items-center gap-2">
                     <Eye className="w-5 h-5 text-purple-400" />
-                    <span>Vista Previa del CV Generado (Format ATS)</span>
+                    <span>4. Vista Previa del CV Generado (Formato ATS)</span>
                   </h3>
                   <span className="text-[10px] font-bold px-2.5 py-1 bg-purple-500/20 text-purple-300 rounded-full border border-purple-500/30">
                     4 Secciones Verificadas
                   </span>
                 </div>
 
-                <div className="bg-slate-950/90 rounded-2xl p-6 border border-slate-800 text-slate-300 text-xs space-y-4 font-sans shadow-inner">
-                  
-                  {/* HEADER */}
-                  <div className="border-b border-slate-800 pb-3 text-center space-y-1">
-                    <h2 className="text-xl font-black text-white tracking-wide">{cvData.fullName}</h2>
+                <div className="bg-slate-950/90 rounded-2xl p-6 border border-slate-200 text-[#333A42] text-xs space-y-4 font-sans shadow-inner">
+                  <div className="border-b border-slate-200 pb-3 text-center space-y-1">
+                    <h2 className="text-xl font-black text-[#0D2538] tracking-wide">{cvData.fullName}</h2>
                     <p className="text-xs font-bold text-purple-400">{activeDiagnostic.targetLabel}</p>
-                    <p className="text-[10px] text-slate-400">Lima, Perú • mateo.benitez@aethera.edu.pe • github.com/mbenitez-tech</p>
+                    <p className="text-[10px] text-[#4A5568]">Lima, Perú • mateo.benitez@aethera.edu.pe • github.com/mbenitez-tech</p>
                   </div>
-
-                  {/* 1. EDUCATION */}
                   <div className="space-y-1">
-                    <h4 className="font-bold text-white uppercase tracking-wider text-[11px] text-blue-400 border-b border-slate-800/80 pb-0.5">
-                      1. Education (Educación)
-                    </h4>
-                    <p className="text-slate-300 leading-relaxed text-[11px]">{cvData.education}</p>
+                    <h4 className="font-bold text-[#0D2538] uppercase tracking-wider text-[11px] text-[#1D63B8] border-b border-slate-200/80 pb-0.5">1. Education (Educación)</h4>
+                    <p className="text-[#333A42] leading-relaxed text-[11px]">{cvData.education}</p>
                   </div>
-
-                  {/* 2. EXPERIENCE */}
                   <div className="space-y-1">
-                    <h4 className="font-bold text-white uppercase tracking-wider text-[11px] text-emerald-400 border-b border-slate-800/80 pb-0.5">
-                      2. Experience (Experiencia)
-                    </h4>
-                    <p className="text-slate-300 leading-relaxed text-[11px]">{cvData.experience}</p>
+                    <h4 className="font-bold text-[#0D2538] uppercase tracking-wider text-[11px] text-emerald-400 border-b border-slate-200/80 pb-0.5">2. Experience (Experiencia)</h4>
+                    <p className="text-[#333A42] leading-relaxed text-[11px]">{cvData.experience}</p>
                   </div>
-
-                  {/* 3. PROJECTS */}
                   <div className="space-y-1">
-                    <h4 className="font-bold text-white uppercase tracking-wider text-[11px] text-amber-400 border-b border-slate-800/80 pb-0.5">
-                      3. Projects (Proyectos)
-                    </h4>
-                    <p className="text-slate-300 leading-relaxed text-[11px]">{cvData.projects}</p>
+                    <h4 className="font-bold text-[#0D2538] uppercase tracking-wider text-[11px] text-amber-400 border-b border-slate-200/80 pb-0.5">3. Projects (Proyectos)</h4>
+                    <p className="text-[#333A42] leading-relaxed text-[11px]">{cvData.projects}</p>
                   </div>
-
-                  {/* 4. TECHNICAL SKILLS */}
                   <div className="space-y-1">
-                    <h4 className="font-bold text-white uppercase tracking-wider text-[11px] text-purple-400 border-b border-slate-800/80 pb-0.5">
-                      4. Technical Skills (Habilidades Técnicas)
-                    </h4>
-                    <p className="text-slate-300 leading-relaxed text-[11px]">{cvData.technicalSkills}</p>
+                    <h4 className="font-bold text-[#0D2538] uppercase tracking-wider text-[11px] text-purple-400 border-b border-slate-200/80 pb-0.5">4. Technical Skills (Habilidades Técnicas)</h4>
+                    <p className="text-[#333A42] leading-relaxed text-[11px]">{cvData.technicalSkills}</p>
                   </div>
-
                 </div>
 
-                {/* ACCIONES DE DESCARGA & COPIADO */}
-                <div className="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center gap-3">
-                  <button
-                    onClick={handleDownloadCv}
-                    className="w-full sm:flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2 transition-all cursor-pointer"
-                  >
+                <div className="pt-3 border-t border-slate-200 flex flex-col sm:flex-row items-center gap-3">
+                  <button onClick={handleDownloadCv} className="w-full sm:flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-[#0D2538] font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.4)] flex items-center justify-center gap-2 transition-all cursor-pointer">
                     {downloadSuccess ? (
-                      <>
-                        <CheckCircle2 className="w-4 h-4 text-emerald-300" />
-                        <span>¡CV Generado y Descargado (.PDF)!</span>
-                      </>
+                      <><CheckCircle2 className="w-4 h-4 text-emerald-300" /><span>¡CV Generado y Descargado (.PDF)!</span></>
                     ) : (
-                      <>
-                        <Download className="w-4 h-4" />
-                        <span>Descargar CV Optimizado</span>
-                      </>
+                      <><Download className="w-4 h-4" /><span>Descargar CV en PDF (Formato Harvard)</span></>
                     )}
                   </button>
-
-                  <button
-                    onClick={handleCopyCvText}
-                    className="w-full sm:w-auto px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl border border-slate-700 flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0"
-                  >
-                    <FileCheck className="w-4 h-4 text-cyan-400" />
+                  <button onClick={handleCopyCvText} className="w-full sm:w-auto px-4 py-3 bg-slate-100 hover:bg-slate-700 text-[#333A42] font-bold text-xs rounded-xl border border-slate-200 flex items-center justify-center gap-2 transition-colors cursor-pointer shrink-0">
+                    <FileCheck className="w-4 h-4 text-[#1D63B8]" />
                     <span>{copiedCvText ? '¡Copiado ATS!' : 'Copiar Texto ATS'}</span>
                   </button>
                 </div>
-
               </div>
-
             </div>
           )}
 
@@ -1077,33 +985,33 @@ ${cvData.technicalSkills}
 
       {/* POSTULACIÓN MODAL */}
       {appliedModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 text-slate-200 animate-fadeIn">
+        <div className="fixed inset-0 z-50 bg-slate-800/50 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 text-[#333A42] animate-fadeIn">
             <div className="flex justify-between items-start">
               <div>
-                <span className="px-2.5 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs font-bold rounded-md">
+                <span className="px-2.5 py-1 bg-[#1D63B8]/10 text-[#1D63B8] border border-blue-500/30 text-xs font-bold rounded-md">
                   {selectedCategory}
                 </span>
-                <h3 className="font-extrabold text-white text-lg mt-2">{appliedModal.title}</h3>
+                <h3 className="font-extrabold text-[#0D2538] text-lg mt-2">{appliedModal.title}</h3>
               </div>
-              <button onClick={() => setAppliedModal(null)} className="text-slate-400 font-bold hover:text-white text-xl cursor-pointer">✕</button>
+              <button onClick={() => setAppliedModal(null)} className="text-[#4A5568] font-bold hover:text-[#0D2538] text-xl cursor-pointer">✕</button>
             </div>
 
-            <div className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700 space-y-2 text-xs">
-              <p><strong className="text-white">Institución/Empresa:</strong> {appliedModal.company}</p>
-              <p><strong className="text-white">Modalidad:</strong> {appliedModal.modality || appliedModal.location}</p>
-              <p><strong className="text-white">Beneficio/Remuneración:</strong> {appliedModal.salary || appliedModal.benefit}</p>
+            <div className="p-4 bg-slate-100/60 rounded-2xl border border-slate-200 space-y-2 text-xs">
+              <p><strong className="text-[#0D2538]">Institución/Empresa:</strong> {appliedModal.company}</p>
+              <p><strong className="text-[#0D2538]">Modalidad:</strong> {appliedModal.modality || appliedModal.location}</p>
+              <p><strong className="text-[#0D2538]">Beneficio/Remuneración:</strong> {appliedModal.salary || appliedModal.benefit}</p>
             </div>
 
-            <p className="text-slate-300 text-xs leading-relaxed">{appliedModal.description}</p>
+            <p className="text-[#333A42] text-xs leading-relaxed">{appliedModal.description}</p>
 
             <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-300 text-xs flex items-center gap-2 font-medium">
               <CheckCircle2 className="w-5 h-5 shrink-0" />
               <span>Tu perfil en LinkUP cumple con los requisitos iniciales recomendados.</span>
             </div>
 
-            <div className="pt-3 border-t border-slate-800 flex justify-end gap-2">
-              <button onClick={() => setAppliedModal(null)} className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl border border-slate-700 cursor-pointer">
+            <div className="pt-3 border-t border-slate-200 flex justify-end gap-2">
+              <button onClick={() => setAppliedModal(null)} className="px-4 py-2 bg-slate-100 hover:bg-slate-700 text-[#333A42] font-bold text-xs rounded-xl border border-slate-200 cursor-pointer">
                 Cerrar
               </button>
               <button 
@@ -1111,7 +1019,7 @@ ${cvData.technicalSkills}
                   alert(`¡Postulación enviada exitosamente para ${appliedModal.title}!`);
                   setAppliedModal(null);
                 }} 
-                className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] cursor-pointer"
+                className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-[#0D2538] font-bold text-xs rounded-xl shadow-[0_0_15px_rgba(37,99,235,0.4)] cursor-pointer"
               >
                 Confirmar Postulación ✨
               </button>
