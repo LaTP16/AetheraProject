@@ -396,13 +396,9 @@ ${cvData.technicalSkills}
                 <div className="p-3 rounded-2xl bg-white shadow-md">
                   <Icon className="w-7 h-7" />
                 </div>
-                {cat.id !== 'Crea tu CV' ? (
+                {cat.id !== 'Crea tu CV' && (
                   <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-white text-[#1D63B8] border border-slate-200">
                     {opportunitiesData[cat.id]?.length || 0} convocatorias
-                  </span>
-                ) : (
-                  <span className="text-[11px] font-extrabold px-3 py-1 rounded-full bg-purple-500/30 text-purple-300 border border-purple-500/40">
-                    ✨ Carga tus 4 Secciones
                   </span>
                 )}
               </div>
