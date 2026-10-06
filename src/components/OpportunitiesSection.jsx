@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { downloadHarvardPDF } from '../utils/pdfGenerator';
 import { 
   Target, GraduationCap, FileText, Filter, Search, CheckCircle2, 
   ArrowRight, Building2, MapPin, Award, BookOpen, Clock, Briefcase, 
@@ -334,6 +335,14 @@ export default function OpportunitiesSection() {
   const filteredItems = getFilteredItems();
 
   const handleDownloadCv = () => {
+    downloadHarvardPDF({
+      fullName: cvData.fullName,
+      targetLabel: activeDiagnostic?.targetLabel || '',
+      education: cvData.education,
+      experience: cvData.experience,
+      projects: cvData.projects,
+      technicalSkills: cvData.technicalSkills
+    });
     setDownloadSuccess(true);
     setTimeout(() => setDownloadSuccess(false), 3000);
   };
@@ -935,27 +944,36 @@ ${cvData.technicalSkills}
                   </span>
                 </div>
 
-                <div className="bg-slate-950/90 rounded-2xl p-6 border border-slate-200 text-[#333A42] text-xs space-y-4 font-sans shadow-inner">
-                  <div className="border-b border-slate-200 pb-3 text-center space-y-1">
-                    <h2 className="text-xl font-black text-[#0D2538] tracking-wide">{cvData.fullName}</h2>
-                    <p className="text-xs font-bold text-purple-400">{activeDiagnostic.targetLabel}</p>
-                    <p className="text-[10px] text-[#4A5568]">Lima, Perú • mateo.benitez@aethera.edu.pe • github.com/mbenitez-tech</p>
+                <div className="bg-white rounded-2xl p-8 sm:p-10 border border-slate-300 text-slate-900 text-xs sm:text-sm space-y-6 shadow-2xl ring-1 ring-slate-200/80 font-serif max-w-3xl mx-auto">
+                  {/* HARVARD HEADER */}
+                  <div className="text-center space-y-1.5 pb-4 border-b-2 border-slate-900">
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 uppercase">{cvData.fullName}</h2>
+                    <p className="text-xs font-bold text-slate-700 font-sans tracking-wide uppercase">{activeDiagnostic.targetLabel}</p>
+                    <p className="text-[11px] text-slate-600 font-sans">Lima, Perú • mateo.benitez@aethera.edu.pe • github.com/mbenitez-tech • +51 987 654 321</p>
                   </div>
-                  <div className="space-y-1">
-                    <h4 className="font-bold text-[#0D2538] uppercase tracking-wider text-[11px] text-[#1D63B8] border-b border-slate-200/80 pb-0.5">1. Education (Educación)</h4>
-                    <p className="text-[#333A42] leading-relaxed text-[11px]">{cvData.education}</p>
+
+                  {/* 1. EDUCATION */}
+                  <div className="space-y-1.5 font-sans">
+                    <h4 className="font-bold text-slate-900 uppercase tracking-widest text-xs border-b border-slate-800 pb-0.5">1. EDUCATION (EDUCACIÓN)</h4>
+                    <p className="text-slate-800 leading-relaxed text-xs sm:text-sm whitespace-pre-line">{cvData.education || 'Sin información registrada.'}</p>
                   </div>
-                  <div className="space-y-1">
-                    <h4 className="font-bold text-[#0D2538] uppercase tracking-wider text-[11px] text-emerald-400 border-b border-slate-200/80 pb-0.5">2. Experience (Experiencia)</h4>
-                    <p className="text-[#333A42] leading-relaxed text-[11px]">{cvData.experience}</p>
+
+                  {/* 2. EXPERIENCE */}
+                  <div className="space-y-1.5 font-sans">
+                    <h4 className="font-bold text-slate-900 uppercase tracking-widest text-xs border-b border-slate-800 pb-0.5">2. EXPERIENCE (EXPERIENCIA)</h4>
+                    <p className="text-slate-800 leading-relaxed text-xs sm:text-sm whitespace-pre-line">{cvData.experience || 'Sin información registrada.'}</p>
                   </div>
-                  <div className="space-y-1">
-                    <h4 className="font-bold text-[#0D2538] uppercase tracking-wider text-[11px] text-amber-400 border-b border-slate-200/80 pb-0.5">3. Projects (Proyectos)</h4>
-                    <p className="text-[#333A42] leading-relaxed text-[11px]">{cvData.projects}</p>
+
+                  {/* 3. PROJECTS */}
+                  <div className="space-y-1.5 font-sans">
+                    <h4 className="font-bold text-slate-900 uppercase tracking-widest text-xs border-b border-slate-800 pb-0.5">3. PROJECTS (PROYECTOS Y LOGROS)</h4>
+                    <p className="text-slate-800 leading-relaxed text-xs sm:text-sm whitespace-pre-line">{cvData.projects || 'Sin información registrada.'}</p>
                   </div>
-                  <div className="space-y-1">
-                    <h4 className="font-bold text-[#0D2538] uppercase tracking-wider text-[11px] text-purple-400 border-b border-slate-200/80 pb-0.5">4. Technical Skills (Habilidades Técnicas)</h4>
-                    <p className="text-[#333A42] leading-relaxed text-[11px]">{cvData.technicalSkills}</p>
+
+                  {/* 4. TECHNICAL SKILLS */}
+                  <div className="space-y-1.5 font-sans">
+                    <h4 className="font-bold text-slate-900 uppercase tracking-widest text-xs border-b border-slate-800 pb-0.5">4. TECHNICAL SKILLS (HABILIDADES TÉCNICAS)</h4>
+                    <p className="text-slate-800 leading-relaxed text-xs sm:text-sm whitespace-pre-line">{cvData.technicalSkills || 'Sin información registrada.'}</p>
                   </div>
                 </div>
 

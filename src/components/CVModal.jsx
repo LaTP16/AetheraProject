@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { downloadHarvardPDF } from '../utils/pdfGenerator';
 import { Sparkles, FileText, CheckCircle, Briefcase, GraduationCap, Code, ArrowRight, Download, Target } from 'lucide-react';
 
 export default function CVModal({ isOpen, onClose }) {
@@ -33,8 +34,14 @@ export default function CVModal({ isOpen, onClose }) {
   };
 
   const handleDownloadPDF = () => {
-    alert("Descargando CV en formato Harvard PDF...");
-    // Simulacion de descarga
+    downloadHarvardPDF({
+      fullName: 'Mateo Benítez',
+      targetLabel: `${filters.puesto} (${filters.nivel})`,
+      education: cvInfo.education,
+      experience: cvInfo.experience,
+      projects: cvInfo.projects,
+      skills: cvInfo.skills
+    });
   };
 
   const renderStep1 = () => (
