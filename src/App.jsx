@@ -503,9 +503,6 @@ export default function App() {
                         <span className="text-[#333A42]">Ansiedad</span>
                         <span className="px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 rounded-md text-xs">{formatBand(studentData.survey?.anxiety_band, true)} ({studentData.survey?.anxiety_score})</span>
                       </div>
-                      <div className="mt-3 p-3 bg-red-500/10 text-red-300 text-xs font-bold rounded-xl border border-red-500/30">
-                        ⚠️ {studentData.survey?.wellbeing_note || 'Sin notas adicionales.'}
-                      </div>
                     </div>
                   </div>
                 </div>

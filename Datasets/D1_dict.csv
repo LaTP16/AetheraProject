@@ -22,4 +22,4 @@
 20,D1,campus_activity_frequency,Campus Activity Frequency,Synthetic frequency of campus participation,enum,low|medium|high,,False,,False,,,synthetic configurable rule,M4,non-sensitive synthetic,PUBLIC,
 21,D1,previous_support_use,Previous Support Use,Synthetic lifetime support-use history as of survey,enum,never|prior_18m|earlier_than_18m,,False,,False,,,synthetic configurable rule,M5,non-sensitive synthetic,PUBLIC,
 22,D1,services_awareness,Services Awareness,Awareness of Aethera support services,enum,aware|unaware,,False,,False,,,synthetic configurable rule,M6,non-sensitive synthetic,PUBLIC,
-23,D1,wellbeing_note,Wellbeing Note,Non-clinical interpretation notice,string,,,False,synthetic category; not a diagnosis,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
+23,D1,wellbeing_note,Wellbeing Note,Non-clinical interpretation notice,string,,,False,,False,,,synthetic configurable rule,,non-sensitive synthetic,PUBLIC,
