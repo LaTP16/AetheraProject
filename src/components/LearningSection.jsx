@@ -1,18 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { GraduationCap, BookMarked, ClipboardCheck, Trophy, CheckCircle2, ArrowLeft, Search, CalendarDays, MapPin, Clock, Play, Pause, RotateCcw, Timer } from 'lucide-react';
 
-export default function LearningSection() {
+export default function LearningSection({ addNotification }) {
   // NAVIGATION STATE
   const [activeView, setActiveView] = useState('HOME');
 
   // RETO DIARIO STATE
-  const [dailyDate, setDailyDate] = useState('2026-10-06');
   const [dailyStartTime, setDailyStartTime] = useState('18:00');
   const [dailyPlace, setDailyPlace] = useState('Biblioteca Central');
   const [habitSaved, setHabitSaved] = useState(false);
   const [streakCount, setStreakCount] = useState(5);
+  const [scheduledCommitment, setScheduledCommitment] = useState(null);
 
-  // TIMER STATE
+  // Proximity notification checker
+  useEffect(() => {
+    if (!scheduledCommitment || scheduledCommitment.notifiedApproaching) return;
+
+    const checkProximity = () => {
+      const now = new Date();
+      const currentHours = now.getHours();
+      const currentMinutes = now.getMinutes();
+
+      const [targetH, targetM] = scheduledCommitment.time.split(':').map(Number);
+      const currentTotal = currentHours * 60 + currentMinutes;
+      const targetTotal = targetH * 60 + targetM;
+
+      const diff = targetTotal - currentTotal;
+
+      // Notificar cuando falten 15 min o sea la hora exacta
+      if (diff <= 15 && diff >= 0) {
+        if (addNotification) {
+          addNotification({
+            title: '⏰ ¡Recordatorio Próximo!',
+            message: `Tu compromiso de estudio en ${scheduledCommitment.place} comienza pronto (${scheduledCommitment.time} hrs).`,
+            iconType: 'bell'
+          });
+        }
+        setScheduledCommitment(prev => ({ ...prev, notifiedApproaching: true }));
+      }
+    };
+
+    const timer = setInterval(checkProximity, 3000);
+    checkProximity();
+    return () => clearInterval(timer);
+  }, [scheduledCommitment, addNotification]);
+
+  const handleSaveHabit = (e) => {
+    e.preventDefault();
+    setHabitSaved(true);
+
+    const timeVal = dailyStartTime || '18:00';
+    const placeVal = dailyPlace || 'Biblioteca Central';
+
+    if (addNotification) {
+      addNotification({
+        title: '¡Compromiso Registrado! 🎯',
+        message: `Estudio agendado a las ${timeVal} hrs en ${placeVal}.`,
+        iconType: 'clock'
+      });
+    }
+
+    setScheduledCommitment({
+      time: timeVal,
+      place: placeVal,
+      notifiedApproaching: false
+    });
+
+    setTimeout(() => setHabitSaved(false), 3000);
+  };
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutos en segundos
   const [isTimerActive, setIsTimerActive] = useState(false);
 
@@ -75,12 +130,6 @@ export default function LearningSection() {
       description: 'Pon a prueba tus conocimientos con ejercicios, simulaciones y evaluación'
     }
   ];
-
-  const handleSaveHabit = (e) => {
-    e.preventDefault();
-    setHabitSaved(true);
-    setTimeout(() => setHabitSaved(false), 3000);
-  };
 
   const handleCategoryClick = (id) => {
     setActiveView(id);
@@ -277,41 +326,30 @@ export default function LearningSection() {
               </div>
             </div>
 
-            {/* Formulario Fechas, Horas y Lugar */}
+            {/* Formulario Hora Inicio y Lugar */}
             <form onSubmit={handleSaveHabit} className="space-y-5 pt-3 border-t border-slate-100">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-1">
                   <label className="block text-[10px] font-bold text-[#4A5568] uppercase mb-1.5 flex items-center gap-1">
-                    <CalendarDays className="w-3 h-3" /> Fecha:
-                  </label>
-                  <input
-                    type="date"
-                    value={dailyDate}
-                    onChange={(e) => setDailyDate(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-xs border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all cursor-pointer"
-                  />
-                </div>
-                <div className="sm:col-span-1">
-                  <label className="block text-[10px] font-bold text-[#4A5568] uppercase mb-1.5 flex items-center gap-1">
-                    <Clock className="w-3 h-3" /> Hora Inicio:
+                    <Clock className="w-3.5 h-3.5 text-[#1D63B8]" /> Hora Inicio:
                   </label>
                   <input
                     type="time"
                     value={dailyStartTime}
                     onChange={(e) => setDailyStartTime(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-xs border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all cursor-pointer"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-xs border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all cursor-pointer"
                   />
                 </div>
                 <div className="sm:col-span-1">
                   <label className="block text-[10px] font-bold text-[#4A5568] uppercase mb-1.5 flex items-center gap-1">
-                    <MapPin className="w-3 h-3" /> Lugar:
+                    <MapPin className="w-3.5 h-3.5 text-[#1D63B8]" /> Lugar:
                   </label>
                   <input
                     type="text"
                     value={dailyPlace}
                     onChange={(e) => setDailyPlace(e.target.value)}
-                    placeholder="Ej. Biblioteca"
-                    className="w-full px-3 py-2.5 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-xs border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
+                    placeholder="Ej. Biblioteca Central"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 text-[#0D2538] font-bold text-xs border border-slate-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"
                   />
                 </div>
               </div>
@@ -320,7 +358,7 @@ export default function LearningSection() {
                 className="w-full py-3 bg-[#1D63B8] hover:bg-blue-600 text-white font-bold text-sm rounded-xl shadow-lg transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-2"
               >
                 <CheckCircle2 className="w-4 h-4 text-cyan-300" />
-                <span>{habitSaved ? '¡Reto Guardado! ✓' : 'Fijar Compromiso de Estudio'}</span>
+                <span>{habitSaved ? '¡Compromiso Registrado! ✓' : 'Fijar Compromiso de Estudio'}</span>
               </button>
             </form>
           </div>

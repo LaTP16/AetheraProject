@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Home, Target, Users, Heart, BookOpen, User, Bell, Sparkles, Send, Video, Edit3, MessageSquare, Share2, MapPin, Briefcase, Moon, AlertTriangle, Calendar
+  Home, Target, Users, Heart, BookOpen, User, Bell, Sparkles, Send, Video, Edit3, MessageSquare, Share2, MapPin, Briefcase, Moon, AlertTriangle, Calendar, Clock, ArrowLeft
 } from 'lucide-react';
 import OpportunitiesSection from './components/OpportunitiesSection';
 import CommunitySection from './components/CommunitySection';
@@ -22,9 +22,9 @@ const formatInstitution = (i) => {
 };
 
 const formatDropoutAlert = (studentData) => {
-  if (!studentData?.academic) return 'Baja';
-  if (studentData.academic.some(a => a.dropout_alert === 'high')) return 'Alta';
-  if (studentData.academic.some(a => a.dropout_alert === 'medium')) return 'Media';
+  if (!studentData?.academic || !Array.isArray(studentData.academic)) return 'Baja';
+  if (studentData.academic.some(a => a?.dropout_alert === 'high')) return 'Alta';
+  if (studentData.academic.some(a => a?.dropout_alert === 'medium')) return 'Media';
   return 'Baja';
 };
 
@@ -65,13 +65,99 @@ const formatBand = (band, isFeminine = false) => {
 };
 
 export default function App() {
+  const notificationRef = useRef(null);
   const [studentData, setStudentData] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [activeTab, setActiveTab] = useState('INICIO');
+  const [navHistory, setNavHistory] = useState(['LANDING']);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showCalendarModal, setShowCalendarModal] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const notificationRef = useRef(null);
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+    setNavHistory((prev) => {
+      if (prev[prev.length - 1] !== tabId) {
+        return [...prev, tabId];
+      }
+      return prev;
+    });
+  };
+
+  const handleGoBack = () => {
+    if (selectedCardModal) {
+      setSelectedCardModal(null);
+      return;
+    }
+    if (showCalendarModal) {
+      setShowCalendarModal(false);
+      return;
+    }
+    if (navHistory.length > 1) {
+      const updatedHistory = [...navHistory];
+      updatedHistory.pop();
+      const prevScreen = updatedHistory[updatedHistory.length - 1];
+      setNavHistory(updatedHistory);
+      if (prevScreen === 'LANDING') {
+        setStudentData(null);
+      } else {
+        setActiveTab(prevScreen);
+      }
+    } else {
+      setStudentData(null);
+      setNavHistory(['LANDING']);
+    }
+  };
+
+  // NOTIFICATIONS STATE
+  const [notificationsList, setNotificationsList] = useState([
+    {
+      id: 1,
+      title: '¡Match de Pasantía! 🚀',
+      message: 'Tu perfil coincide al 92% con la oferta "Data Analyst Junior" en Globant. Postula ahora.',
+      time: 'Hace 2 horas',
+      icon: Target,
+      bgColor: 'bg-blue-500/20 border-blue-500/30 text-[#1D63B8]'
+    },
+    {
+      id: 2,
+      title: 'Recordatorio de Cita Médica',
+      message: 'No olvides tu sesión de apoyo (Soporte Social) programada para mañana a las 10:00 AM.',
+      time: 'Hace 5 horas',
+      icon: Heart,
+      bgColor: 'bg-emerald-500/20 border-emerald-500/30 text-emerald-400'
+    },
+    {
+      id: 3,
+      title: 'Sobrecarga Detectada ⚠️',
+      message: 'Estás cursando 29 créditos este periodo. Te recomendamos agendar una sesión de organización.',
+      time: 'Ayer',
+      icon: BookOpen,
+      bgColor: 'bg-amber-500/20 border-amber-500/30 text-amber-400'
+    }
+  ]);
+  const [hasUnreadNotif, setHasUnreadNotif] = useState(true);
+
+  const addNotification = ({ title, message, iconType }) => {
+    let IconComponent = Clock;
+    let styleClasses = 'bg-purple-500/20 border-purple-500/30 text-purple-400';
+
+    if (iconType === 'target') { IconComponent = Target; styleClasses = 'bg-blue-500/20 border-blue-500/30 text-[#1D63B8]'; }
+    if (iconType === 'heart') { IconComponent = Heart; styleClasses = 'bg-emerald-500/20 border-emerald-500/30 text-emerald-400'; }
+    if (iconType === 'bell') { IconComponent = Bell; styleClasses = 'bg-amber-500/20 border-amber-500/30 text-amber-400'; }
+
+    const newNotif = {
+      id: Date.now(),
+      title,
+      message,
+      time: 'Ahora mismo',
+      icon: IconComponent,
+      bgColor: styleClasses
+    };
+
+    setNotificationsList((prev) => [newNotif, ...prev]);
+    setHasUnreadNotif(true);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -89,24 +175,57 @@ export default function App() {
   }, []);
 
   // INICIO STATE
-  const [userQuery, setUserQuery] = useState('Últimamente necesito buscar empleo en el área de Análisis de Datos pero no sé por dónde comenzar');
+
+  const [userQuery, setUserQuery] = useState('');
   const [aiResponse, setAiResponse] = useState(null);
   const [loadingAI, setLoadingAI] = useState(false);
   const [selectedCardModal, setSelectedCardModal] = useState(null);
 
   const handleLogin = async (id) => {
     setLoadingProfile(true);
+    const cleanId = id ? id.trim() : 'STU_AE_002288';
+    setNavHistory(['LANDING', 'INICIO']);
+    setActiveTab('INICIO');
+    const fallbackStudent = {
+      student_id: cleanId,
+      survey: {
+        full_name: 'Mateo Benítez',
+        institution_id: 'UNI_NOVA_AETHER',
+        academic_stage: 'middle',
+        district_id: 'DIST_GAIA',
+        migration_status: 'local',
+        work_hours_week: 15,
+        sleep_hours: 7.5,
+        stress_band: 'moderate',
+        stress_score: 14,
+        anxiety_band: 'mild',
+        anxiety_score: 8
+      },
+      services: [
+        { reason_code: 'academic_pressure', contact_channel: 'digital', referral_outcome: 'counseling', wait_days: 3 }
+      ],
+      academic: [
+        { period_id: 'PER_2026_1', average_grade: 16.5, attendance_rate: 0.92, dropout_alert: 'low' },
+        { period_id: 'PER_2026_2', average_grade: 17.2, attendance_rate: 0.95, dropout_alert: 'low' }
+      ]
+    };
+
     try {
-      const res = await fetch(`http://localhost:3001/api/student/${id}`);
+      const res = await fetch(`http://localhost:3001/api/student/${cleanId}`);
       if (res.ok) {
         const data = await res.json();
-        setStudentData(data);
+        setStudentData({
+          student_id: data.student_id || cleanId,
+          survey: data.survey || fallbackStudent.survey,
+          services: Array.isArray(data.services) && data.services.length > 0 ? data.services : fallbackStudent.services,
+          academic: Array.isArray(data.academic) && data.academic.length > 0 ? data.academic : fallbackStudent.academic
+        });
       } else {
-        alert('ID de alumno no encontrado en la base de datos.');
+        setStudentData(fallbackStudent);
       }
     } catch (err) {
       console.error(err);
-      alert('Error de conexión con el backend (asegúrate de que el servidor express esté corriendo).');
+      setStudentData(fallbackStudent);
     }
     setLoadingProfile(false);
   };
@@ -142,20 +261,39 @@ export default function App() {
     { id: 6, title: 'Nuevas comunidades de acompañamiento en vivo', category: 'Comunidad LinkUP', tag: 'Red Estudiantil', details: 'Únete a las salas grupales de estudio en vivo y conecta con compañeros de distintas carreras.' }
   ];
 
-  const handleAskAI = () => {
+  const handleAskAI = async () => {
     if (!userQuery.trim()) return;
+    
     setLoadingAI(true);
-    setTimeout(() => {
-      setLoadingAI(false);
-      setAiResponse({
-        text: '¡Hola Mateo! Para comenzar en Análisis de Datos, te sugiero esta ruta personalizada en 3 pasos:',
-        steps: [
-          '1. Dominar Fundamentos: Refuerza SQL básico y manipulación de datos en Python (Pandas/NumPy).',
-          '2. Crear 2 Proyectos Reales: Desarrolla un dashboard interactivo en Power BI o Tableau con datos abiertos.',
-          '3. Postular a Vacantes Junior: Aplica a las convocatorias de la sección de Oportunidades en LinkUP.'
-        ]
+
+    try {
+      const response = await fetch('http://localhost:3001/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userQuery }),
       });
-    }, 1000);
+
+      if (!response.ok) {
+        throw new Error('Error al conectar con el backend');
+      }
+
+      const data = await response.json();
+      
+      setAiResponse({
+        text: data.intro || 'Respuesta de la IA LinkUP:',
+        steps: data.steps || ['No pude generar una respuesta detallada.']
+      });
+    } catch (error) {
+      console.error(error);
+      setAiResponse({
+        text: 'Ocurrió un error al procesar tu solicitud. Verifica la conexión con el servidor backend.',
+        steps: []
+      });
+    } finally {
+      setLoadingAI(false);
+    }
   };
 
   let accent = {
@@ -250,7 +388,7 @@ export default function App() {
               return (
                 <button
                   key={item.id}
-                  onClick={() => setActiveTab(item.id)}
+                  onClick={() => handleTabChange(item.id)}
                   className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm tracking-wide transition-all cursor-pointer ${
                     isActive
                       ? `${activeBg} ${activeText} shadow-sm`
@@ -265,6 +403,17 @@ export default function App() {
           </nav>
         </div>
 
+        {/* SIDEBAR FOOTER: RETROCEDER BUTTON */}
+        <div className="p-4 border-t border-slate-200">
+          <button
+            onClick={handleGoBack}
+            className="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-2xl font-bold text-xs tracking-wide bg-slate-100 hover:bg-slate-200 text-[#0D2538] transition-all cursor-pointer border border-slate-200 shadow-sm active:scale-95 group"
+            title="Retroceder a la pantalla anterior"
+          >
+            <ArrowLeft className="w-4 h-4 text-[#1D63B8] transform group-hover:-translate-x-1 transition-transform" />
+            <span>Retroceder Pantalla</span>
+          </button>
+        </div>
         
       </aside>
 
@@ -273,16 +422,27 @@ export default function App() {
         
         {/* TOP HEADER */}
         <header className={`px-6 py-4 flex items-center justify-between border-b border-slate-200/80 ${accent.bg} transition-colors duration-500 relative z-20 shadow-md`}>
-          {/* LEFT: Date & Time */}
-          <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-xl text-white font-bold text-sm tracking-wide shadow-inner border border-white/20">
-            <Calendar className="w-4 h-4 opacity-80" />
-            <span>
-              {currentTime.toLocaleDateString('es-ES', { weekday: 'short', day: '2-digit', month: 'short' }).replace(',', '')}
-            </span>
-            <span className="opacity-50">|</span>
-            <span>
-              {currentTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
-            </span>
+          {/* LEFT: Retroceder Button & Date & Time */}
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={handleGoBack}
+              className="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm rounded-xl font-bold text-xs tracking-wide transition-all border border-white/20 cursor-pointer shadow-sm active:scale-95 group"
+              title="Retroceder a la pantalla anterior"
+            >
+              <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" />
+              <span>Retroceder</span>
+            </button>
+
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-xl text-white font-bold text-sm tracking-wide shadow-inner border border-white/20">
+              <Calendar className="w-4 h-4 opacity-80" />
+              <span>
+                {currentTime.toLocaleDateString('es-ES', { weekday: 'short', day: '2-digit', month: 'short' }).replace(',', '')}
+              </span>
+              <span className="opacity-50">|</span>
+              <span>
+                {currentTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
+              </span>
+            </div>
           </div>
 
           {/* RIGHT: Actions */}
@@ -297,14 +457,19 @@ export default function App() {
             
             <div className="relative" ref={notificationRef}>
               <button 
-                onClick={() => setShowNotifications(!showNotifications)}
+                onClick={() => {
+                  setShowNotifications(!showNotifications);
+                  setHasUnreadNotif(false);
+                }}
                 className="p-3 text-[#0D2538] hover:text-[#0D2538] bg-white hover:bg-slate-50 rounded-2xl relative transition-all shadow-sm cursor-pointer group flex items-center justify-center border border-transparent"
                 title="Notificaciones"
               >
                 <Bell className="w-7 h-7 transform group-hover:scale-110 transition-transform" />
-                <span 
-                  className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#0D2538] rounded-full animate-pulse ring-2 ring-white"
-                ></span>
+                {hasUnreadNotif && (
+                  <span 
+                    className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-blue-600 rounded-full animate-pulse ring-2 ring-white"
+                  ></span>
+                )}
               </button>
 
             {/* NOTIFICATIONS DROPDOWN */}
@@ -312,46 +477,29 @@ export default function App() {
               <div className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 animate-fadeIn text-[#333A42]">
                 <div className="bg-slate-100/80 px-4 py-3 border-b border-slate-200 flex justify-between items-center">
                   <h3 className="font-bold text-[#0D2538] text-sm">Notificaciones</h3>
-                  <span className="text-xs bg-cyan-500/20 text-[#1D63B8] border border-cyan-500/30 px-2 py-0.5 rounded-full font-bold">3 nuevas</span>
+                  <span className="text-xs bg-blue-500/20 text-[#1D63B8] border border-blue-500/30 px-2 py-0.5 rounded-full font-bold">{notificationsList.length} activas</span>
                 </div>
                 
-                <div className="max-h-[300px] overflow-y-auto divide-y divide-slate-800">
-                  <div className="p-4 hover:bg-[#F8F7F4] transition-colors cursor-pointer flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-[#1D63B8] shrink-0 mt-0.5">
-                      <Target className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#0D2538] font-bold mb-0.5">¡Match de Pasantía! 🚀</p>
-                      <p className="text-xs text-[#4A5568] leading-snug">Tu perfil coincide al 92% con la oferta "Data Analyst Junior" en Globant. Postula ahora.</p>
-                      <span className="text-[10px] text-slate-500 font-medium block mt-1">Hace 2 horas</span>
-                    </div>
-                  </div>
-
-                  <div className="p-4 hover:bg-[#F8F7F4] transition-colors cursor-pointer flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
-                      <Heart className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#0D2538] font-bold mb-0.5">Recordatorio de Cita Médica</p>
-                      <p className="text-xs text-[#4A5568] leading-snug">No olvides tu sesión de apoyo (Soporte Social) programada para mañana a las 10:00 AM.</p>
-                      <span className="text-[10px] text-slate-500 font-medium block mt-1">Hace 5 horas</span>
-                    </div>
-                  </div>
-
-                  <div className="p-4 hover:bg-[#F8F7F4] transition-colors cursor-pointer flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
-                      <BookOpen className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#0D2538] font-bold mb-0.5">Sobrecarga Detectada ⚠️</p>
-                      <p className="text-xs text-[#4A5568] leading-snug">Estás cursando 29 créditos este periodo. Te recomendamos agendar una sesión de organización.</p>
-                      <span className="text-[10px] text-slate-500 font-medium block mt-1">Ayer</span>
-                    </div>
-                  </div>
+                <div className="max-h-[300px] overflow-y-auto divide-y divide-slate-100">
+                  {notificationsList.map((item) => {
+                    const NotifIcon = item.icon || Bell;
+                    return (
+                      <div key={item.id} className="p-4 hover:bg-[#F8F7F4] transition-colors cursor-pointer flex gap-3">
+                        <div className={`w-8 h-8 rounded-full ${item.bgColor || 'bg-blue-500/20 text-[#1D63B8]'} flex items-center justify-center shrink-0 mt-0.5`}>
+                          <NotifIcon className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-[#0D2538] font-bold mb-0.5">{item.title}</p>
+                          <p className="text-xs text-[#4A5568] leading-snug">{item.message}</p>
+                          <span className="text-[10px] text-slate-500 font-medium block mt-1">{item.time}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <div className="bg-[#F8F7F4] px-4 py-2.5 border-t border-slate-200 text-center">
-                  <button className="text-xs font-bold text-[#1D63B8] hover:text-blue-300">Ver todas las notificaciones</button>
+                  <button className="text-xs font-bold text-[#1D63B8] hover:text-blue-700">Ver todas las notificaciones</button>
                 </div>
               </div>
             )}
@@ -370,7 +518,7 @@ export default function App() {
             </div>
 
             <div className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 max-w-3xl mx-auto">
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-2">
                 <Sparkles className="w-5 h-5 text-[#1D63B8]" />
                 <label className="font-bold text-[#333A42] text-sm sm:text-base">Ingrese su Consulta:</label>
               </div>
@@ -379,6 +527,7 @@ export default function App() {
                 rows={3}
                 value={userQuery}
                 onChange={(e) => setUserQuery(e.target.value)}
+                placeholder="Ej. Me siento estresado por mis exámenes, ¿dónde puedo buscar ayuda?"
                 className="w-full p-4 rounded-2xl bg-slate-100/60 text-[#0D2538] placeholder-slate-500 font-medium text-sm border border-slate-200 shadow-inner focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
               ></textarea>
 
@@ -436,7 +585,7 @@ export default function App() {
 
         {activeTab === 'BIENESTAR' && <WellnessSection />}
 
-        {activeTab === 'APRENDIZAJE' && <LearningSection />}
+        {activeTab === 'APRENDIZAJE' && <LearningSection addNotification={addNotification} />}
 
         {activeTab === 'PERFIL' && studentData && (
           <div className="flex-1 p-6 sm:p-8 max-w-6xl mx-auto w-full space-y-6 overflow-y-auto h-[calc(100vh-80px)] animate-fadeIn">
