@@ -1,38 +1,53 @@
-# Ubunto - Plataforma Digital de Acompañamiento Estudiantil
+# Aethera Project - LinkUP
 
-Ubunto es una plataforma digital responsive diseñada para conectar, orientar y acompañar a estudiantes universitarios en su trayectoria académica, personal y profesional.
+Este repositorio contiene la plataforma LinkUP dividida en dos partes:
+* [frontend/](file:///c:/Users/USER/Desktop/AetheraProject/frontend): Aplicación cliente en React + Vite + Tailwind CSS.
+* [backend/](file:///c:/Users/USER/Desktop/AetheraProject/backend): API servidor en Node.js + Express + SQLite + Gemini AI.
 
-## 🚀 Formas de Ejecución
+---
 
-### Opción 1: Vista Previa Inmediata (Sin Instalación)
-Solo abre el archivo [`index.html`](file:///c:/Users/USER/Desktop/AetheraProject/index.html) directamente en tu navegador preferido. Es una aplicación completa e interactiva con Tailwind CSS y React.
+## 🚀 Despliegue en Producción
 
-### Opción 2: Proyecto React Modular (Vite + Tailwind CSS + Lucide)
-Si deseas ejecutarlo como proyecto Vite de producción:
+### 1. Backend en Render (Web Service)
+1. Conecta tu repositorio de GitHub en Render.
+2. Crea un **New Web Service**.
+3. Configuración del servicio:
+   * **Root Directory**: `backend`
+   * **Environment**: `Node`
+   * **Build Command**: `npm install`
+   * **Start Command**: `npm start`
+4. En la pestaña **Environment Variables**:
+   * `GEMINI_API_KEY`: Tu clave de Google Gemini.
+5. Copia la URL que Render te asigna (ej. `https://mi-backend.onrender.com`).
 
+---
+
+### 2. Frontend en Vercel
+1. Conecta tu repositorio de GitHub en Vercel.
+2. Al importar el proyecto:
+   * **Root Directory**: Haz clic en *Edit* y selecciona `frontend`.
+   * **Framework Preset**: `Vite` (lo detectará automáticamente).
+   * **Build Command**: `npm run build`
+   * **Output Directory**: `dist`
+3. En la sección **Environment Variables**:
+   * Nombre: `VITE_API_URL`
+   * Valor: `https://mi-backend.onrender.com` (la URL de tu servicio de Render, sin barra al final).
+4. Haz clic en **Deploy**.
+
+---
+
+## 💻 Desarrollo Local
+
+### Iniciar Backend:
 ```bash
-# 1. Instalar dependencias
+cd backend
 npm install
-
-# 2. Iniciar servidor de desarrollo
 npm run dev
 ```
 
-## 📁 Estructura del Código Creado en `AetheraProject`:
-
-```
-AetheraProject/
-├── index.html                  <-- Aplicación web interactiva autónoma
-├── package.json                <-- Configuración de dependencias (Vite + React + Lucide)
-├── README.md                   <-- Documentación y guía de uso
-└── src/
-    ├── App.jsx                 <-- Contenedor principal de la aplicación Ubunto
-    ├── main.jsx                <-- Punto de entrada de React
-    ├── index.css               <-- Estilos globales y Tailwind CSS
-    └── components/
-        ├── Navbar.jsx          <-- Barra superior con buscador, notificaciones y perfil
-        ├── AcademicSection.jsx <-- Sección 1: Entorno Académico (Grupos, Foros)
-        ├── CareerSection.jsx   <-- Sección 2: Desarrollo Profesional (Becas, Analizador CV)
-        ├── AIChatSection.jsx   <-- Sección 3: Orientación & Apoyo IA (Chat de derivación)
-        └── CVModal.jsx         <-- Modal interactivo de análisis de CV con IA
+### Iniciar Frontend:
+```bash
+cd frontend
+npm install
+npm run dev
 ```

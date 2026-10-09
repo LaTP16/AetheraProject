@@ -1,0 +1,192 @@
+[
+  {
+    "conversation_id": "CONV_AE_000001",
+    "started_at": "2026-10-19T00:00:00",
+    "country_context": "Peru",
+    "motive": "academic_pressure",
+    "referral": "SRV_AE_004",
+    "messages": [
+      {
+        "turn": 1,
+        "role": "student",
+        "text": "Me gustaría conocer alternativas antes de sentirme sobrepasado. Vivo lejos de mi red cercana. Me acomoda recibir información por escrito."
+      },
+      {
+        "turn": 2,
+        "role": "orientation",
+        "text": "Gracias por contarlo. Puedo ayudarte a revisar opciones de apoyo no clínico y próximos pasos."
+      },
+      {
+        "turn": 3,
+        "role": "student",
+        "text": "Preferiría una alternativa compatible con modalidad evening y sin trámites complejos."
+      },
+      {
+        "turn": 4,
+        "role": "orientation",
+        "text": "Puedes considerar el servicio ficticio SRV_AE_004. Antes de derivarte, confirma tu canal preferido y disponibilidad."
+      },
+      {
+        "turn": 5,
+        "role": "orientation",
+        "text": "Bien. Esta orientación no diagnostica ni reemplaza atención profesional. Si percibes riesgo inmediato, busca apoyo humano urgente en tu entorno local."
+      }
+    ],
+    "safety_note": "synthetic non-clinical orientation; human review required"
+  },
+  {
+    "conversation_id": "CONV_AE_000002",
+    "started_at": "2026-10-19T01:00:00",
+    "country_context": "Chile",
+    "motive": "social_support",
+    "referral": "SRV_AE_011",
+    "messages": [
+      {
+        "turn": 1,
+        "role": "student",
+        "text": "Estoy buscando información clara sobre los servicios. Vivo lejos de mi red cercana. Me acomoda recibir información por escrito."
+      },
+      {
+        "turn": 2,
+        "role": "orientation",
+        "text": "Gracias por contarlo. Puedo ayudarte a revisar opciones de apoyo no clínico y próximos pasos."
+      },
+      {
+        "turn": 3,
+        "role": "student",
+        "text": "Preferiría una alternativa compatible con modalidad day y sin trámites complejos."
+      },
+      {
+        "turn": 4,
+        "role": "orientation",
+        "text": "Puedes considerar el servicio ficticio SRV_AE_011. Antes de derivarte, confirma tu canal preferido y disponibilidad."
+      },
+      {
+        "turn": 5,
+        "role": "student",
+        "text": "De acuerdo, revisaré esa opción y también hablaré con una persona de confianza."
+      },
+      {
+        "turn": 6,
+        "role": "orientation",
+        "text": "Bien. Esta orientación no diagnostica ni reemplaza atención profesional. Si percibes riesgo inmediato, busca apoyo humano urgente en tu entorno local."
+      }
+    ],
+    "safety_note": "synthetic non-clinical orientation; human review required"
+  },
+  {
+    "conversation_id": "CONV_AE_000003",
+    "started_at": "2026-10-19T02:00:00",
+    "country_context": "Chile",
+    "motive": "career_concern",
+    "referral": "SRV_AE_003",
+    "messages": [
+      {
+        "turn": 1,
+        "role": "student",
+        "text": "Quiero mejorar mi rutina de estudio y descanso. Vivo lejos de mi red cercana. Me acomoda recibir información por escrito."
+      },
+      {
+        "turn": 2,
+        "role": "orientation",
+        "text": "Gracias por contarlo. Puedo ayudarte a revisar opciones de apoyo no clínico y próximos pasos."
+      },
+      {
+        "turn": 3,
+        "role": "student",
+        "text": "Preferiría una alternativa compatible con modalidad day y sin trámites complejos."
+      },
+      {
+        "turn": 4,
+        "role": "orientation",
+        "text": "Puedes considerar el servicio ficticio SRV_AE_003. Antes de derivarte, confirma tu canal preferido y disponibilidad."
+      },
+      {
+        "turn": 5,
+        "role": "student",
+        "text": "De acuerdo, revisaré esa opción y también hablaré con una persona de confianza."
+      },
+      {
+        "turn": 6,
+        "role": "orientation",
+        "text": "Bien. Esta orientación no diagnostica ni reemplaza atención profesional. Si percibes riesgo inmediato, busca apoyo humano urgente en tu entorno local."
+      }
+    ],
+    "safety_note": "synthetic non-clinical orientation; human review required"
+  },
+  {
+    "conversation_id": "CONV_AE_000004",
+    "started_at": "2026-10-19T03:00:00",
+    "country_context": "Chile",
+    "motive": "sleep_and_routine",
+    "referral": "SRV_AE_010",
+    "messages": [
+      {
+        "turn": 1,
+        "role": "student",
+        "text": "Necesito ubicar un espacio de orientación. Vivo lejos de mi red cercana. Me acomoda recibir información por escrito."
+      },
+      {
+        "turn": 2,
+        "role": "orientation",
+        "text": "Gracias por contarlo. Puedo ayudarte a revisar opciones de apoyo no clínico y próximos pasos."
+      },
+      {
+        "turn": 3,
+        "role": "student",
+        "text": "Preferiría una alternativa compatible con modalidad day y sin trámites complejos."
+      },
+      {
+        "turn": 4,
+        "role": "orientation",
+        "text": "Puedes considerar el servicio ficticio SRV_AE_010. Antes de derivarte, confirma tu canal preferido y disponibilidad."
+      },
+      {
+        "turn": 5,
+        "role": "orientation",
+        "text": "Bien. Esta orientación no diagnostica ni reemplaza atención profesional. Si percibes riesgo inmediato, busca apoyo humano urgente en tu entorno local."
+      }
+    ],
+    "safety_note": "synthetic non-clinical orientation; human review required"
+  },
+  {
+    "conversation_id": "CONV_AE_000005",
+    "started_at": "2026-10-19T04:00:00",
+    "country_context": "Chile",
+    "motive": "service_navigation",
+    "referral": "SRV_AE_002",
+    "messages": [
+      {
+        "turn": 1,
+        "role": "student",
+        "text": "Necesito orientación para ordenar mis próximas semanas. Estoy en la etapa final de la carrera. Me acomoda recibir información por escrito."
+      },
+      {
+        "turn": 2,
+        "role": "orientation",
+        "text": "Gracias por contarlo. Puedo ayudarte a revisar opciones de apoyo no clínico y próximos pasos."
+      },
+      {
+        "turn": 3,
+        "role": "student",
+        "text": "Preferiría una alternativa compatible con modalidad day y sin trámites complejos."
+      },
+      {
+        "turn": 4,
+        "role": "orientation",
+        "text": "Puedes considerar el servicio ficticio SRV_AE_002. Antes de derivarte, confirma tu canal preferido y disponibilidad."
+      },
+      {
+        "turn": 5,
+        "role": "student",
+        "text": "De acuerdo, revisaré esa opción y también hablaré con una persona de confianza."
+      },
+      {
+        "turn": 6,
+        "role": "orientation",
+        "text": "Bien. Esta orientación no diagnostica ni reemplaza atención profesional. Si percibes riesgo inmediato, busca apoyo humano urgente en tu entorno local."
+      }
+    ],
+    "safety_note": "synthetic non-clinical orientation; human review required"
+  }
+]
