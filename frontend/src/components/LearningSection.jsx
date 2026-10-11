@@ -1,9 +1,165 @@
-import React, { useState, useEffect } from 'react';
-import { GraduationCap, BookMarked, ClipboardCheck, Trophy, CheckCircle2, ArrowLeft, Search, CalendarDays, MapPin, Clock, Play, Pause, RotateCcw, Timer } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  GraduationCap, BookMarked, ClipboardCheck, Trophy, CheckCircle2, ArrowLeft, ArrowRight, Search, 
+  MapPin, Clock, Play, Pause, RotateCcw, Timer, Sparkles, Send, Bot, RefreshCw, 
+  BookOpen, Lightbulb, MessageSquare, HelpCircle, ChevronRight, Check
+} from 'lucide-react';
 
 export default function LearningSection({ addNotification }) {
   // NAVIGATION STATE
   const [activeView, setActiveView] = useState('HOME');
+
+  // TUTOR IA STATE
+  const [topicInput, setTopicInput] = useState('');
+  const [activeTopic, setActiveTopic] = useState('');
+  const [tutorMode, setTutorMode] = useState('socrates'); // 'socrates' | 'feynman'
+  const [tutorMessages, setTutorMessages] = useState([]);
+  const [chatInput, setChatInput] = useState('');
+  const [isLoadingTutor, setIsLoadingTutor] = useState(false);
+  const tutorChatEndRef = useRef(null);
+
+  // Auto-scroll tutor chat
+  useEffect(() => {
+    tutorChatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [tutorMessages, isLoadingTutor]);
+
+  // Handle start study session with AI Tutor
+  const handleStartTutorSession = async (modeToUse) => {
+    const selectedMode = modeToUse || tutorMode;
+    const cleanTopic = topicInput.trim();
+    if (!cleanTopic) return;
+
+    setActiveTopic(cleanTopic);
+    setTutorMode(selectedMode);
+    setIsLoadingTutor(true);
+
+    const initialAiPlaceholder = {
+      id: Date.now(),
+      sender: 'ai',
+      text: selectedMode === 'socrates' 
+        ? `Invocando al filósofo Sócrates para reflexionar sobre "${cleanTopic}"...` 
+        : `Llamando a Richard Feynman para analizar "${cleanTopic}"...`,
+      isInitial: true
+    };
+    setTutorMessages([initialAiPlaceholder]);
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/learning/tutor`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic: cleanTopic,
+          mode: selectedMode,
+          messages: []
+        })
+      });
+
+      if (!response.ok) throw new Error('Error al conectar con el Tutor IA');
+      const data = await response.json();
+
+      setTutorMessages([
+        {
+          id: Date.now(),
+          sender: 'ai',
+          text: data.reply || (selectedMode === 'socrates' 
+            ? `Dime, mi estimado amigo: cuando piensas en "${cleanTopic}", ¿cuál consideras que es su principio fundamental y por qué?`
+            : `¡Hola! Me alegra que abordemos "${cleanTopic}". Imagina que tengo 10 años: ¿cómo me explicarías con tus propias palabras qué es y para qué sirve?`),
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    } catch (err) {
+      console.error(err);
+      setTutorMessages([
+        {
+          id: Date.now(),
+          sender: 'ai',
+          text: selectedMode === 'socrates'
+            ? `Saludos. Reflexionemos sobre "${cleanTopic}". Dime: ¿qué es lo primero que das por sentado al hablar de este tema, y estás seguro de que es realmente así?`
+            : `¡Hola! Exploremos "${cleanTopic}". Trata de explicarme en dos frases sencillas sin tecnicismos qué significa este concepto.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    } finally {
+      setIsLoadingTutor(false);
+    }
+  };
+
+  // Send message inside active session
+  const handleSendTutorMessage = async (e) => {
+    if (e) e.preventDefault();
+    const text = chatInput.trim();
+    if (!text || !activeTopic || isLoadingTutor) return;
+
+    const userMsg = {
+      id: Date.now(),
+      sender: 'user',
+      text,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    const updatedMessages = [...tutorMessages, userMsg];
+    setTutorMessages(updatedMessages);
+    setChatInput('');
+    setIsLoadingTutor(true);
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/learning/tutor`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic: activeTopic,
+          mode: tutorMode,
+          messages: updatedMessages.map(m => ({ sender: m.sender, text: m.text }))
+        })
+      });
+
+      if (!response.ok) throw new Error('Error en respuesta del tutor');
+      const data = await response.json();
+
+      setTutorMessages(prev => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          sender: 'ai',
+          text: data.reply,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    } catch (err) {
+      console.error(err);
+      setTutorMessages(prev => [
+        ...prev,
+        {
+          id: Date.now() + 1,
+          sender: 'ai',
+          text: tutorMode === 'socrates'
+            ? 'Interesante razonamiento. Ahora profundicemos: si lo que dices es cierto, ¿qué contradicción podría surgir en un caso extremo?'
+            : 'Noto una idea interesante en tu explicación, pero intenta simplificar un poco más: ¿qué metáfora de la vida real usarías para ejemplificarlo?',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    } finally {
+      setIsLoadingTutor(false);
+    }
+  };
+
+  // Switch tutor mode or reset
+  const handleSwitchTutorMode = (newMode) => {
+    if (newMode === tutorMode) return;
+    setTutorMode(newMode);
+    if (activeTopic) {
+      // Re-init with same topic in the new mode
+      handleStartTutorSession(newMode);
+    }
+  };
+
+  const handleResetTopic = () => {
+    setActiveTopic('');
+    setTutorMessages([]);
+    setChatInput('');
+  };
 
   // RETO DIARIO STATE
   const [dailyStartTime, setDailyStartTime] = useState('18:00');
@@ -27,7 +183,6 @@ export default function LearningSection({ addNotification }) {
 
       const diff = targetTotal - currentTotal;
 
-      // Notificar cuando falten 15 min o sea la hora exacta
       if (diff <= 15 && diff >= 0) {
         if (addNotification) {
           addNotification({
@@ -68,7 +223,8 @@ export default function LearningSection({ addNotification }) {
 
     setTimeout(() => setHabitSaved(false), 3000);
   };
-  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutos en segundos
+
+  const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isTimerActive, setIsTimerActive] = useState(false);
 
   useEffect(() => {
@@ -278,7 +434,6 @@ export default function LearningSection({ addNotification }) {
   }
 
   // HOME VIEW
-
   const mockRecursos = [
     { id: 1, title: 'Guía Definitiva de React & Hooks', type: 'PDF • 45 páginas', size: '2.4 MB', icon: BookMarked },
     { id: 2, title: 'Plantilla de Organización Semanal', type: 'Excel / Notion', size: 'Plantilla', icon: ClipboardCheck },
@@ -385,8 +540,316 @@ export default function LearningSection({ addNotification }) {
           APRENDIZAJE
         </h1>
         <p className="text-[#4A5568] text-base sm:text-lg font-semibold tracking-wide">
-          Aprende, practica y desarrolla tus habilidades
+          Aprende, practica y desarrolla tus habilidades con Inteligencia Artificial
         </p>
+      </div>
+
+      {/* SECCIÓN 2: INTERACCIÓN IA - TUTOR DE APRENDIZAJE (SÓCRATES & FEYNMAN) */}
+      <div className="w-full bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border-2 border-indigo-100 relative overflow-hidden">
+        {/* Glow decorativo de fondo */}
+        <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-br from-indigo-200/30 to-amber-200/30 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+
+        <div className="relative z-10 space-y-6">
+          
+          {/* Cabecera del Módulo IA */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-md">
+                <Sparkles className="w-6 h-6 text-amber-300" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xl sm:text-2xl font-black text-[#0D2538] tracking-wide">
+                    Tutor Virtual de Aprendizaje (IA)
+                  </h2>
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-200">
+                    Gemini Activo
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                  Domina cualquier concepto a través de preguntas reflexivas o explicaciones simplificadas.
+                </p>
+              </div>
+            </div>
+
+            {/* Botón de Cambiar / Reiniciar si ya hay una sesión activa */}
+            {activeTopic && (
+              <button
+                type="button"
+                onClick={handleResetTopic}
+                className="self-start sm:self-auto text-xs font-bold text-indigo-700 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>Ingresar nuevo tema</span>
+              </button>
+            )}
+          </div>
+
+          {/* PASO 1: INPUT DE TEMA Y SELECTOR DE TUTOR */}
+          {!activeTopic ? (
+            <div className="space-y-6 animate-fadeIn">
+              
+              {/* Campo de Entrada (Input de Tema) */}
+              <div>
+                <label className="block text-xs font-black uppercase text-[#0D2538] tracking-wider mb-2 flex items-center gap-1.5">
+                  <BookOpen className="w-4 h-4 text-indigo-600" />
+                  <span>¿Qué tema o concepto deseas estudiar hoy?</span>
+                </label>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="text"
+                    value={topicInput}
+                    onChange={(e) => setTopicInput(e.target.value)}
+                    placeholder="Ej: Patrones de Diseño, Entropía en Termodinámica, Teorema de Bayes, Recursión..."
+                    className="flex-1 bg-slate-50 border-2 border-slate-200 focus:border-indigo-600 focus:bg-white rounded-2xl px-5 py-3.5 text-sm font-semibold text-[#0D2538] outline-none transition-all shadow-inner"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') handleStartTutorSession();
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleStartTutorSession()}
+                    disabled={!topicInput.trim()}
+                    className={`px-7 py-3.5 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition-all shadow-md ${
+                      topicInput.trim()
+                        ? 'bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer active:scale-95'
+                        : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                    }`}
+                  >
+                    <span>Comenzar Tutoría</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Selector de Tutor IA (Modo de Estudio) */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-black uppercase text-[#0D2538] tracking-wider flex items-center gap-1.5">
+                    <Bot className="w-4 h-4 text-indigo-600" />
+                    <span>Selecciona tu Tutor Virtual (Modo de Estudio):</span>
+                  </span>
+                  <span className="text-[11px] font-bold text-slate-400">
+                    Podrás alternar en cualquier momento
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* MODO 1: SÓCRATES */}
+                  <div
+                    onClick={() => setTutorMode('socrates')}
+                    className={`p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                      tutorMode === 'socrates'
+                        ? 'bg-gradient-to-br from-indigo-50/80 to-blue-50/80 border-indigo-600 shadow-md ring-2 ring-indigo-500/20'
+                        : 'bg-white hover:bg-slate-50 border-slate-200 hover:border-indigo-300'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-black uppercase tracking-wider text-indigo-700 bg-indigo-100 px-2.5 py-0.5 rounded-lg">
+                          Modo 1 • Método Mayéutico
+                        </span>
+                        {tutorMode === 'socrates' && (
+                          <div className="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold">
+                            ✓
+                          </div>
+                        )}
+                      </div>
+                      <h3 className="text-lg font-black text-[#0D2538] mb-1 flex items-center gap-2">
+                        <span>🏛️ Sócrates</span>
+                      </h3>
+                      <p className="text-xs text-[#4A5568] leading-relaxed font-medium">
+                        <strong>Comportamiento:</strong> No da respuestas directas. Formula preguntas reflexivas e incisivas sobre el tema para que desarrolles el hábito de razonar y descubrir las respuestas por ti mismo.
+                      </p>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-indigo-100 flex items-center justify-between text-[11px] font-bold text-indigo-600">
+                      <span>Ideal para: Pensamiento crítico y deducción</span>
+                      <span>Seleccionar →</span>
+                    </div>
+                  </div>
+
+                  {/* MODO 2: FEYNMAN */}
+                  <div
+                    onClick={() => setTutorMode('feynman')}
+                    className={`p-5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                      tutorMode === 'feynman'
+                        ? 'bg-gradient-to-br from-amber-50/80 to-orange-50/80 border-amber-500 shadow-md ring-2 ring-amber-500/20'
+                        : 'bg-white hover:bg-slate-50 border-slate-200 hover:border-amber-300'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-black uppercase tracking-wider text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-lg">
+                          Modo 2 • Técnica de Feynman
+                        </span>
+                        {tutorMode === 'feynman' && (
+                          <div className="w-5 h-5 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold">
+                            ✓
+                          </div>
+                        )}
+                      </div>
+                      <h3 className="text-lg font-black text-[#0D2538] mb-1 flex items-center gap-2">
+                        <span>⚛️ Richard Feynman</span>
+                      </h3>
+                      <p className="text-xs text-[#4A5568] leading-relaxed font-medium">
+                        <strong>Comportamiento:</strong> Te guía para que expliques conceptos o fórmulas en palabras ultra sencillas (como a un niño de 10 años) y diagnostica vacíos en tu comprensión.
+                      </p>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-amber-100 flex items-center justify-between text-[11px] font-bold text-amber-700">
+                      <span>Ideal para: Claridad conceptual y analogías</span>
+                      <span>Seleccionar →</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          ) : (
+            /* PASO 2: SESIÓN INTERACTIVA CON EL TUTOR IA */
+            <div className="space-y-4 animate-fadeIn">
+              
+              {/* BARRA DE ESTADO / CONTROL DE LA SESIÓN */}
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-base shadow-sm ${
+                    tutorMode === 'socrates' ? 'bg-indigo-600' : 'bg-amber-500'
+                  }`}>
+                    {tutorMode === 'socrates' ? '🏛️' : '⚛️'}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Tema en estudio:</span>
+                      <span className="text-sm font-black text-[#0D2538] bg-white px-2.5 py-0.5 rounded-lg border border-slate-200">
+                        {activeTopic}
+                      </span>
+                    </div>
+                    <p className="text-xs font-semibold text-slate-600 mt-0.5">
+                      Tutor activo: <strong className={tutorMode === 'socrates' ? 'text-indigo-700' : 'text-amber-700'}>
+                        {tutorMode === 'socrates' ? 'Sócrates (Método Mayéutico)' : 'Richard Feynman (Técnica de Feynman)'}
+                      </strong>
+                    </p>
+                  </div>
+                </div>
+
+                {/* BOTONES PARA CAMBIAR DE TUTOR / MÉTODO */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleSwitchTutorMode('socrates')}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
+                      tutorMode === 'socrates'
+                        ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-400'
+                        : 'bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50'
+                    }`}
+                  >
+                    <span>🏛️ Modo Sócrates</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleSwitchTutorMode('feynman')}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
+                      tutorMode === 'feynman'
+                        ? 'bg-amber-500 text-white shadow-sm ring-2 ring-amber-300'
+                        : 'bg-white border border-slate-200 text-slate-600 hover:text-amber-700 hover:bg-amber-50'
+                    }`}
+                  >
+                    <span>⚛️ Modo Feynman</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleResetTopic}
+                    className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 hover:border-red-300 text-slate-500 hover:text-red-600 transition-colors cursor-pointer flex items-center gap-1"
+                    title="Ingresar otro tema de estudio"
+                  >
+                    <span>Otro tema</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* CAJA DE CONVERSACIÓN / HISTORIAL */}
+              <div className="bg-slate-50/70 rounded-2xl border border-slate-200 p-4 h-[380px] overflow-y-auto space-y-3.5 shadow-inner">
+                {tutorMessages.map((msg) => {
+                  const isUser = msg.sender === 'user';
+                  return (
+                    <div
+                      key={msg.id}
+                      className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} animate-fadeIn`}
+                    >
+                      <div className="flex items-center gap-1.5 mb-1 px-1">
+                        <span className="text-[10px] font-black uppercase text-slate-400">
+                          {isUser ? 'Tú (Estudiante)' : (tutorMode === 'socrates' ? 'Sócrates' : 'Richard Feynman')}
+                        </span>
+                        {msg.timestamp && (
+                          <span className="text-[9px] text-slate-400">
+                            • {msg.timestamp}
+                          </span>
+                        )}
+                      </div>
+
+                      <div
+                        className={`max-w-[85%] sm:max-w-[75%] p-4 rounded-2xl text-xs sm:text-sm font-medium leading-relaxed shadow-sm ${
+                          isUser
+                            ? 'bg-[#1D63B8] text-white rounded-br-xs'
+                            : tutorMode === 'socrates'
+                            ? 'bg-white text-[#0D2538] border border-indigo-200 rounded-bl-xs'
+                            : 'bg-white text-[#0D2538] border border-amber-200 rounded-bl-xs'
+                        }`}
+                      >
+                        <p className="whitespace-pre-line">{msg.text}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {isLoadingTutor && (
+                  <div className="flex items-center gap-2 text-xs font-bold text-indigo-600 bg-white px-3 py-2 rounded-xl border border-indigo-100 w-fit animate-pulse">
+                    <Sparkles className="w-4 h-4 animate-spin text-amber-500" />
+                    <span>
+                      {tutorMode === 'socrates' 
+                        ? 'Sócrates está formulando una pregunta reflexiva...' 
+                        : 'Feynman está diagnosticando tu explicación...'}
+                    </span>
+                  </div>
+                )}
+                <div ref={tutorChatEndRef} />
+              </div>
+
+              {/* INPUT DE INTERACCIÓN */}
+              <form onSubmit={handleSendTutorMessage} className="flex gap-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  placeholder={
+                    tutorMode === 'socrates'
+                      ? 'Escribe tu respuesta o reflexión al dilema socrático...'
+                      : 'Explica el concepto con tus propias palabras o haz tu analogía...'
+                  }
+                  disabled={isLoadingTutor}
+                  className="flex-1 bg-white border-2 border-slate-200 focus:border-indigo-600 rounded-xl px-4 py-3 text-xs sm:text-sm font-medium text-[#0D2538] outline-none transition-colors shadow-sm disabled:opacity-60"
+                />
+                <button
+                  type="submit"
+                  disabled={!chatInput.trim() || isLoadingTutor}
+                  className={`px-5 py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all shadow-md ${
+                    chatInput.trim() && !isLoadingTutor
+                      ? tutorMode === 'socrates'
+                        ? 'bg-indigo-600 hover:bg-indigo-500 text-white cursor-pointer active:scale-95'
+                        : 'bg-amber-500 hover:bg-amber-400 text-white cursor-pointer active:scale-95'
+                      : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                  }`}
+                >
+                  <span>Responder</span>
+                  <Send className="w-4 h-4" />
+                </button>
+              </form>
+
+            </div>
+          )}
+
+        </div>
       </div>
 
       {/* SECTION: RETO DIARIO & CRONÓMETRO */}

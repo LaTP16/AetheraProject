@@ -8,6 +8,28 @@ import { dirname, join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Cargar variables de entorno desde backend/.env o .env raíz si no están definidas
+if (!process.env.GEMINI_API_KEY) {
+  const envPaths = [join(__dirname, '.env'), join(__dirname, '..', '.env')];
+  for (const p of envPaths) {
+    if (fs.existsSync(p)) {
+      const envContent = fs.readFileSync(p, 'utf8');
+      envContent.split('\n').forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith('#') && trimmed.includes('=')) {
+          const [k, ...v] = trimmed.split('=');
+          const key = k.trim();
+          const val = v.join('=').trim();
+          if (!process.env[key]) {
+            process.env[key] = val;
+          }
+        }
+      });
+      if (process.env.GEMINI_API_KEY) break;
+    }
+  }
+}
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -209,6 +231,84 @@ Mensaje del estudiante: ${userQuery}
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error interno al consultar la IA de bienestar' });
+  }
+});
+
+// Endpoint para Tutor IA en Aprendizaje (Sócrates y Feynman)
+app.post('/api/learning/tutor', async (req, res) => {
+  const { topic, mode, messages = [] } = req.body;
+  if (!topic) return res.status(400).json({ error: 'Falta el tema de estudio' });
+
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+  if (!GEMINI_API_KEY) return res.status(500).json({ error: 'API Key no configurada en el servidor' });
+
+  let systemPrompt = '';
+  if (mode === 'socrates') {
+    systemPrompt = `Eres Sócrates, el gran filósofo clásico, actuando como tutor virtual de aprendizaje en la plataforma LinkUP (Ciudad Aethera).
+Tu método es el MÉTODO MAYÉUTICO.
+Reglas estrictas de comportamiento:
+1. NUNCA des respuestas directas, explicaciones completas ni soluciones masticadas al estudiante.
+2. Tu propósito es guiar al estudiante a través de preguntas reflexivas, incisivas, socráticas y estimulantes sobre el tema: "${topic}".
+3. Ayuda al estudiante a examinar sus propias suposiciones, razonar paso a paso, descubrir inconsistencias y llegar a sus propias conclusiones por sí mismo.
+4. Mantén un tono respetuoso, filosófico, curioso, cálido e intelectualmente provocador. Usa intervenciones concisas (1 a 3 párrafos como máximo) para invitar a la respuesta activa del estudiante.
+5. Si el estudiante recién comienza, salúdalo brevemente en tu papel y plantéale una primera pregunta fundamental o dilema conceptual intrigante sobre "${topic}".`;
+  } else {
+    // feynman mode
+    systemPrompt = `Eres Richard Feynman, el célebre físico ganador del Premio Nobel y apasionado educador, actuando como tutor virtual en la plataforma LinkUP (Ciudad Aethera).
+Tu método es la TÉCNICA DE FEYNMAN.
+Reglas estrictas de comportamiento:
+1. Tu misión es guiar al estudiante para que explique el tema "${topic}" con sus propias palabras, usando un lenguaje ultra sencillo, sin jerga innecesaria ni tecnicismos vacíos (como si se lo explicara a un niño de 10 años o a un novato).
+2. Diagnostica activamente los vacíos conceptuales, lagunas o ambigüedades en las explicaciones que brinde el estudiante.
+3. Si el estudiante recurre a palabras complejas o memorizadas sin entenderlas a fondo, pídele analogías cotidianas o ejemplos intuitivos para poner a prueba su comprensión real.
+4. Mantén un tono entusiasta, curioso, directo, motivador y divertido, fiel al estilo de Richard Feynman.
+5. Si el estudiante recién comienza, invítalo con entusiasmo a comenzar su explicación inicial de "${topic}" usando palabras simples y analogías.`;
+  }
+
+  try {
+    const contents = [];
+    if (Array.isArray(messages) && messages.length > 0) {
+      for (const m of messages) {
+        contents.push({
+          role: m.sender === 'user' ? 'user' : 'model',
+          parts: [{ text: m.text }]
+        });
+      }
+    } else {
+      // First turn
+      contents.push({
+        role: 'user',
+        parts: [{ text: `Hola, quiero estudiar el tema: "${topic}". Por favor, comienza guiándome en tu rol de tutor.` }]
+      });
+    }
+
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        },
+        contents,
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 1000
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error('Gemini error:', errText);
+      throw new Error('Error al consultar Gemini API');
+    }
+
+    const data = await response.json();
+    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No pude generar una respuesta en este momento. Inténtalo de nuevo.';
+
+    res.json({ reply: replyText });
+  } catch (error) {
+    console.error('Error en /api/learning/tutor:', error);
+    res.status(500).json({ error: 'Error interno del tutor IA' });
   }
 });
 
