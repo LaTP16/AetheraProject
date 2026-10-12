@@ -9,6 +9,8 @@ import LearningSection from './components/LearningSection';
 import LandingPage from './components/LandingPage';
 import CalendarModal from './components/CalendarModal';
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 const formatDistrict = (d) => {
   if (!d) return 'No especificado';
   const map = { 'DIST_GAIA': 'Distrito Gaia', 'DIST_NEBULA': 'Distrito Nebula', 'DIST_HORIZON': 'Distrito Horizon', 'DIST_VECTOR': 'Distrito Vector', 'DIST_QUANTUM': 'Distrito Quantum' };
@@ -211,7 +213,7 @@ export default function App() {
     };
 
     try {
-      const res = await fetch(`http://localhost:3001/api/student/${cleanId}`);
+      const res = await fetch(`${apiUrl}/api/student/${cleanId}`);
       if (res.ok) {
         const data = await res.json();
         setStudentData({
@@ -267,7 +269,7 @@ export default function App() {
     setLoadingAI(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/chat', {
+      const response = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
