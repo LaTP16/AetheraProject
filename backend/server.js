@@ -4,9 +4,60 @@ import cors from 'cors';
 import sqlite3 from 'sqlite3';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import multer from 'multer';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { PDFParse } = require('pdf-parse');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+const uploadsDir = join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+const sourcesFilePath = join(uploadsDir, 'sources.json');
+
+function getStoredSources() {
+  if (!fs.existsSync(sourcesFilePath)) return [];
+  try {
+    const raw = fs.readFileSync(sourcesFilePath, 'utf8');
+    return JSON.parse(raw) || [];
+  } catch (err) {
+    console.error('Error leyendo sources.json:', err);
+    return [];
+  }
+}
+
+function saveStoredSources(sources) {
+  try {
+    fs.writeFileSync(sourcesFilePath, JSON.stringify(sources, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error guardando sources.json:', err);
+  }
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadsDir),
+  filename: (req, file, cb) => {
+    const cleanName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
+    cb(null, `${Date.now()}-${cleanName}`);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 15 * 1024 * 1024 }, // 15 MB
+  fileFilter: (req, file, cb) => {
+    const allowed = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+    if (allowed.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('FORMATO_NO_SOPORTADO'));
+    }
+  }
+});
 
 // Cargar variables de entorno desde backend/.env o .env raíz si no están definidas
 if (!process.env.GEMINI_API_KEY) {
@@ -33,6 +84,95 @@ if (!process.env.GEMINI_API_KEY) {
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+async function callGemini({ systemInstruction, prompt, inlineData, jsonMode = false, temperature = 0.3 }) {
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+  if (!GEMINI_API_KEY) throw new Error('API Key de Gemini no configurada en el servidor');
+
+  const contents = [];
+  const parts = [];
+  if (prompt) {
+    parts.push({ text: prompt });
+  }
+  if (inlineData) {
+    parts.push({
+      inlineData: {
+        mimeType: inlineData.mimeType,
+        data: inlineData.data
+      }
+    });
+  }
+  contents.push({ role: 'user', parts });
+
+  const body = {
+    contents,
+    generationConfig: {
+      temperature,
+      maxOutputTokens: 4500
+    }
+  };
+
+  if (systemInstruction) {
+    body.systemInstruction = {
+      parts: [{ text: systemInstruction }]
+    };
+  }
+
+  if (jsonMode) {
+    body.generationConfig.responseMimeType = 'application/json';
+  }
+
+  const candidateModels = ['gemini-2.5-flash', 'gemini-3.5-flash-lite'];
+  let lastErr = null;
+
+  for (const model of candidateModels) {
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        console.warn(`Gemini model ${model} error (${response.status}):`, errText);
+        lastErr = new Error(`Error de Gemini (${model}): ${response.statusText}`);
+        continue;
+      }
+
+      const data = await response.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error('Respuesta vacía de Gemini');
+      return text;
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+
+  throw lastErr || new Error('No se pudo comunicar con Gemini API');
+}
+
+function parseGeminiJson(rawText) {
+  if (!rawText) return null;
+  let cleaned = rawText.trim();
+  if (cleaned.startsWith('```json')) {
+    cleaned = cleaned.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
+  } else if (cleaned.startsWith('```')) {
+    cleaned = cleaned.replace(/^```\s*/i, '').replace(/\s*```$/i, '');
+  }
+  try {
+    return JSON.parse(cleaned);
+  } catch (err) {
+    const lastBrace = cleaned.lastIndexOf('}');
+    if (lastBrace !== -1) {
+      try {
+        return JSON.parse(cleaned.slice(0, lastBrace + 1));
+      } catch (e2) {}
+    }
+    throw err;
+  }
+}
+
 
 const dbPath = join(__dirname, 'base de datos', 'estudiantes_comunes.db');
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -166,8 +306,11 @@ app.post('/api/bienestar/chat', async (req, res) => {
   let D6_csv = '';
   let D5_examples = '';
   try {
-    D6_csv = fs.readFileSync(join(__dirname, 'Datasets', 'D6.csv'), 'utf8');
-    D5_examples = fs.readFileSync(join(__dirname, 'Datasets', 'D5_examples.json'), 'utf8');
+    const datasetDir = fs.existsSync(join(__dirname, 'Datasets', 'D6.csv'))
+      ? join(__dirname, 'Datasets')
+      : join(__dirname, '..', 'Datasets');
+    D6_csv = fs.readFileSync(join(datasetDir, 'D6.csv'), 'utf8');
+    D5_examples = fs.readFileSync(join(datasetDir, 'D5_examples.json'), 'utf8');
   } catch (e) {
     console.warn('No se pudieron leer los datasets D5 o D6', e);
   }
@@ -309,6 +452,412 @@ Reglas estrictas de comportamiento:
   } catch (error) {
     console.error('Error en /api/learning/tutor:', error);
     res.status(500).json({ error: 'Error interno del tutor IA' });
+  }
+});
+
+// ==========================================
+// NUEVOS ENDPOINTS: APRENDIZAJE INTEGRAL (IA)
+// ==========================================
+
+// 1. Recomendaciones de Fuentes (Videos, Libros, Páginas Web)
+app.post('/api/learning/recommendations', async (req, res) => {
+  const { topic } = req.body;
+  if (!topic || typeof topic !== 'string' || !topic.trim()) {
+    return res.status(400).json({ error: 'Por favor ingresa un tema de estudio válido.' });
+  }
+
+  const cleanTopic = topic.trim();
+  const systemInstruction = `Eres un orientador y curador académico experto en la plataforma educativa LinkUP (Ciudad Aethera).
+Tu misión es recomendar recursos educativos de la más alta calidad y pertinencia para el tema solicitado por el estudiante.
+Debes organizar las recomendaciones obligatoriamente en 3 categorías:
+1. "videos": Videos o canales formativos de alta reputación (ej. YouTube educativos reales como TED-Ed, 3Blue1Brown, DotCSV, Platzi, freeCodeCamp, MIT OpenCourseWare, CrashCourse, etc.) o conferencias académicas reales.
+2. "libros": Libros canónicos, manuales universitarios o textos de referencia ampliamente reconocidos en el área académica (indicando autores reconocidos).
+3. "webs": Páginas web oficiales, documentación técnica, tutoriales o portales educativos abiertos de primer nivel (ej. MDN Web Docs, Wikipedia en español, Khan Academy, GeeksforGeeks, W3Schools, Stanford CS, documentación oficial de la tecnología).
+
+Para CADA recurso debes incluir exactamente:
+- "title": Título claro y exacto del recurso (incluyendo autor o canal).
+- "description": Breve descripción (1 a 2 frases) del contenido específico que aborda.
+- "usefulness": Explicación concreta de su utilidad pedagógica para quien está aprendiendo este tema.
+- "link": Enlace web real y verificable cuando esté disponible.
+- "type": "video" | "libro" | "web"
+
+REGLAS ESTRICTAS DE INTEGRIDAD:
+- NUNCA inventes enlaces ficticios ni generes URLs rotas o que den 404.
+- Si no posees la URL directa garantizada de un libro físico o recurso, coloca null o un enlace de búsqueda real oficial (ej. https://books.google.com o enlace a la web oficial del autor).
+- No inventes libros o autores inexistentes. Todo debe ser verídico y de utilidad formativa comprobada.
+
+Devuelve SIEMPRE la respuesta en formato JSON con la siguiente estructura exacta:
+{
+  "topic": "${cleanTopic}",
+  "summary": "Breve frase o párrafo introductorio motivador para estudiar este tema.",
+  "videos": [
+    {
+      "title": "Nombre del video o canal",
+      "description": "Qué abarca",
+      "usefulness": "Por qué es valioso",
+      "link": "URL válida o null",
+      "type": "video"
+    }
+  ],
+  "libros": [
+    {
+      "title": "Título del libro (Autores)",
+      "description": "Enfoque del libro",
+      "usefulness": "Utilidad académica",
+      "link": "URL válida o null",
+      "type": "libro"
+    }
+  ],
+  "webs": [
+    {
+      "title": "Nombre de la web o documentación",
+      "description": "Contenido del sitio",
+      "usefulness": "Utilidad de aprendizaje",
+      "link": "URL oficial directa",
+      "type": "web"
+    }
+  ]
+}`;
+
+  try {
+    const rawJson = await callGemini({
+      systemInstruction,
+      prompt: `Recomienda los mejores recursos clasificados (videos, libros y páginas web) para aprender a fondo: "${cleanTopic}". Proporciona exactamente 2 a 3 recursos destacados por categoría con descripciones concisas de 1 a 2 oraciones.`,
+      jsonMode: true,
+      temperature: 0.2
+    });
+
+    const parsed = parseGeminiJson(rawJson);
+    res.json(parsed);
+  } catch (error) {
+    console.error('Error en /api/learning/recommendations:', error);
+    res.status(500).json({ error: 'Error al generar recomendaciones de recursos educativos' });
+  }
+});
+
+// 2. Subida y Análisis de Archivos (PDF e Imágenes)
+app.post('/api/learning/upload', (req, res) => {
+  upload.single('file')(req, res, async (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ error: 'El archivo excede el tamaño máximo permitido de 15MB.' });
+      }
+      if (err.message === 'FORMATO_NO_SOPORTADO') {
+        return res.status(400).json({ error: 'Formato no compatible. Por favor sube archivos PDF o imágenes (PNG, JPG, WEBP).' });
+      }
+      return res.status(400).json({ error: `Error en la subida: ${err.message}` });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No se ha seleccionado ningún archivo para subir.' });
+    }
+
+    if (req.file.size === 0) {
+      // Eliminar archivo vacío
+      try { fs.unlinkSync(req.file.path); } catch (e) {}
+      return res.status(400).json({ error: 'El archivo subido está vacío (0 bytes).' });
+    }
+
+    try {
+      const fileBuffer = fs.readFileSync(req.file.path);
+      let extractedContent = '';
+      let totalPages = 1;
+      let summary = '';
+
+      if (req.file.mimetype === 'application/pdf') {
+        try {
+          const parser = new PDFParse({ data: fileBuffer });
+          await parser.load();
+          const textResult = await parser.getText();
+          totalPages = textResult.total || (textResult.pages ? textResult.pages.length : 1);
+
+          if (textResult.pages && textResult.pages.length > 0) {
+            extractedContent = textResult.pages
+              .map(p => `--- [PÁGINA ${p.num}] ---\n${p.text ? p.text.trim() : ''}`)
+              .join('\n\n');
+          } else {
+            extractedContent = textResult.text || '';
+          }
+        } catch (pdfErr) {
+          console.warn('Error en extracción de texto PDF con PDFParse:', pdfErr.message);
+        }
+
+        // Si el PDF contiene muy poco texto (ej. PDF escaneado con imágenes), usar Gemini multimodal
+        if (!extractedContent || extractedContent.trim().length < 40) {
+          try {
+            const base64Data = fileBuffer.toString('base64');
+            const visionExtraction = await callGemini({
+              systemInstruction: 'Eres un analista de documentos académicos. Extrae y describe detalladamente el contenido de este documento PDF, transcribiendo texto visible, fórmulas, esquemas y organizándolo por páginas o secciones.',
+              prompt: 'Extrae y transcribe todo el contenido de este documento PDF para su estudio pedagógico:',
+              inlineData: { mimeType: 'application/pdf', data: base64Data }
+            });
+            extractedContent = visionExtraction;
+          } catch (visErr) {
+            console.warn('Error en extracción multimodal de PDF:', visErr.message);
+          }
+        }
+
+        // Generar un resumen sintético inicial del documento
+        try {
+          const previewText = extractedContent.slice(0, 4000);
+          summary = await callGemini({
+            prompt: `En 2 a 3 oraciones concisas en español, resume el tema y propósito pedagógico principal de este material de estudio:\n\n${previewText}`
+          });
+        } catch (sumErr) {
+          summary = 'Documento PDF listo para estudio interactivo.';
+        }
+
+      } else {
+        // Imágenes (PNG, JPG, WEBP)
+        const base64Image = fileBuffer.toString('base64');
+        const visionPrompt = `Eres un asistente de estudio pedagógico en LinkUP.
+Analiza minuciosamente esta imagen académica (apuntes, pizarra, diagrama, infografía o esquema):
+1. Transcribe con exactitud todo el texto, fórmulas, algoritmos o pasos visibles.
+2. Identifica y describe los diagramas o conceptos representados.
+3. Organiza la descripción indicando claramente las secciones visuales (ej. 'Sección Superior', 'Diagrama Central', 'Columna Lateral', 'Notas').
+4. Proporciona una síntesis clara del contenido pedagógico que enseña.`;
+
+        extractedContent = await callGemini({
+          systemInstruction: 'Eres un analista visual y tutor académico.',
+          prompt: visionPrompt,
+          inlineData: { mimeType: req.file.mimetype, data: base64Image }
+        });
+
+        totalPages = 1;
+        try {
+          summary = await callGemini({
+            prompt: `En 2 oraciones concisas en español, resume qué enseña esta imagen de estudio a partir de su análisis:\n\n${extractedContent.slice(0, 2000)}`
+          });
+        } catch (e) {
+          summary = 'Imagen analizada e interpretada para estudio interactivo.';
+        }
+      }
+
+      const sourceId = `src_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+      const newSource = {
+        id: sourceId,
+        originalName: req.file.originalname,
+        filename: req.file.filename,
+        mimeType: req.file.mimetype,
+        size: req.file.size,
+        pages: totalPages,
+        summary: summary.trim(),
+        extractedContent: extractedContent.trim(),
+        createdAt: new Date().toISOString()
+      };
+
+      const sources = getStoredSources();
+      sources.unshift(newSource);
+      saveStoredSources(sources);
+
+      res.json({
+        success: true,
+        source: {
+          id: newSource.id,
+          originalName: newSource.originalName,
+          mimeType: newSource.mimeType,
+          size: newSource.size,
+          pages: newSource.pages,
+          summary: newSource.summary,
+          createdAt: newSource.createdAt
+        }
+      });
+    } catch (processError) {
+      console.error('Error al procesar el archivo con IA:', processError);
+      res.status(500).json({ error: 'Ocurrió un error al procesar el archivo con la IA: ' + processError.message });
+    }
+  });
+});
+
+// 3. Listar Fuentes Cargadas
+app.get('/api/learning/sources', (req, res) => {
+  try {
+    const sources = getStoredSources().map(s => ({
+      id: s.id,
+      originalName: s.originalName,
+      mimeType: s.mimeType,
+      size: s.size,
+      pages: s.pages,
+      summary: s.summary,
+      createdAt: s.createdAt
+    }));
+    res.json({ sources });
+  } catch (error) {
+    console.error('Error al listar fuentes:', error);
+    res.status(500).json({ error: 'No se pudieron recuperar las fuentes' });
+  }
+});
+
+// 4. Eliminar Fuente
+app.delete('/api/learning/sources/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const sources = getStoredSources();
+    const index = sources.findIndex(s => s.id === id);
+
+    if (index === -1) {
+      return res.status(404).json({ error: 'Fuente no encontrada.' });
+    }
+
+    const [removed] = sources.splice(index, 1);
+    if (removed.filename) {
+      const filePath = join(uploadsDir, removed.filename);
+      if (fs.existsSync(filePath)) {
+        try { fs.unlinkSync(filePath); } catch (e) { console.warn('No se pudo borrar archivo físico:', e); }
+      }
+    }
+
+    saveStoredSources(sources);
+    res.json({ success: true, message: 'Fuente eliminada correctamente.' });
+  } catch (error) {
+    console.error('Error al eliminar fuente:', error);
+    res.status(500).json({ error: 'Error al eliminar la fuente.' });
+  }
+});
+
+// 5. Aprendizaje Interactivo sobre el Material Cargado
+app.post('/api/learning/study', async (req, res) => {
+  const { sourceId, action, query } = req.body;
+  if (!sourceId) {
+    return res.status(400).json({ error: 'Falta especificar el sourceId de la fuente de estudio.' });
+  }
+
+  const sources = getStoredSources();
+  const source = sources.find(s => s.id === sourceId);
+  if (!source) {
+    return res.status(404).json({ error: 'La fuente seleccionada no fue encontrada o ha sido eliminada.' });
+  }
+
+  const documentContent = source.extractedContent || source.summary || '';
+  if (!documentContent) {
+    return res.status(400).json({ error: 'La fuente no cuenta con contenido legible para analizar.' });
+  }
+
+  // Recortar si supera el límite de contexto
+  const safeContent = documentContent.slice(0, 30000);
+
+  const baseInstructions = `Eres un tutor de aprendizaje personalizado en LinkUP (Ciudad Aethera).
+Tu función es ayudar al estudiante a dominar el contenido del material cargado: "${source.originalName}".
+REGLAS OBLIGATORIAS:
+1. Basa tus respuestas PRIORITARIAMENTE en el contenido de este material.
+2. Señala y CITA SIEMPRE las páginas o secciones relevantes cuando estén disponibles (ejemplo: "[Página 2]", "[Sección Superior]", "[Diagrama Central]").
+3. Si el estudiante pregunta algo que NO está en el material, indícalo con honestidad: "Esta información no se encuentra contemplada en el material proporcionado."
+4. Mantén un tono pedagógico, estimulante, claro y estructurado en español.
+
+CONTENIDO DEL MATERIAL:
+${safeContent}`;
+
+  try {
+    if (action === 'quiz') {
+      // Generar Cuestionario Interactivo en JSON
+      const quizSystemPrompt = `${baseInstructions}
+Debes generar un Cuestionario de Evaluación interactivo de 4 a 5 preguntas de opción múltiple basadas exclusivamente en este material.
+Para cada pregunta incluye 4 opciones, el índice de la respuesta correcta (0-3), una explicación pedagógica clara y la cita a la página o sección de donde proviene.
+
+Responde SIEMPRE en formato JSON con la siguiente estructura exacta:
+{
+  "quizTitle": "Cuestionario de Evaluación: ${source.originalName}",
+  "questions": [
+    {
+      "id": 1,
+      "question": "¿Enunciado de la pregunta?",
+      "options": ["Opción A", "Opción B", "Opción C", "Opción D"],
+      "correctIndex": 0,
+      "explanation": "Por qué es correcta y cómo se deduce.",
+      "sourceCitation": "Página X / Sección Y"
+    }
+  ]
+}`;
+
+      const rawQuiz = await callGemini({
+        systemInstruction: quizSystemPrompt,
+        prompt: 'Genera un cuestionario interactivo de 4 preguntas para evaluar la comprensión del material cargado.',
+        jsonMode: true,
+        temperature: 0.3
+      });
+
+      const parsedQuiz = parseGeminiJson(rawQuiz);
+      return res.json({ action: 'quiz', result: parsedQuiz });
+
+    } else if (action === 'summary') {
+      // Resumen estructurado
+      const prompt = `Elabora un RESUMEN ESTRUCTURADO y exhaustivo del material cargado.
+Organiza la respuesta con:
+- 📌 Idea Central / Propósito General
+- 🔑 Conceptos Clave y Definiciones (citando [Página X] o [Sección] de cada uno)
+- 📝 Conclusiones o Puntos Críticos para el examen o aplicación práctica.`;
+
+      const result = await callGemini({
+        systemInstruction: baseInstructions,
+        prompt,
+        temperature: 0.3
+      });
+
+      return res.json({ action: 'summary', result });
+
+    } else if (action === 'step_by_step') {
+      // Explicación paso a paso
+      const prompt = `Desarrolla una EXPLICACIÓN PASO A PASO detallada y didáctica de los conceptos, procedimientos, algoritmos o métodos descritos en este material.
+Explica cada etapa de forma secuencial, indicando en qué página o sección se ubica cada paso ([Página X] o [Sección]).`;
+
+      const result = await callGemini({
+        systemInstruction: baseInstructions,
+        prompt,
+        temperature: 0.3
+      });
+
+      return res.json({ action: 'step_by_step', result });
+
+    } else if (action === 'examples') {
+      // Ejemplos y aplicaciones
+      const prompt = `Genera EJEMPLOS PRÁCTICOS, casos de estudio o analogías cotidianas basados en el contenido de este material.
+Conecta cada ejemplo directamente con los conceptos tratados en el documento y cita la página o sección relevante.`;
+
+      const result = await callGemini({
+        systemInstruction: baseInstructions,
+        prompt,
+        temperature: 0.3
+      });
+
+      return res.json({ action: 'examples', result });
+
+    } else if (action === 'practice_questions') {
+      // Preguntas de práctica
+      const prompt = `Formula 4 a 5 PREGUNTAS DE PRÁCTICA y ejercicios reflexivos para que el estudiante ponga a prueba su comprensión de este material.
+Para cada pregunta, incluye una pista pedagógica que señale en qué [Página X] o [Sección] puede encontrar la clave para responderla.`;
+
+      const result = await callGemini({
+        systemInstruction: baseInstructions,
+        prompt,
+        temperature: 0.3
+      });
+
+      return res.json({ action: 'practice_questions', result });
+
+    } else {
+      // Pregunta personalizada o libre
+      const userQuestion = query || action;
+      if (!userQuestion || typeof userQuestion !== 'string' || !userQuestion.trim()) {
+        return res.status(400).json({ error: 'Por favor escribe tu pregunta sobre el material.' });
+      }
+
+      const prompt = `El estudiante tiene la siguiente pregunta sobre el material cargado:
+"${userQuestion.trim()}"
+
+Responde con rigor pedagógico basándote prioritariamente en el material y citando las páginas o secciones ([Página X] o [Sección]) de donde obtienes la respuesta.`;
+
+      const result = await callGemini({
+        systemInstruction: baseInstructions,
+        prompt,
+        temperature: 0.3
+      });
+
+      return res.json({ action: 'custom_question', result });
+    }
+
+  } catch (error) {
+    console.error('Error en /api/learning/study:', error);
+    res.status(500).json({ error: 'Error al procesar la sesión de estudio interactivo con la IA.' });
   }
 });
 
