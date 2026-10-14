@@ -3,8 +3,8 @@ import { ArrowRight, Search, GraduationCap, Users, Sparkles, Check, ChevronDown 
 import studentsData from '../data/students.json';
 
 const LandingPage = ({ onLogin }) => {
-  const [studentId, setStudentId] = useState('');
-  const [selectedStageTab, setSelectedStageTab] = useState('early'); // 'early', 'middle', 'final'
+  const [studentId, setStudentId] = useState('STU_AE_000059'); // Estudiante de último año por defecto
+  const [selectedStageTab, setSelectedStageTab] = useState('final'); // Pestaña de 'Último Año' activa por defecto
   const [searchQuery, setSearchQuery] = useState('');
   const [displayLimit, setDisplayLimit] = useState(40);
 
@@ -168,30 +168,42 @@ const LandingPage = ({ onLogin }) => {
           </p>
 
           {/* INPUT FORM DE INGRESO DIRECTO */}
-          <form 
-            onSubmit={handleLogin}
-            className="w-full max-w-[580px] flex flex-col sm:flex-row items-stretch gap-3"
-          >
-            <input 
-              type="text" 
-              placeholder="Código seleccionado o escribe ID (Ej: STU_AE_002288)..." 
-              value={studentId}
-              onChange={(e) => setStudentId(e.target.value)}
-              className="flex-1 bg-white border-2 border-slate-300 focus:border-[#1D63B8] outline-none text-[#0D2538] font-bold px-5 py-3.5 rounded-xl shadow-sm transition-colors text-sm font-mono"
-            />
-            <button 
-              type="submit"
-              disabled={!studentId.trim()}
-              className={`group font-bold text-[15px] px-7 py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md whitespace-nowrap ${
-                studentId.trim()
-                  ? 'bg-[#F5B82E] hover:bg-[#e0a624] text-[#0D2538] cursor-pointer active:scale-95'
-                  : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-              }`}
+          <div className="w-full max-w-[580px] space-y-2">
+            <div className="flex items-center justify-between text-xs font-semibold px-1">
+              <span className="text-slate-500 font-bold flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                <span>Estudiante de último año seleccionado:</span>
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-wider bg-purple-100 text-purple-700 px-2.5 py-0.5 rounded-full border border-purple-200">
+                Último Año • Mia Rodriguez
+              </span>
+            </div>
+
+            <form 
+              onSubmit={handleLogin}
+              className="w-full flex flex-col sm:flex-row items-stretch gap-3"
             >
-              <span>Ingresar</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </form>
+              <input 
+                type="text" 
+                placeholder="Código seleccionado o escribe ID (Ej: STU_AE_000059)..." 
+                value={studentId}
+                onChange={(e) => setStudentId(e.target.value)}
+                className="flex-1 bg-white border-2 border-slate-300 focus:border-[#1D63B8] outline-none text-[#0D2538] font-bold px-5 py-3.5 rounded-xl shadow-sm transition-colors text-sm font-mono"
+              />
+              <button 
+                type="submit"
+                disabled={!studentId.trim()}
+                className={`group font-bold text-[15px] px-7 py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md whitespace-nowrap ${
+                  studentId.trim()
+                    ? 'bg-[#F5B82E] hover:bg-[#e0a624] text-[#0D2538] cursor-pointer active:scale-95'
+                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                }`}
+              >
+                <span>Ingresar</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </form>
+          </div>
 
           {/* SECCIÓN: ESCOGE UN ESTUDIANTE (CATÁLOGO DE 2,278 CÓDIGOS) */}
           <div className="w-full max-w-[580px] mt-2 pt-5 border-t border-slate-200/90 flex flex-col">

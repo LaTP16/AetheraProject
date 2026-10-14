@@ -185,30 +185,32 @@ export default function App() {
 
   const handleLogin = async (id) => {
     setLoadingProfile(true);
-    const cleanId = id ? id.trim() : 'STU_AE_002288';
+    const cleanId = id ? id.trim() : 'STU_AE_000059';
     setNavHistory(['LANDING', 'INICIO']);
     setActiveTab('INICIO');
     const fallbackStudent = {
       student_id: cleanId,
       survey: {
-        full_name: 'Mateo Benítez',
+        full_name: 'Mia Rodriguez',
         institution_id: 'UNI_NOVA_AETHER',
-        academic_stage: 'middle',
-        district_id: 'DIST_GAIA',
+        academic_stage: 'final',
+        district_id: 'DIST_VECTOR',
         migration_status: 'local',
-        work_hours_week: 15,
-        sleep_hours: 7.5,
+        work_hours_week: 0,
+        sleep_hours: 6.6,
         stress_band: 'moderate',
-        stress_score: 14,
+        stress_score: 15,
         anxiety_band: 'mild',
-        anxiety_score: 8
+        anxiety_score: 6
       },
       services: [
-        { reason_code: 'academic_pressure', contact_channel: 'digital', referral_outcome: 'counseling', wait_days: 3 }
+        { reason_code: 'academic_pressure', contact_channel: 'in_person', referral_outcome: 'counseling', wait_days: 58 }
       ],
       academic: [
-        { period_id: 'PER_2026_1', average_grade: 16.5, attendance_rate: 0.92, dropout_alert: 'low' },
-        { period_id: 'PER_2026_2', average_grade: 17.2, attendance_rate: 0.95, dropout_alert: 'low' }
+        { period_id: 'PER_2026_1', average_grade: 16.5, attendance_rate: 0.835, dropout_alert: 'low' },
+        { period_id: 'PER_2026_2', average_grade: 15.8, attendance_rate: 0.783, dropout_alert: 'medium' },
+        { period_id: 'PER_2026_3', average_grade: 15.7, attendance_rate: 0.879, dropout_alert: 'low' },
+        { period_id: 'PER_2026_4', average_grade: 16.2, attendance_rate: 0.852, dropout_alert: 'low' }
       ]
     };
 
