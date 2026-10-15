@@ -8,6 +8,7 @@ import WellnessSection from './components/WellnessSection';
 import LearningSection from './components/LearningSection';
 import LandingPage from './components/LandingPage';
 import CalendarModal from './components/CalendarModal';
+import StudyPlanSection from './components/StudyPlanSection';
 
 const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
@@ -249,10 +250,10 @@ export default function App() {
 
   const navItems = [
     { id: 'INICIO', label: 'INICIO', icon: Home },
-    { id: 'OPORTUNIDADES', label: 'OPORTUNIDADES', icon: Target },
-    { id: 'COMUNIDAD', label: 'COMUNIDAD', icon: Users },
     { id: 'BIENESTAR', label: 'BIENESTAR', icon: Heart },
     { id: 'APRENDIZAJE', label: 'APRENDIZAJE', icon: BookOpen },
+    { id: 'COMUNIDAD', label: 'COMUNIDAD', icon: Users },
+    { id: 'OPORTUNIDADES', label: 'OPORTUNIDADES', icon: Target },
     { id: 'PERFIL', label: 'PERFIL', icon: User },
   ];
 
@@ -511,85 +512,23 @@ export default function App() {
         </div>
       </header>
 
-        {/* CONDITIONALLY RENDER ALL 6 TABS */}
+        {/* CONDITIONALLY RENDER ALL 6 TABS IN STRICT ORDER */}
         {activeTab === 'INICIO' && (
-          <div className="flex-1 p-6 sm:p-8 max-w-6xl mx-auto w-full space-y-8 animate-fadeIn">
-            <div className="text-center pt-2">
-              <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#0D2538] uppercase">
-                BIENVENIDO <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1D63B8] to-[#1D59AC]">{studentData?.survey?.full_name || studentData?.student_id || 'ESTUDIANTE'}</span>
-              </h1>
-              <p className="text-[#4A5568] text-sm mt-1">¿En qué área o reto universitario te gustaría enfocar hoy?</p>
-            </div>
-
-            <div className="bg-white backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 max-w-3xl mx-auto">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-5 h-5 text-[#1D63B8]" />
-                <label className="font-bold text-[#333A42] text-sm sm:text-base">Ingrese su Consulta:</label>
-              </div>
-
-              <textarea
-                rows={3}
-                value={userQuery}
-                onChange={(e) => setUserQuery(e.target.value)}
-                placeholder="Ej. Me siento estresado por mis exámenes, ¿dónde puedo buscar ayuda?"
-                className="w-full p-4 rounded-2xl bg-slate-100/60 text-[#0D2538] placeholder-slate-500 font-medium text-sm border border-slate-200 shadow-inner focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
-              ></textarea>
-
-              <button 
-                onClick={handleAskAI} 
-                disabled={loadingAI} 
-                className="mt-3 px-6 py-3 bg-[#1D63B8] hover:bg-[#2eb4dd] text-[#0D2538] font-bold text-sm rounded-xl shadow-sm flex items-center gap-2 ml-auto transition-all cursor-pointer"
-              >
-                {loadingAI ? 'Consultando IA...' : 'Orientarme con IA ✨'}
-              </button>
-
-              {aiResponse && (
-                <div className="mt-5 p-5 bg-slate-100/40 rounded-2xl border border-blue-500/30 text-xs sm:text-sm space-y-2">
-                  <p className="font-bold text-[#1D63B8]">{aiResponse.text}</p>
-                  <ul className="space-y-1.5 pl-2">
-                    {aiResponse.steps.map((step, idx) => (
-                      <li key={idx} className="bg-white p-3 rounded-xl border border-slate-200 text-[#333A42]">
-                        {step}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-4">
-              <h2 className="text-xl sm:text-2xl font-bold text-[#0D2538] tracking-wide">Sección de Noticias & Novedades</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {newsCards.map((card) => (
-                  <div 
-                    key={card.id} 
-                    onClick={() => setSelectedCardModal(card)} 
-                    className="bg-white hover:bg-slate-100/80 p-6 rounded-2xl shadow-xl border border-slate-200 hover:border-blue-500/40 cursor-pointer transition-all transform hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(59,130,246,0.15)] flex flex-col justify-between min-h-[160px]"
-                  >
-                    <div>
-                      <span className="inline-block px-2.5 py-0.5 bg-blue-500/20 text-[#1D63B8] border border-blue-500/30 text-[10px] font-bold rounded-md mb-3">
-                        {card.category}
-                      </span>
-                      <h3 className="font-bold text-[#0D2538] text-sm leading-snug">{card.title}</h3>
-                    </div>
-                    <div className="mt-4 flex items-center justify-between text-xs pt-3 border-t border-slate-200">
-                      <span className="font-semibold text-[#4A5568]">{card.tag}</span>
-                      <span className="font-bold text-[#1D63B8]">Leer más →</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <StudyPlanSection
+            studentData={studentData}
+            onNavigateToTab={handleTabChange}
+            onOpenCalendar={() => setShowCalendarModal(true)}
+            addNotification={addNotification}
+          />
         )}
-
-        {activeTab === 'OPORTUNIDADES' && <OpportunitiesSection />}
-        
-        {activeTab === 'COMUNIDAD' && <CommunitySection />}
 
         {activeTab === 'BIENESTAR' && <WellnessSection />}
 
         {activeTab === 'APRENDIZAJE' && <LearningSection addNotification={addNotification} />}
+
+        {activeTab === 'COMUNIDAD' && <CommunitySection />}
+
+        {activeTab === 'OPORTUNIDADES' && <OpportunitiesSection />}
 
         {activeTab === 'PERFIL' && studentData && (
           <div className="flex-1 p-6 sm:p-8 max-w-6xl mx-auto w-full space-y-6 overflow-y-auto h-[calc(100vh-80px)] animate-fadeIn">
@@ -676,7 +615,7 @@ export default function App() {
                   </div>
 
                   <div className="bg-[#F8F7F4] p-5 rounded-2xl border border-slate-200 shadow-sm">
-                    <h3 className="font-bold text-[#1D63B8] mb-4 flex items-center gap-2"><MessageSquare className="w-4 h-4"/> Uso de Servicios (Puntos de dolor)</h3>
+                    <h3 className="font-bold text-[#1D63B8] mb-4 flex items-center gap-2"><MessageSquare className="w-4 h-4"/> Uso de Servicios</h3>
                     <div className="space-y-3">
                       {studentData.services?.length > 0 ? studentData.services.map((srv, i) => (
                         <div key={i} className="p-3 bg-white border border-slate-200 rounded-xl flex justify-between items-center">
@@ -730,7 +669,12 @@ export default function App() {
       )}
 
       {/* CALENDAR MODAL */}
-      {showCalendarModal && <CalendarModal onClose={() => setShowCalendarModal(false)} />}
+      {showCalendarModal && (
+        <CalendarModal 
+          studentId={studentData?.student_id || 'STU_AE_000059'}
+          onClose={() => setShowCalendarModal(false)} 
+        />
+      )}
     </div>
   );
 }

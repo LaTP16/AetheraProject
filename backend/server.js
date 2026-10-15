@@ -108,7 +108,7 @@ async function callGemini({ systemInstruction, prompt, inlineData, jsonMode = fa
     contents,
     generationConfig: {
       temperature,
-      maxOutputTokens: 4500
+      maxOutputTokens: 8192
     }
   };
 
@@ -122,7 +122,7 @@ async function callGemini({ systemInstruction, prompt, inlineData, jsonMode = fa
     body.generationConfig.responseMimeType = 'application/json';
   }
 
-  const candidateModels = ['gemini-2.5-flash', 'gemini-3.5-flash-lite'];
+  const candidateModels = ['gemini-2.5-flash', 'gemini-flash-latest'];
   let lastErr = null;
 
   for (const model of candidateModels) {
@@ -152,26 +152,80 @@ async function callGemini({ systemInstruction, prompt, inlineData, jsonMode = fa
   throw lastErr || new Error('No se pudo comunicar con Gemini API');
 }
 
+function repairTruncatedJson(str) {
+  let inString = false;
+  let escape = false;
+  const stack = [];
+
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (escape) {
+      escape = false;
+      continue;
+    }
+    if (char === '\\') {
+      escape = true;
+      continue;
+    }
+    if (char === '"') {
+      inString = !inString;
+      continue;
+    }
+    if (!inString) {
+      if (char === '{' || char === '[') {
+        stack.push(char);
+      } else if (char === '}') {
+        if (stack.length && stack[stack.length - 1] === '{') stack.pop();
+      } else if (char === ']') {
+        if (stack.length && stack[stack.length - 1] === '[') stack.pop();
+      }
+    }
+  }
+
+  let repaired = str;
+  if (inString) {
+    repaired += '"';
+  }
+  while (stack.length > 0) {
+    const opening = stack.pop();
+    if (opening === '{') repaired += '}';
+    else if (opening === '[') repaired += ']';
+  }
+  return repaired;
+}
+
 function parseGeminiJson(rawText) {
   if (!rawText) return null;
   let cleaned = rawText.trim();
-  if (cleaned.startsWith('```json')) {
-    cleaned = cleaned.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
-  } else if (cleaned.startsWith('```')) {
-    cleaned = cleaned.replace(/^```\s*/i, '').replace(/\s*```$/i, '');
+  cleaned = cleaned.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+
+  const firstBrace = cleaned.indexOf('{');
+  const lastBrace = cleaned.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+    cleaned = cleaned.substring(firstBrace, lastBrace + 1);
   }
+
   try {
     return JSON.parse(cleaned);
   } catch (err) {
-    const lastBrace = cleaned.lastIndexOf('}');
-    if (lastBrace !== -1) {
+    const fixed = cleaned
+      .replace(/,\s*([}\]])/g, '$1')
+      .replace(/\/\/.*$/gm, '')
+      .replace(/\/\*[\s\S]*?\*\//g, '');
+    try {
+      return JSON.parse(fixed);
+    } catch (e2) {
       try {
-        return JSON.parse(cleaned.slice(0, lastBrace + 1));
-      } catch (e2) {}
+        const repaired = repairTruncatedJson(fixed);
+        return JSON.parse(repaired);
+      } catch (e3) {
+        console.error('Error parseando JSON de Gemini. Raw recibido:', rawText.slice(0, 500));
+        throw err;
+      }
     }
-    throw err;
   }
 }
+
 
 
 const dbPath = join(__dirname, 'base de datos', 'estudiantes_comunes.db');
@@ -180,6 +234,104 @@ const db = new sqlite3.Database(dbPath, (err) => {
     console.error("Error opening database " + err.message);
   } else {
     console.log("Connected to the SQLite database.");
+    // Inicializar tabla para el calendario interactivo y gestor de tareas
+    db.run(`
+      CREATE TABLE IF NOT EXISTS calendar_events (
+        id TEXT PRIMARY KEY,
+        student_id TEXT NOT NULL,
+        title TEXT NOT NULL,
+        description TEXT,
+        date TEXT NOT NULL,
+        time TEXT,
+        type TEXT DEFAULT 'study',
+        module TEXT DEFAULT 'GENERAL',
+        completed INTEGER DEFAULT 0,
+        created_at TEXT
+      )
+    `, (tableErr) => {
+      if (tableErr) {
+        console.error("Error creating calendar_events table:", tableErr);
+      } else {
+        // Verificar si está vacía para sembrar eventos de muestra
+        db.get("SELECT COUNT(*) as count FROM calendar_events", (cntErr, row) => {
+          if (!cntErr && row && row.count === 0) {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = now.getDate();
+
+            const pad = (n) => String(n).padStart(2, '0');
+            const formatDay = (dayOffset) => {
+              const target = new Date(now);
+              target.setDate(target.getDate() + dayOffset);
+              return `${target.getFullYear()}-${pad(target.getMonth() + 1)}-${pad(target.getDate())}`;
+            };
+
+            const sampleEvents = [
+              {
+                id: 'evt_sample_1',
+                student_id: 'STU_AE_000059',
+                title: 'Examen Parcial de Cálculo Multivariable',
+                description: 'Aula 304 - Edificio de Ingeniería. Llevar calculadora científica y formulario impreso.',
+                date: formatDay(5),
+                time: '08:00 - 10:00',
+                type: 'exam',
+                module: 'APRENDIZAJE',
+                completed: 0,
+                created_at: new Date().toISOString()
+              },
+              {
+                id: 'evt_sample_2',
+                student_id: 'STU_AE_000059',
+                title: 'Taller de Regulación Emocional y Manejo del Estrés',
+                description: 'Sesión grupal con el equipo de Bienestar Estudiantil. Modalidad presencial en Sala Brújula.',
+                date: formatDay(2),
+                time: '16:00 - 17:30',
+                type: 'wellness',
+                module: 'BIENESTAR',
+                completed: 0,
+                created_at: new Date().toISOString()
+              },
+              {
+                id: 'evt_sample_3',
+                student_id: 'STU_AE_000059',
+                title: 'Bloque de Estudio: Métodos de Integración',
+                description: 'Repaso con técnica Feynman y resolución de 5 ejercicios del banco de exámenes.',
+                date: formatDay(1),
+                time: '18:00 - 20:00',
+                type: 'study',
+                module: 'APRENDIZAJE',
+                completed: 0,
+                created_at: new Date().toISOString()
+              },
+              {
+                id: 'evt_sample_4',
+                student_id: 'STU_AE_000059',
+                title: 'Feria de Pasantías Tech LinkUP',
+                description: 'Stands virtuales de reclutamiento y simulacros de entrevista técnica.',
+                date: formatDay(8),
+                time: '10:00 - 14:00',
+                type: 'meeting',
+                module: 'OPORTUNIDADES',
+                completed: 0,
+                created_at: new Date().toISOString()
+              }
+            ];
+
+            const insertStmt = db.prepare(`
+              INSERT INTO calendar_events (id, student_id, title, description, date, time, type, module, completed, created_at)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `);
+
+            for (const s of sampleEvents) {
+              insertStmt.run([s.id, s.student_id, s.title, s.description, s.date, s.time, s.type, s.module, s.completed, s.created_at]);
+            }
+            insertStmt.finalize();
+            console.log("Seeded sample calendar events successfully.");
+          }
+        });
+      }
+    });
   }
 });
 
@@ -861,7 +1013,313 @@ Responde con rigor pedagógico basándote prioritariamente en el material y cita
   }
 });
 
+// ==========================================
+// NUEVOS ENDPOINTS: CALENDARIO INTERACTIVO (CRUD)
+// ==========================================
+
+// 1. Obtener eventos del calendario
+app.get('/api/calendar/events', (req, res) => {
+  const { studentId, month, year } = req.query;
+  let query = 'SELECT * FROM calendar_events';
+  const params = [];
+  const conditions = [];
+
+  if (studentId) {
+    conditions.push('student_id = ?');
+    params.push(studentId);
+  }
+  if (month && year) {
+    const padMonth = String(month).padStart(2, '0');
+    conditions.push("strftime('%Y-%m', date) = ?");
+    params.push(`${year}-${padMonth}`);
+  }
+
+  if (conditions.length > 0) {
+    query += ' WHERE ' + conditions.join(' AND ');
+  }
+  query += ' ORDER BY date ASC, time ASC';
+
+  db.all(query, params, (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ events: rows || [] });
+  });
+});
+
+// 2. Crear un nuevo evento
+app.post('/api/calendar/events', (req, res) => {
+  const { student_id = 'STU_AE_000059', title, description = '', date, time = '10:00 - 11:00', type = 'study', module = 'GENERAL' } = req.body;
+  if (!title || !date) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios: title y date' });
+  }
+
+  const id = `evt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+  const createdAt = new Date().toISOString();
+
+  const stmt = db.prepare(`
+    INSERT INTO calendar_events (id, student_id, title, description, date, time, type, module, completed, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)
+  `);
+
+  stmt.run([id, student_id, title, description, date, time, type, module, createdAt], function(err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({
+      success: true,
+      event: { id, student_id, title, description, date, time, type, module, completed: 0, created_at: createdAt }
+    });
+  });
+});
+
+// 3. Inserción masiva de eventos (Sincronización del Plan de Estudios con IA)
+app.post('/api/calendar/events/bulk', (req, res) => {
+  const { student_id = 'STU_AE_000059', events = [] } = req.body;
+  if (!Array.isArray(events) || events.length === 0) {
+    return res.status(400).json({ error: 'Lista de eventos vacía' });
+  }
+
+  const createdAt = new Date().toISOString();
+  const createdEvents = [];
+
+  db.serialize(() => {
+    db.run('BEGIN TRANSACTION');
+    const stmt = db.prepare(`
+      INSERT INTO calendar_events (id, student_id, title, description, date, time, type, module, completed, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)
+    `);
+
+    for (const evt of events) {
+      const id = evt.id || `evt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+      const title = evt.title || 'Sesión de Estudio';
+      const description = evt.description || '';
+      const date = evt.date;
+      const time = evt.time || '10:00 - 12:00';
+      const type = evt.type || 'study';
+      const mod = evt.module || 'APRENDIZAJE';
+
+      stmt.run([id, student_id, title, description, date, time, type, mod, createdAt]);
+      createdEvents.push({ id, student_id, title, description, date, time, type, module: mod, completed: 0, created_at: createdAt });
+    }
+
+    stmt.finalize();
+    db.run('COMMIT', (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ success: true, count: createdEvents.length, events: createdEvents });
+    });
+  });
+});
+
+// 4. Actualizar evento existente
+app.put('/api/calendar/events/:id', (req, res) => {
+  const { id } = req.params;
+  const { title, description, date, time, type, module, completed } = req.body;
+
+  db.get('SELECT * FROM calendar_events WHERE id = ?', [id], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!row) return res.status(404).json({ error: 'Evento no encontrado' });
+
+    const newTitle = title !== undefined ? title : row.title;
+    const newDescription = description !== undefined ? description : row.description;
+    const newDate = date !== undefined ? date : row.date;
+    const newTime = time !== undefined ? time : row.time;
+    const newType = type !== undefined ? type : row.type;
+    const newModule = module !== undefined ? module : row.module;
+    const newCompleted = completed !== undefined ? (completed ? 1 : 0) : row.completed;
+
+    const stmt = db.prepare(`
+      UPDATE calendar_events
+      SET title = ?, description = ?, date = ?, time = ?, type = ?, module = ?, completed = ?
+      WHERE id = ?
+    `);
+
+    stmt.run([newTitle, newDescription, newDate, newTime, newType, newModule, newCompleted, id], function(updateErr) {
+      if (updateErr) return res.status(500).json({ error: updateErr.message });
+      res.json({
+        success: true,
+        event: { ...row, title: newTitle, description: newDescription, date: newDate, time: newTime, type: newType, module: newModule, completed: newCompleted }
+      });
+    });
+  });
+});
+
+// 5. Alternar estado completado
+app.patch('/api/calendar/events/:id/toggle', (req, res) => {
+  const { id } = req.params;
+  db.get('SELECT completed FROM calendar_events WHERE id = ?', [id], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!row) return res.status(404).json({ error: 'Evento no encontrado' });
+
+    const newCompleted = row.completed === 1 ? 0 : 1;
+    db.run('UPDATE calendar_events SET completed = ? WHERE id = ?', [newCompleted, id], function(updateErr) {
+      if (updateErr) return res.status(500).json({ error: updateErr.message });
+      res.json({ success: true, id, completed: newCompleted });
+    });
+  });
+});
+
+// 6. Eliminar evento
+app.delete('/api/calendar/events/:id', (req, res) => {
+  const { id } = req.params;
+  db.run('DELETE FROM calendar_events WHERE id = ?', [id], function(err) {
+    if (err) return res.status(500).json({ error: err.message });
+    if (this.changes === 0) return res.status(404).json({ error: 'Evento no encontrado' });
+    res.json({ success: true, message: 'Evento eliminado correctamente' });
+  });
+});
+
+// ==========================================
+// NUEVOS ENDPOINTS: PLAN DE ESTUDIOS CON IA (INICIO)
+// ==========================================
+
+// 7. Generar Plan de Estudios personalizado
+app.post('/api/study-plan/generate', async (req, res) => {
+  const { examDate, topics, dailyHours, context = '', studentId = 'STU_AE_000059' } = req.body;
+
+  if (!examDate || !topics) {
+    return res.status(400).json({ error: 'La fecha del examen y los temas a estudiar son obligatorios.' });
+  }
+
+  // Obtener contexto del estudiante de la DB si está disponible
+  let studentContext = '';
+  try {
+    const student = await new Promise((resolve) => {
+      db.get('SELECT * FROM D1_encuestas WHERE student_id = ?', [studentId], (err, row) => {
+        resolve(row || null);
+      });
+    });
+    if (student) {
+      studentContext = `Estudiante: ${student.full_name}, Nivel de estrés: ${student.stress_band || 'moderado'}, Horas de sueño: ${student.sleep_hours || 7}h.`;
+    }
+  } catch (e) {
+    console.warn('Error leyendo contexto de estudiante para el plan:', e);
+  }
+
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  const systemInstruction = `Eres el Estratega Académico y de Bienestar con IA de LinkUP (Ciudad Aethera).
+Tu misión es diseñar un Plan de Estudios personalizado, riguroso, realista y altamente motivador para preparar al estudiante hacia su fecha límite o examen.
+
+INTEGRACIÓN CRUZADA OBLIGATORIA CON LOS MÓDULOS DE LINKUP:
+1. MÓDULO APRENDIZAJE:
+   - Recomienda explícitamente aplicar técnicas científicas de estudio:
+     * TÉCNICA DE FEYNMAN (explicar conceptos complejos en lenguaje simple, usando el Tutor Feynman del módulo Aprendizaje).
+     * MÉTODO MAYÉUTICO DE SÓCRATES (autoevaluación con preguntas reflexivas, usando el Tutor Sócrates del módulo Aprendizaje).
+     * Técnica Pomodoro (bloques de 25 o 50 minutos con foco total).
+     * Consulta del Banco de Exámenes y recursos de LinkUP.
+2. MÓDULO BIENESTAR:
+   - Integra de forma obligatoria la salud mental y física del estudiante:
+     * Pausas activas y desconexión digital recomendada.
+     * Técnicas de respiración (ej. 4-7-8 o diafragmática) para reducir el estrés pre-examen.
+     * Hábitos de sueño e hidratación para consolidar la memoria a largo plazo.
+     * Recordatorio del canal de orientación y apoyo 24/7 de LinkUP si experimenta sobrecarga o angustia.
+
+REGLAS DE DISTRIBUCIÓN DEL CRONOGRAMA:
+- La fecha de hoy es: ${todayStr}.
+- La fecha del examen/entrega es: ${examDate}.
+- Debes generar exactamente entre 4 y 6 bloques clave o sesiones estratégicas (máximo 6 bloques), distribuidos cronológicamente entre hoy y la fecha del examen.
+- Cada bloque debe tener una fecha exacta en formato 'YYYY-MM-DD' (dentro del rango), horario recomendado (ej. '18:00 - 20:00'), título accionable, temas específicos, lista breve de 2 a 3 tareas y recomendaciones concisas de Aprendizaje y Bienestar.
+- El último bloque debe ser el día previo al examen enfocado en repaso ligero, mentalidad positiva y descanso reparador.
+
+FORMATO DE RESPUESTA:
+Debes responder ÚNICAMENTE con un JSON válido y bien formateado, sin comentarios de código, con comillas dobles en todas las propiedades y cadenas:
+{
+  "planTitle": "Título claro y motivador del plan",
+  "summary": "Resumen ejecutivo del plan y su enfoque pedagógico",
+  "examDate": "YYYY-MM-DD",
+  "dailyHours": "X horas/día",
+  "totalEstimatedHours": 12,
+  "difficultyLevel": "Medio-Alto",
+  "schedule": [
+    {
+      "dayNumber": 1,
+      "date": "YYYY-MM-DD",
+      "time": "18:00 - 20:00",
+      "title": "Día 1: Título de la sesión",
+      "focus": "Tema central a dominar",
+      "duration": "2h",
+      "tasks": [
+        "Acción concreta 1",
+        "Acción concreta 2"
+      ],
+      "learningTip": "Técnica de Aprendizaje recomendada (mencionando Tutor Feynman o Sócrates de LinkUP)",
+      "wellnessTip": "Recomendación de Bienestar (pausas activas, descanso, respiración)"
+    }
+  ],
+  "learningIntegration": {
+    "recommendedTechniques": ["Método Feynman", "Práctica deliberada"],
+    "learningModuleAction": "Cómo aprovechar el módulo de Aprendizaje para este plan",
+    "suggestedResources": ["Banco de exámenes", "Videos recomendados"]
+  },
+  "wellnessIntegration": {
+    "stressManagementTip": "Técnica concreta para controlar el estrés o ansiedad pre-examen",
+    "activePauses": "Frecuencia sugerida de pausas activas",
+    "wellnessModuleAction": "Cómo apoyarse en el módulo de Bienestar ante sobrecarga académica"
+  },
+  "actionableSteps": [
+    "Paso 1: Organiza tu entorno",
+    "Paso 2: Comienza con el bloque del Día 1",
+    "Paso 3: Sincroniza al calendario"
+  ]
+}`;
+
+  const prompt = `Diseña el plan de estudio completo:
+- Materia/Temas: "${topics}"
+- Fecha límite/Examen: "${examDate}"
+- Tiempo diario disponible: "${dailyHours || '2 horas/día'}"
+- Indicaciones adicionales: "${context || 'Ninguna'}"
+- Contexto del estudiante en LinkUP: "${studentContext || 'Estudiante universitario'}"`;
+
+  try {
+    const rawJson = await callGemini({
+      systemInstruction,
+      prompt,
+      jsonMode: true,
+      temperature: 0.2
+    });
+
+    const parsed = parseGeminiJson(rawJson);
+    res.json(parsed);
+  } catch (error) {
+    console.error('Error en /api/study-plan/generate:', error);
+    res.status(500).json({ error: 'Error al generar el plan de estudios con la IA: ' + error.message });
+  }
+});
+
+// 8. Refinar o ajustar Plan de Estudios con IA
+app.post('/api/study-plan/refine', async (req, res) => {
+  const { currentPlan, adjustmentRequest } = req.body;
+
+  if (!currentPlan || !adjustmentRequest) {
+    return res.status(400).json({ error: 'Faltan datos del plan actual o la solicitud de ajuste.' });
+  }
+
+  const systemInstruction = `Eres el Estratega Académico y de Bienestar con IA de LinkUP (Ciudad Aethera).
+Tu tarea es modificar o ajustar el Plan de Estudios existente según la solicitud específica del estudiante, manteniendo la estructura JSON original y la integración cruzada con los módulos de APRENDIZAJE y BIENESTAR.
+
+Devuelve ÚNICAMENTE el JSON actualizado con la misma estructura (planTitle, summary, examDate, dailyHours, totalEstimatedHours, difficultyLevel, schedule, learningIntegration, wellnessIntegration, actionableSteps).`;
+
+  const prompt = `Ajusta el siguiente plan de estudio según la indicación del usuario:
+INDICACIÓN DE AJUSTE: "${adjustmentRequest}"
+
+PLAN ACTUAL:
+${JSON.stringify(currentPlan, null, 2)}`;
+
+  try {
+    const rawJson = await callGemini({
+      systemInstruction,
+      prompt,
+      jsonMode: true,
+      temperature: 0.2
+    });
+
+    const parsed = parseGeminiJson(rawJson);
+    res.json(parsed);
+  } catch (error) {
+    console.error('Error en /api/study-plan/refine:', error);
+    res.status(500).json({ error: 'Error al ajustar el plan de estudios con la IA' });
+  }
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+

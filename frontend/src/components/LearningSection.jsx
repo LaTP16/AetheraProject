@@ -840,9 +840,6 @@ export default function LearningSection({ addNotification }) {
                   <h2 className="text-xl sm:text-2xl font-black text-[#0D2538] tracking-wide">
                     Tutor Virtual de Aprendizaje (IA)
                   </h2>
-                  <span className="text-[10px] font-black uppercase tracking-wider bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-200">
-                    Gemini Activo
-                  </span>
                 </div>
                 <p className="text-xs sm:text-sm text-slate-500 font-medium">
                   Domina cualquier concepto a través de preguntas reflexivas o explicaciones simplificadas.
